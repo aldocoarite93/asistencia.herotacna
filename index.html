@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Hero Tacna — Asistencia</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding:16px}
+.app{max-width:480px;margin:0 auto;background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #eee}
+.logo-icon{width:46px;height:46px;min-width:46px;background:#1D9E75;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px}
+.logo-text{font-size:17px;font-weight:600;color:#111}
+.logo-sub{font-size:13px;color:#888;margin-top:2px}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid #ddd;border-top-color:#1D9E75;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:4px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#1D9E75;display:inline-block;margin-right:5px}
+
+.blk{margin-bottom:20px}
+.blk-label{font-size:14px;font-weight:500;color:#555;margin-bottom:8px;display:block}
+.blk select,.blk input[type=date]{width:100%;padding:13px 14px;border:1px solid #ddd;border-radius:10px;font-size:16px;background:#fff;color:#111;font-family:inherit;appearance:none;-webkit-appearance:none}
+.blk select:focus,.blk input[type=date]:focus{outline:none;border-color:#1D9E75}
+
+.turno-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tbtn{padding:14px 10px;border:1px solid #ddd;border-radius:10px;background:#fff;color:#333;font-size:14px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit;min-height:58px;touch-action:manipulation;transition:all 0.15s}
+.tbtn small{font-size:11px;display:block;margin-top:3px;opacity:0.75;font-weight:400}
+.tbtn.active{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.tbtn:active{opacity:0.8}
+
+.th{display:grid;grid-template-columns:1fr 80px 80px;padding:10px 12px;background:#f7f7f7;border-radius:10px;font-size:13px;font-weight:500;color:#777;margin-bottom:4px;text-align:center}
+.th span:first-child{text-align:left}
+.arow{display:grid;grid-template-columns:1fr 80px 80px;align-items:center;padding:12px;border-bottom:1px solid #f0f0f0;min-height:54px}
+.arow:last-child{border-bottom:none}
+.aname{font-size:14px;color:#111;line-height:1.3}
+.acod{font-size:12px;color:#999;margin-top:2px}
+.rcell{display:flex;justify-content:center;align-items:center}
+.rcell input[type=radio]{width:22px;height:22px;accent-color:#1D9E75;cursor:pointer;touch-action:manipulation}
+.tabla-wrap{border:1px solid #eee;border-radius:10px;overflow:hidden;margin-top:8px}
+.no-sel{text-align:center;padding:28px;color:#aaa;font-size:14px}
+.sec-title{font-size:16px;font-weight:600;color:#111;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.cnt-badge{font-size:12px;padding:3px 10px;border-radius:20px;background:#e8f8f2;color:#0F6E56;font-weight:500}
+
+.tog-box{display:flex;align-items:center;justify-content:space-between;padding:14px;border:1px solid #eee;border-radius:10px;background:#fff}
+.tog-label{font-size:15px;font-weight:500;color:#111}
+.tog-sub{font-size:12px;color:#999;margin-top:3px}
+.tog-pair{display:flex;gap:8px}
+.tog-btn{padding:9px 20px;border-radius:24px;border:1px solid #ddd;font-size:14px;cursor:pointer;background:#f5f5f5;color:#777;font-family:inherit;touch-action:manipulation;min-height:42px;transition:all 0.15s}
+.tog-btn:active{opacity:0.8}
+.tog-btn.t-si{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.tog-btn.t-no{background:#fff0f0;color:#c0392b;border-color:#f5c6c6}
+
+.extra-box{margin-top:10px;border:1px solid #eee;border-radius:10px;padding:14px;background:#fafafa}
+
+.inv-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:12px;margin-bottom:10px}
+.search-input{width:100%;padding:12px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;background:#fff;color:#111;font-family:inherit;margin-bottom:8px}
+.search-input:focus{outline:none;border-color:#1D9E75}
+.drop-list{background:#fff;border:1px solid #ddd;border-radius:10px;margin-bottom:8px;max-height:200px;overflow-y:auto}
+.drop-row{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;touch-action:manipulation;min-height:52px}
+.drop-row:last-child{border-bottom:none}
+.drop-row:active{background:#f7f7f7}
+.drop-name{font-size:14px;color:#111}
+.drop-cod{font-size:12px;color:#999;margin-top:1px}
+.turno-pill{font-size:12px;padding:5px 12px;border-radius:6px;border:1px solid #ddd;background:#f5f5f5;color:#333;font-weight:500;white-space:nowrap;margin-left:8px}
+.selected-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f0faf6;border-radius:10px;border:1px solid #c8ead9;margin-bottom:10px}
+.sel-name{font-size:14px;font-weight:500;color:#111}
+.sel-cod{font-size:12px;color:#888}
+.clear-x{background:none;border:none;font-size:22px;cursor:pointer;color:#aaa;padding:4px 8px;touch-action:manipulation;line-height:1}
+.inv-row-bottom{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.radio-box{display:flex;flex-direction:column;gap:10px;padding:12px;border:1px solid #eee;border-radius:10px;background:#fff}
+.radio-box label{display:flex;align-items:center;gap:8px;font-size:15px;color:#111;cursor:pointer;min-height:28px;touch-action:manipulation}
+.radio-box input{width:20px;height:20px;accent-color:#1D9E75;touch-action:manipulation;cursor:pointer}
+.nota-ta{width:100%;padding:12px;border:1px solid #eee;border-radius:10px;font-size:14px;font-family:inherit;background:#fff;color:#111;resize:none;height:66px}
+.nota-ta:focus{outline:none;border-color:#1D9E75}
+
+.pr-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:12px;margin-bottom:10px;display:flex;flex-direction:column;gap:10px}
+.pr-card input{width:100%;padding:12px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;background:#fff;color:#111}
+.pr-card input:focus{outline:none;border-color:#1D9E75}
+
+.add-row-btn{display:flex;align-items:center;gap:6px;font-size:14px;color:#1D9E75;cursor:pointer;padding:8px 0 2px;background:none;border:none;font-family:inherit;touch-action:manipulation;font-weight:500}
+.submit-btn{width:100%;padding:16px;background:#1D9E75;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-top:20px;font-family:inherit;touch-action:manipulation;min-height:56px;transition:all 0.2s}
+.submit-btn:active{opacity:0.85}
+.submit-btn:disabled{opacity:0.6;cursor:not-allowed}
+.ok-msg{text-align:center;padding:16px;background:#e8f8f2;border-radius:12px;color:#0F6E56;font-size:15px;font-weight:500;margin-top:14px;border:1px solid #c8ead9}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="logo">
+    <div class="logo-icon"><i class="ti ti-ball-basketball"></i></div>
+    <div>
+      <div class="logo-text">Hero Tacna Academia</div>
+      <div class="logo-sub" id="ds"><span class="spinner"></span>Cargando alumnos...</div>
+    </div>
+  </div>
+
+  <div class="blk">
+    <span class="blk-label">📅 Fecha de clase</span>
+    <input type="date" id="fecha">
+  </div>
+
+  <div class="blk">
+    <span class="blk-label">👤 Profesor</span>
+    <select id="profesor">
+      <option value="">Seleccionar profesor...</option>
+      <option>Dante Pastor</option>
+      <option>Pedro Liendo</option>
+      <option>Mauricio Gutiérrez</option>
+    </select>
+  </div>
+
+  <div class="blk">
+    <span class="blk-label">🕐 Turno</span>
+    <div class="turno-grid">
+      <button class="tbtn" onclick="selTurno('TA1',this)">TA1<small>LMV 3:30–4:30pm · Camelias</small></button>
+      <button class="tbtn" onclick="selTurno('TA2',this)">TA2<small>LMV 4:30–6:00pm · Camelias</small></button>
+      <button class="tbtn" onclick="selTurno('TB1',this)">TB1<small>MJS 4:00–5:00pm · Coliseo</small></button>
+      <button class="tbtn" onclick="selTurno('TB2',this)">TB2<small>MJS 5:00–6:00pm · Coliseo</small></button>
+      <button class="tbtn" onclick="selTurno('TC1',this)">TC1<small>MJS 4:00–5:00pm · Camelias</small></button>
+      <button class="tbtn" onclick="selTurno('TC2',this)">TC2<small>MJS 5:00–6:00pm · Camelias</small></button>
+    </div>
+  </div>
+
+  <div class="blk">
+    <div class="sec-title">📋 Asistencia <span class="cnt-badge" id="badge"></span></div>
+    <div class="th"><span>Alumno</span><span>Asistió</span><span>No asistió</span></div>
+    <div class="tabla-wrap" id="tabla">
+      <div class="no-sel">⬆️ Selecciona un turno arriba</div>
+    </div>
+  </div>
+
+  <!-- INVITADOS -->
+  <div class="blk">
+    <div class="tog-box">
+      <div>
+        <div class="tog-label">👥 Alumno invitado</div>
+        <div class="tog-sub">Recupera clase en otro turno</div>
+      </div>
+      <div class="tog-pair">
+        <button class="tog-btn t-no" id="inv-no" onclick="togSec('inv','no')">No</button>
+        <button class="tog-btn" id="inv-si" onclick="togSec('inv','si')">Sí</button>
+      </div>
+    </div>
+    <div class="extra-box" id="sec-inv" style="display:none">
+      <div id="rows-inv"></div>
+      <button class="add-row-btn" onclick="addInv()">➕ Agregar otro alumno</button>
+    </div>
+  </div>
+
+  <!-- PRUEBA -->
+  <div class="blk">
+    <div class="tog-box">
+      <div>
+        <div class="tog-label">⭐ Clase de prueba</div>
+        <div class="tog-sub">Niño/a que viene por primera vez</div>
+      </div>
+      <div class="tog-pair">
+        <button class="tog-btn t-no" id="pr-no" onclick="togSec('pr','no')">No</button>
+        <button class="tog-btn" id="pr-si" onclick="togSec('pr','si')">Sí</button>
+      </div>
+    </div>
+    <div class="extra-box" id="sec-pr" style="display:none">
+      <div id="rows-pr"></div>
+      <button class="add-row-btn" onclick="addPr()">➕ Agregar otro alumno prueba</button>
+    </div>
+  </div>
+
+  <button class="submit-btn" id="sbtn" onclick="enviar()">📤 Enviar asistencia</button>
+  <div id="resultado"></div>
+</div>
+
+<script>
+const API="https://script.google.com/macros/s/AKfycbzjKtixs--bCWGHAGeranHFlbQnbwr03jcRPKF2fUwHJM6xUhG4RwiTMa1YUeZRAP6Exg/exec";
+let APT={},TODOS=[],turno=null,invN=0,prN=0;
+
+async function init(){
+  try{
+    const r=await fetch(API);
+    const d=await r.json();
+    TODOS=d;APT={};
+    d.forEach(a=>{const t=(a.turno||"").toUpperCase();if(!APT[t])APT[t]=[];APT[t].push(a);});
+    document.getElementById('ds').innerHTML='🟢 '+d.length+' alumnos cargados';
+    if(turno)renderTabla(turno);
+  }catch(e){
+    document.getElementById('ds').innerHTML='⚠️ Sin conexión — intenta de nuevo';
+  }
+}
+
+function selTurno(t,btn){
+  turno=t;
+  document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTabla(t);
+}
+
+function renderTabla(t){
+  const lista=APT[t]||[];
+  document.getElementById('badge').textContent=lista.length+' alumnos';
+  if(!lista.length){document.getElementById('tabla').innerHTML='<div class="no-sel">Sin alumnos en este turno</div>';return;}
+  document.getElementById('tabla').innerHTML=lista.map((a,i)=>`
+    <div class="arow">
+      <div><div class="aname">${(a.nom||'').split(' ').slice(0,3).join(' ')}</div><div class="acod">${a.cod}</div></div>
+      <div class="rcell"><input type="radio" name="a${i}" value="SI"></div>
+      <div class="rcell"><input type="radio" name="a${i}" value="NO"></div>
+    </div>`).join('');
+}
+
+function togSec(tipo,val){
+  document.getElementById(tipo+'-si').className='tog-btn'+(val==='si'?' t-si':'');
+  document.getElementById(tipo+'-no').className='tog-btn'+(val==='no'?' t-no':'');
+  const sec=document.getElementById('sec-'+tipo);
+  if(val==='si'){
+    sec.style.display='block';
+    if(!document.getElementById('rows-'+tipo).children.length){tipo==='inv'?addInv():addPr();}
+  }else sec.style.display='none';
+}
+
+function addInv(){
+  const c=document.getElementById('rows-inv');
+  const n=invN++;
+  const div=document.createElement('div');
+  div.className='inv-card';div.id='ic'+n;
+  div.innerHTML=`
+    <input class="search-input" type="text" id="si${n}" placeholder="Escribe nombre o código del alumno..." oninput="filtrar(${n})" autocomplete="off">
+    <div id="dl${n}"></div>
+    <div id="sv${n}"></div>
+    <div class="inv-row-bottom">
+      <div class="radio-box">
+        <label><input type="radio" name="ir${n}" value="SI"> Asistió</label>
+        <label><input type="radio" name="ir${n}" value="NO"> No asistió</label>
+      </div>
+      <textarea class="nota-ta" id="in${n}" placeholder="Turno original, motivo..."></textarea>
+    </div>`;
+  c.appendChild(div);
+}
+
+function filtrar(n){
+  const q=document.getElementById('si'+n).value.toLowerCase().trim();
+  const res=q.length>0?TODOS.filter(a=>a.nom.toLowerCase().includes(q)||a.cod.includes(q)):[];
+  const dl=document.getElementById('dl'+n);
+  if(!res.length){dl.innerHTML='';return;}
+  dl.innerHTML='<div class="drop-list">'+res.slice(0,30).map(a=>`
+    <div class="drop-row" onclick="elegir(${n},'${a.cod}','${a.nom.replace(/'/g,"\\'")}','${a.turno||''}')">
+      <div><div class="drop-name">${a.nom.split(' ').slice(0,3).join(' ')}</div><div class="drop-cod">${a.cod}</div></div>
+      <div class="turno-pill">Turno ${a.turno||'—'}</div>
+    </div>`).join('')+'</div>';
+}
+
+function elegir(n,cod,nom,t){
+  document.getElementById('si'+n).value='';
+  document.getElementById('dl'+n).innerHTML='';
+  const sv=document.getElementById('sv'+n);
+  sv.innerHTML=`
+    <div class="selected-row">
+      <div><div class="sel-name">${nom.split(' ').slice(0,3).join(' ')}</div><div class="sel-cod">${cod}</div></div>
+      <div class="turno-pill">Turno ${t||'—'}</div>
+      <button class="clear-x" onclick="limpiar(${n})">✕</button>
+    </div>`;
+  sv.dataset.cod=cod;sv.dataset.nom=nom;sv.dataset.turno=t;
+}
+
+function limpiar(n){
+  const sv=document.getElementById('sv'+n);
+  sv.innerHTML='';delete sv.dataset.cod;
+  document.getElementById('si'+n).value='';
+  document.getElementById('dl'+n).innerHTML='';
+}
+
+function addPr(){
+  const c=document.getElementById('rows-pr');
+  const n=prN++;
+  const div=document.createElement('div');
+  div.className='pr-card';
+  div.innerHTML=`
+    <input type="text" id="pn${n}" placeholder="Nombre completo del niño/a">
+    <div class="inv-row-bottom">
+      <div class="radio-box">
+        <label><input type="radio" name="pr${n}" value="SI"> Asistió</label>
+        <label><input type="radio" name="pr${n}" value="NO"> No asistió</label>
+      </div>
+      <textarea class="nota-ta" id="pt${n}" placeholder="Tel, edad, colegio, notas..."></textarea>
+    </div>`;
+  c.appendChild(div);
+}
+
+async function enviar(){
+  const fecha=document.getElementById('fecha').value;
+  const prof=document.getElementById('profesor').value;
+  if(!fecha||!prof||!turno){alert('Completa fecha, profesor y turno antes de enviar.');return;}
+  const lista=APT[turno]||[];
+  const alumnos=lista.map((a,i)=>{const s=document.querySelector(`input[name="a${i}"]:checked`);return{cod:a.cod,nom:a.nom,asistencia:s?s.value:'—'};});
+  const invitados=[];
+  document.querySelectorAll('.inv-card').forEach(card=>{
+    const n=card.id.replace('ic','');
+    const sv=document.getElementById('sv'+n);
+    if(!sv||!sv.dataset.cod)return;
+    const s=card.querySelector('input[type=radio]:checked');
+    invitados.push({cod:sv.dataset.cod,nom:sv.dataset.nom,turnoOrigen:sv.dataset.turno,asistencia:s?s.value:'—',nota:document.getElementById('in'+n).value});
+  });
+  const prueba=[];
+  document.querySelectorAll('.pr-card').forEach(card=>{
+    const inp=card.querySelector('input[type=text]');
+    const n=inp.id.replace('pn','');
+    const nom=inp.value.trim();
+    if(!nom)return;
+    const s=card.querySelector('input[type=radio]:checked');
+    prueba.push({nom,asistencia:s?s.value:'—',nota:document.getElementById('pt'+n).value});
+  });
+  const btn=document.getElementById('sbtn');
+  btn.disabled=true;btn.innerHTML='⏳ Enviando...';
+  try{
+    await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({fecha,profesor:prof,turno,alumnos,invitados,prueba})});
+    btn.innerHTML='✅ Asistencia enviada';btn.style.background='#085041';
+    document.getElementById('resultado').innerHTML='<div class="ok-msg">✅ Registro guardado correctamente en Google Sheets</div>';
+  }catch(e){
+    btn.disabled=false;btn.innerHTML='📤 Enviar asistencia';
+    alert('Error al enviar. Revisa tu conexión.');
+  }
+}
+
+document.getElementById('fecha').valueAsDate=new Date();
+init();
+</script>
+</body>
+</html>
