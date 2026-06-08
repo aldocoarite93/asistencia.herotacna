@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Hero Tacna — Tienda</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding:16px}
+.app{max-width:480px;margin:0 auto;background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid #eee}
+.logo-icon{width:44px;height:44px;min-width:44px;background:#1D9E75;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px}
+.logo-text{font-size:17px;font-weight:600;color:#111}
+.logo-sub{font-size:13px;color:#888;margin-top:2px}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid #ddd;border-top-color:#1D9E75;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:4px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pasos{display:flex;gap:4px;margin-bottom:20px}
+.paso{height:4px;border-radius:2px;background:#eee;flex:1}
+.paso.done{background:#1D9E75}
+.paso.active{background:#1D9E75;opacity:0.5}
+.step-header{font-size:12px;font-weight:500;color:#888;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px}
+.blk{margin-bottom:18px}
+.search-input{width:100%;padding:13px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;background:#fff;color:#111;font-family:inherit;margin-bottom:6px}
+.search-input:focus{outline:none;border-color:#1D9E75}
+.drop-list{background:#fff;border:1px solid #ddd;border-radius:10px;max-height:220px;overflow-y:auto;margin-bottom:10px;display:none}
+.drop-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;touch-action:manipulation;min-height:50px}
+.drop-row:last-child{border-bottom:none}
+.drop-row:active{background:#f7faf8}
+.drop-name{font-size:14px;color:#111;font-weight:500}
+.drop-info{font-size:12px;color:#999;margin-top:2px}
+.turno-pill{font-size:11px;padding:4px 9px;border-radius:6px;border:1px solid #ddd;background:#f5f5f5;color:#333;font-weight:500;white-space:nowrap;flex-shrink:0;margin-left:8px}
+.alumno-card{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#f0faf6;border:1px solid #c8ead9;border-radius:10px;margin-bottom:16px}
+.alumno-nombre{font-size:15px;font-weight:500;color:#111}
+.alumno-det{font-size:12px;color:#666;margin-top:2px}
+.clear-btn{background:none;border:none;font-size:20px;cursor:pointer;color:#aaa;padding:4px 8px;touch-action:manipulation}
+.productos-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.prod-btn{padding:18px 10px;border:1px solid #ddd;border-radius:12px;background:#fff;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;transition:all 0.15s}
+.prod-btn.active{border-color:#1D9E75;background:#f0faf6}
+.prod-icon{font-size:30px;display:block;margin-bottom:8px}
+.prod-name{font-size:14px;font-weight:500;color:#111}
+.form-section{background:#fafafa;border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:12px}
+.form-label{font-size:13px;font-weight:500;color:#555;margin-bottom:8px;display:block}
+.form-input{width:100%;padding:11px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;background:#fff;color:#111}
+.form-input:focus{outline:none;border-color:#1D9E75}
+.talla-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.talla-btn{padding:11px 4px;border:1px solid #ddd;border-radius:8px;background:#fff;font-size:13px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333}
+.talla-btn.active{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.cat-badge{display:inline-block;font-size:12px;padding:4px 12px;border-radius:20px;background:#E1F5EE;color:#0F6E56;font-weight:500;margin-bottom:10px}
+.num-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:10px}
+.num-btn{padding:9px 2px;border:1px solid #ddd;border-radius:7px;background:#fff;font-size:12px;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333;font-weight:500}
+.num-btn.ocupado{background:#fff0f0;border-color:#fdd;color:#bbb;cursor:not-allowed;text-decoration:line-through}
+.num-btn.active{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.num-legend{display:flex;gap:12px;font-size:12px;color:#888;margin-top:10px;flex-wrap:wrap}
+.leg-sq{width:12px;height:12px;border-radius:3px;display:inline-block;margin-right:4px;vertical-align:middle}
+.resumen-card{background:#f0faf6;border:1px solid #c8ead9;border-radius:12px;padding:14px;margin-bottom:16px}
+.resumen-row{display:flex;justify-content:space-between;font-size:14px;padding:5px 0;border-bottom:1px solid #d5eee2;color:#333}
+.resumen-row:last-child{border-bottom:none;font-weight:500}
+.submit-btn{width:100%;padding:15px;background:#1D9E75;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;touch-action:manipulation;min-height:52px;margin-top:4px}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed}
+.back-btn{width:100%;padding:12px;background:none;color:#888;border:1px solid #ddd;border-radius:12px;font-size:14px;cursor:pointer;font-family:inherit;touch-action:manipulation;margin-bottom:12px}
+.ok-msg{text-align:center;padding:24px;background:#e8f8f2;border-radius:12px;color:#0F6E56;font-size:15px;font-weight:500;border:1px solid #c8ead9}
+.info-box{background:#fafafa;border:1px solid #eee;border-radius:10px;padding:12px;font-size:13px;color:#777;margin-top:8px;line-height:1.5}
+.talla-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="logo">
+    <div class="logo-icon">🏀</div>
+    <div>
+      <div class="logo-text">Hero Tacna — Tienda</div>
+      <div class="logo-sub" id="status"><span class="spinner"></span>Cargando alumnos...</div>
+    </div>
+  </div>
+
+  <div class="pasos" id="pasos">
+    <div class="paso active" id="p1"></div>
+    <div class="paso" id="p2"></div>
+    <div class="paso" id="p3"></div>
+    <div class="paso" id="p4"></div>
+  </div>
+
+  <div id="step1">
+    <div class="step-header">Paso 1 — Buscar alumno</div>
+    <input class="search-input" type="text" id="busca-alumno" placeholder="🔍 Nombre, código o turno..." oninput="filtrarAlumno()" autocomplete="off">
+    <div class="drop-list" id="drop-alumno"></div>
+    <div class="info-box">Puedes buscar por nombre, código o turno (TA1, TA2, TB1, TB2, TC1, TC2)</div>
+  </div>
+
+  <div id="step2" style="display:none">
+    <div id="alumno-sel-card"></div>
+    <div class="step-header">Paso 2 — ¿Qué artículo necesita?</div>
+    <div class="productos-grid">
+      <button class="prod-btn" onclick="selProducto('camiseta',this)"><span class="prod-icon">👕</span><span class="prod-name">Camiseta</span></button>
+      <button class="prod-btn" onclick="selProducto('calentador',this)"><span class="prod-icon">🧥</span><span class="prod-name">Calentador</span></button>
+      <button class="prod-btn" onclick="selProducto('buzo',this)"><span class="prod-icon">🩱</span><span class="prod-name">Buzo</span></button>
+      <button class="prod-btn" onclick="selProducto('balon',this)"><span class="prod-icon">🏀</span><span class="prod-name">Balón</span></button>
+    </div>
+  </div>
+
+  <div id="step3" style="display:none"></div>
+  <div id="step4" style="display:none"></div>
+  <div id="resultado"></div>
+</div>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbzjKtixs--bCWGHAGeranHFlbQnbwr03jcRPKF2fUwHJM6xUhG4RwiTMa1YUeZRAP6Exg/exec";
+let TODOS=[], alumnoSel=null, productoSel=null, detalle={};
+
+function getCatNum(cat){
+  const n=parseInt(String(cat).toUpperCase().replace('U',''));
+  if(isNaN(n)) return null;
+  return n%2===0 ? n+1 : n;
+}
+
+function numOcupados(catNum){
+  const uPar='U'+(catNum-1), uImpar='U'+catNum;
+  return TODOS.filter(a=>{
+    const c=String(a.categoria||'').toUpperCase().trim();
+    return (c===uPar||c===uImpar) && a.numCamiseta && String(a.numCamiseta).trim()!=='';
+  }).map(a=>parseInt(a.numCamiseta)).filter(n=>!isNaN(n)&&n>0);
+}
+
+async function init(){
+  try{
+    const r=await fetch(API);
+    const d=await r.json();
+    TODOS=d.map(a=>({
+      cod:a.cod, nom:a.nom, turno:(a.turno||'').toUpperCase(),
+      categoria:(a.categoria||a.CATEGORIA||'').toString().toUpperCase().trim(),
+      numCamiseta:a.numCamiseta||a['NUMERO DE CAMISETA']||a['#']||null,
+      talla:a.talla||a.TALLA||''
+    }));
+    document.getElementById('status').innerHTML='🟢 '+TODOS.length+' alumnos cargados';
+  }catch(e){
+    document.getElementById('status').innerHTML='⚠️ Sin conexión — reintenta';
+  }
+}
+
+function filtrarAlumno(){
+  const q=document.getElementById('busca-alumno').value.toLowerCase().trim();
+  const dd=document.getElementById('drop-alumno');
+  if(!q){dd.style.display='none';return;}
+  const res=TODOS.filter(a=>(a.nom||'').toLowerCase().includes(q)||String(a.cod||'').includes(q)||(a.turno||'').toLowerCase().includes(q));
+  if(!res.length){dd.style.display='none';return;}
+  dd.innerHTML=res.slice(0,20).map(a=>`
+    <div class="drop-row" onmousedown="elegirAlumno('${a.cod}')">
+      <div><div class="drop-name">${(a.nom||'').split(' ').slice(0,3).join(' ')}</div>
+      <div class="drop-info">Cod: ${a.cod} · Cat: ${a.categoria||'—'}</div></div>
+      <div class="turno-pill">${a.turno||'—'}</div>
+    </div>`).join('');
+  dd.style.display='block';
+}
+
+function elegirAlumno(cod){
+  alumnoSel=TODOS.find(a=>String(a.cod)===String(cod));
+  document.getElementById('busca-alumno').value='';
+  document.getElementById('drop-alumno').style.display='none';
+  irPaso(2);
+}
+
+function selProducto(prod,btn){
+  productoSel=prod;
+  document.querySelectorAll('.prod-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  setTimeout(()=>irPaso(3),150);
+}
+
+function irPaso(n){
+  [1,2,3,4].forEach(i=>{
+    document.getElementById('step'+i).style.display=i===n?'block':'none';
+    const p=document.getElementById('p'+i);
+    p.className='paso'+(i<n?' done':i===n?' active':'');
+  });
+  if(n===2) document.getElementById('alumno-sel-card').innerHTML=alumnoCardHTML();
+  if(n===3) renderPaso3();
+  if(n===4) renderPaso4();
+}
+
+function alumnoCardHTML(){
+  const a=alumnoSel, cat=getCatNum(a.categoria);
+  return `<div class="alumno-card">
+    <div><div class="alumno-nombre">${(a.nom||'').split(' ').slice(0,3).join(' ')}</div>
+    <div class="alumno-det">Cod: ${a.cod} · ${a.categoria||'—'} · Cat ${cat||'—'} · ${a.turno||'—'}</div></div>
+    <button class="clear-btn" onclick="volverP1()">✕</button>
+  </div>`;
+}
+
+function renderPaso3(){
+  const s=document.getElementById('step3');
+  const a=alumnoSel, cat=getCatNum(a.categoria);
+  detalle={};
+
+  if(productoSel==='camiseta'){
+    const ocup=numOcupados(cat);
+    let nums='';
+    for(let i=1;i<=99;i++){
+      const oc=ocup.includes(i);
+      nums+=`<button class="num-btn${oc?' ocupado':''}" id="nb${i}" onclick="selNum(${i},${oc})">${i}</button>`;
+    }
+    s.innerHTML=`
+      <button class="back-btn" onclick="irPaso(2)">← Volver</button>
+      <div class="step-header">Paso 3 — Detalles de la camiseta</div>
+      <div class="form-section">
+        <div class="cat-badge">Categoría ${cat} (${a.categoria})</div>
+        <label class="form-label">Talla</label>
+        <div class="talla-grid">
+          ${['XS','S','M','L','XL'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this)">${t}</button>`).join('')}
+        </div>
+      </div>
+      <div class="form-section">
+        <label class="form-label">Nombre en la camiseta</label>
+        <input class="form-input" type="text" id="nom-cam" placeholder="Ej: GIANFRANCO" oninput="detalle.nombreCamiseta=this.value.toUpperCase();this.value=this.value.toUpperCase()">
+      </div>
+      <div class="form-section">
+        <label class="form-label">Número de camiseta</label>
+        <div class="num-legend">
+          <span><span class="leg-sq" style="background:#fff;border:1px solid #ddd"></span>Libre</span>
+          <span><span class="leg-sq" style="background:#fff0f0;border:1px solid #fdd"></span>Ocupado (${ocup.length})</span>
+          <span><span class="leg-sq" style="background:#1D9E75"></span>Elegido</span>
+        </div>
+        <div class="num-grid">${nums}</div>
+        <div style="font-size:12px;color:#888;margin-top:8px">Números ocupados en Cat ${cat}: ${ocup.length>0?ocup.sort((a,b)=>a-b).join(', '):'ninguno aún'}</div>
+      </div>
+      <button class="submit-btn" onclick="validarYContinuar()">Continuar →</button>`;
+
+  } else if(productoSel==='balon'){
+    s.innerHTML=`
+      <button class="back-btn" onclick="irPaso(2)">← Volver</button>
+      <div class="step-header">Paso 3 — Detalles del balón</div>
+      <div class="form-section">
+        <label class="form-label">Talla del balón</label>
+        <div class="talla-grid-3">
+          ${['Talla 5','Talla 6','Talla 7'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this)">${t}</button>`).join('')}
+        </div>
+      </div>
+      <div class="form-section">
+        <label class="form-label">Observación (opcional)</label>
+        <input class="form-input" type="text" placeholder="Ej: para uso personal, marca..." oninput="detalle.obs=this.value">
+      </div>
+      <button class="submit-btn" onclick="irPaso(4)" style="margin-top:4px">Continuar →</button>`;
+
+  } else {
+    const prod=productoSel==='calentador'?'Calentador':'Buzo';
+    s.innerHTML=`
+      <button class="back-btn" onclick="irPaso(2)">← Volver</button>
+      <div class="step-header">Paso 3 — Detalles del ${prod.toLowerCase()}</div>
+      <div class="form-section">
+        <label class="form-label">Talla</label>
+        <div class="talla-grid">
+          ${['XS','S','M','L','XL'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this)">${t}</button>`).join('')}
+        </div>
+      </div>
+      <div class="form-section">
+        <label class="form-label">Nombre en el ${prod.toLowerCase()} (opcional)</label>
+        <input class="form-input" type="text" placeholder="Ej: MATIAS" oninput="detalle.nombreProd=this.value.toUpperCase();this.value=this.value.toUpperCase()">
+      </div>
+      <div class="form-section">
+        <label class="form-label">Observación</label>
+        <input class="form-input" type="text" placeholder="Color, modelo, urgencia..." oninput="detalle.obs=this.value">
+      </div>
+      <button class="submit-btn" onclick="irPaso(4)" style="margin-top:4px">Continuar →</button>`;
+  }
+}
+
+function selTalla(t,btn){
+  btn.closest('.talla-grid,talla-grid-3,.form-section').querySelectorAll('.talla-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  detalle.talla=t;
+}
+
+function selNum(n,ocupado){
+  if(ocupado){alert('❌ El número '+n+' ya está asignado en esta categoría.\nElige otro número.');return;}
+  document.querySelectorAll('.num-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('nb'+n).classList.add('active');
+  detalle.numero=n;
+}
+
+function validarYContinuar(){
+  if(!detalle.talla){alert('Selecciona una talla.');return;}
+  if(!detalle.numero){alert('Selecciona un número de camiseta.');return;}
+  irPaso(4);
+}
+
+function renderPaso4(){
+  const a=alumnoSel, cat=getCatNum(a.categoria);
+  const prods={camiseta:'Camiseta',calentador:'Calentador',buzo:'Buzo',balon:'Balón'};
+  const filas=[
+    ['Alumno',(a.nom||'').split(' ').slice(0,3).join(' ')],
+    ['Código',a.cod],
+    ['Categoría',`${a.categoria} (Cat ${cat})`],
+    ['Turno',a.turno||'—'],
+    ['Artículo',prods[productoSel]],
+    detalle.talla?['Talla',detalle.talla]:null,
+    detalle.numero?['Número','#'+detalle.numero]:null,
+    detalle.nombreCamiseta?['Nombre en camiseta',detalle.nombreCamiseta]:null,
+    detalle.nombreProd?['Nombre en artículo',detalle.nombreProd]:null,
+    detalle.obs?['Observación',detalle.obs]:null,
+  ].filter(Boolean);
+
+  document.getElementById('step4').innerHTML=`
+    <button class="back-btn" onclick="irPaso(3)">← Modificar</button>
+    <div class="step-header">Paso 4 — Confirmar pedido</div>
+    <div class="resumen-card">
+      ${filas.map(([k,v])=>`<div class="resumen-row"><span style="color:#666">${k}</span><span>${v}</span></div>`).join('')}
+    </div>
+    <button class="submit-btn" id="btn-confirmar" onclick="confirmar()">✅ Confirmar pedido</button>`;
+}
+
+function confirmar(){
+  const btn=document.getElementById('btn-confirmar');
+  btn.disabled=true; btn.textContent='⏳ Guardando...';
+  const prods={camiseta:'Camiseta',calentador:'Calentador',buzo:'Buzo',balon:'Balón'};
+  setTimeout(()=>{
+    document.getElementById('step4').style.display='none';
+    document.getElementById('pasos').style.display='none';
+    document.getElementById('resultado').innerHTML=`
+      <div class="ok-msg">
+        ✅ Pedido registrado correctamente<br>
+        <span style="font-size:13px;font-weight:400;opacity:0.85;display:block;margin-top:6px">
+          ${(alumnoSel.nom||'').split(' ')[0]} · ${prods[productoSel]}
+          ${detalle.numero?' · #'+detalle.numero:''}
+          ${detalle.talla?' · Talla '+detalle.talla:''}
+        </span>
+        <button onclick="nuevoPedido()" style="margin-top:14px;padding:9px 24px;border-radius:20px;border:1px solid #0F6E56;background:none;color:#0F6E56;font-size:14px;cursor:pointer;font-family:inherit;font-weight:500">+ Nuevo pedido</button>
+      </div>`;
+  },700);
+}
+
+function nuevoPedido(){
+  alumnoSel=null;productoSel=null;detalle={};
+  document.getElementById('resultado').innerHTML='';
+  document.getElementById('pasos').style.display='flex';
+  irPaso(1);
+}
+
+function volverP1(){alumnoSel=null;irPaso(1);}
+
+document.addEventListener('touchstart',e=>{
+  if(!e.target.closest('#busca-alumno')&&!e.target.closest('#drop-alumno'))
+    document.getElementById('drop-alumno').style.display='none';
+});
+document.addEventListener('mousedown',e=>{
+  if(!e.target.closest('#busca-alumno')&&!e.target.closest('#drop-alumno'))
+    document.getElementById('drop-alumno').style.display='none';
+});
+
+init();
+</script>
+</body>
+</html>
