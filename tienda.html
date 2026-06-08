@@ -104,7 +104,7 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 </div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbyO7ikmRz5YbUK17_wMvq5loT6I-HoY6QcvBv4F8MmPRlTBLAgsugIALPn2hxqIfwVWAQ/exec";
+const API = "https://script.google.com/macros/s/AKfycbzb_Gkb14GvbMcL6ha0N9yHkxTLyVl235J74wZC8HSj0tFTFxXLha_KFLr6tIej4xwscQ/exec";
 let TODOS=[], alumnoSel=null, productoSel=null, detalle={};
 
 function getCatNum(cat){
@@ -125,14 +125,16 @@ async function init(){
   try{
     const r=await fetch(API);
     const d=await r.json();
-    TODOS=d.filter(a=>a.cod&&a.nom).map(a=>({
-      cod:String(a.cod).trim(),
-      nom:String(a.nom).trim(),
-      turno:String(a.turno||'').toUpperCase().trim(),
-      categoria:String(a.categoria||'').toUpperCase().trim(),
-      numCamiseta:a.numCamiseta?String(a.numCamiseta).trim():'',
-      talla:String(a.talla||'').trim()
-    }));
+    // API ALUMNOS devuelve col1=CATEGORIA, col2=COD, col3=Nombre, col4=Apellido
+    // col5=HORARIO, col16=NUMERO DE CAMISETA, col17=TALLA
+    TODOS=d.filter(a=>a.col2&&a.col3&&a['LEYENDA:']!=='N°').map(a=>({
+      cod:String(a.col2||'').trim(),
+      nom:(String(a.col3||'').trim()+' '+String(a.col4||'').trim()).trim(),
+      turno:String(a.col5||'').toUpperCase().trim(),
+      categoria:String(a.col1||'').toUpperCase().trim(),
+      numCamiseta:a.col16!==null&&a.col16!==''?String(a.col16).trim():'',
+      talla:String(a.col17||'').trim()
+    })).filter(a=>a.cod&&a.nom&&a.cod!=='COD');
     console.log('Total alumnos:', TODOS.length);
     if(TODOS.length>0) console.log('Primer alumno:', JSON.stringify(TODOS[0]));
     // Debug temporal - mostrar campos del primer alumno
