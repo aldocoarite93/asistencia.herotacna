@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Hero Tacna — Asistencia</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding:16px}
 .app{max-width:480px;margin:0 auto;background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
 .logo{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #eee}
-.logo-icon{width:46px;height:46px;min-width:46px;background:#1D9E75;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px}
+.logo-icon{width:46px;height:46px;min-width:46px;background:#1D9E75;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px}
 .logo-text{font-size:17px;font-weight:600;color:#111}
 .logo-sub{font-size:13px;color:#888;margin-top:2px}
 .spinner{display:inline-block;width:12px;height:12px;border:2px solid #ddd;border-top-color:#1D9E75;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:4px}
@@ -46,38 +45,48 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .tog-sub{font-size:12px;color:#999;margin-top:3px}
 .tog-pair{display:flex;gap:8px}
 .tog-btn{padding:9px 20px;border-radius:24px;border:1px solid #ddd;font-size:14px;cursor:pointer;background:#f5f5f5;color:#777;font-family:inherit;touch-action:manipulation;min-height:42px;transition:all 0.15s}
-.tog-btn:active{opacity:0.8}
 .tog-btn.t-si{background:#1D9E75;color:#fff;border-color:#1D9E75}
 .tog-btn.t-no{background:#fff0f0;color:#c0392b;border-color:#f5c6c6}
-
 .extra-box{margin-top:10px;border:1px solid #eee;border-radius:10px;padding:14px;background:#fafafa}
 
-.inv-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:12px;margin-bottom:10px}
-.search-input{width:100%;padding:12px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;background:#fff;color:#111;font-family:inherit;margin-bottom:8px}
+/* Buscador invitados */
+.search-input{width:100%;padding:13px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;background:#fff;color:#111;font-family:inherit;margin-bottom:6px}
 .search-input:focus{outline:none;border-color:#1D9E75}
-.drop-list{background:#fff;border:1px solid #ddd;border-radius:10px;margin-bottom:8px;max-height:200px;overflow-y:auto}
+.drop-list{background:#fff;border:1px solid #ddd;border-radius:10px;max-height:200px;overflow-y:auto;margin-bottom:10px;display:none}
 .drop-row{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;touch-action:manipulation;min-height:52px}
 .drop-row:last-child{border-bottom:none}
-.drop-row:active{background:#f7f7f7}
-.drop-name{font-size:14px;color:#111}
-.drop-cod{font-size:12px;color:#999;margin-top:1px}
-.turno-pill{font-size:12px;padding:5px 12px;border-radius:6px;border:1px solid #ddd;background:#f5f5f5;color:#333;font-weight:500;white-space:nowrap;margin-left:8px}
-.selected-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#f0faf6;border-radius:10px;border:1px solid #c8ead9;margin-bottom:10px}
-.sel-name{font-size:14px;font-weight:500;color:#111}
-.sel-cod{font-size:12px;color:#888}
-.clear-x{background:none;border:none;font-size:22px;cursor:pointer;color:#aaa;padding:4px 8px;touch-action:manipulation;line-height:1}
-.inv-row-bottom{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.radio-box{display:flex;flex-direction:column;gap:10px;padding:12px;border:1px solid #eee;border-radius:10px;background:#fff}
-.radio-box label{display:flex;align-items:center;gap:8px;font-size:15px;color:#111;cursor:pointer;min-height:28px;touch-action:manipulation}
-.radio-box input{width:20px;height:20px;accent-color:#1D9E75;touch-action:manipulation;cursor:pointer}
-.nota-ta{width:100%;padding:12px;border:1px solid #eee;border-radius:10px;font-size:14px;font-family:inherit;background:#fff;color:#111;resize:none;height:66px}
-.nota-ta:focus{outline:none;border-color:#1D9E75}
+.drop-row:active{background:#f7faf8}
+.drop-name{font-size:14px;color:#111;font-weight:500}
+.drop-cod{font-size:12px;color:#999;margin-top:2px}
+.turno-pill{font-size:12px;padding:5px 10px;border-radius:6px;border:1px solid #ddd;background:#f5f5f5;color:#333;font-weight:500;white-space:nowrap;margin-left:8px;flex-shrink:0}
 
+/* Fila invitado */
+.inv-item{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid #e0f0e8;border-radius:10px;padding:10px 12px;margin-bottom:8px;min-height:48px}
+.inv-left{display:flex;flex-direction:column;flex-shrink:0;width:120px}
+.inv-name{font-size:14px;font-weight:500;color:#111;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.inv-cod{font-size:11px;color:#999;margin-top:1px}
+.inv-pill{font-size:11px;padding:4px 9px;border-radius:6px;border:1px solid #ddd;background:#f5f5f5;color:#333;font-weight:500;white-space:nowrap;flex-shrink:0}
+.nota-wrap{flex:1;min-width:0}
+.nota-display{width:100%;height:32px;padding:7px 10px;border:1px solid transparent;border-radius:8px;font-size:13px;font-family:inherit;color:#999;background:transparent;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:text;line-height:18px;display:flex;align-items:center}
+.nota-display.has-text{color:#555}
+.nota-input-inv{width:100%;height:32px;padding:7px 10px;border:1px solid #1D9E75;border-radius:8px;font-size:13px;font-family:inherit;background:#fff;color:#111;display:none;outline:none}
+
+.del-btn{width:32px;height:32px;min-width:32px;border-radius:8px;border:1px solid #fdd;background:#fff5f5;color:#e74c3c;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0}
+.del-btn:active{background:#fdd}
+.empty-list{text-align:center;padding:16px;color:#bbb;font-size:13px;border:1px dashed #ddd;border-radius:10px}
+.add-btn{display:flex;align-items:center;gap:6px;font-size:14px;color:#1D9E75;cursor:pointer;padding:8px 0 2px;background:none;border:none;font-family:inherit;touch-action:manipulation;font-weight:500}
+
+/* Prueba */
 .pr-card{background:#fff;border:1px solid #eee;border-radius:10px;padding:12px;margin-bottom:10px;display:flex;flex-direction:column;gap:10px}
 .pr-card input{width:100%;padding:12px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;background:#fff;color:#111}
 .pr-card input:focus{outline:none;border-color:#1D9E75}
+.pr-bottom{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.radio-box{display:flex;flex-direction:column;gap:10px;padding:12px;border:1px solid #eee;border-radius:10px;background:#fafafa}
+.radio-box label{display:flex;align-items:center;gap:8px;font-size:15px;color:#111;cursor:pointer;min-height:28px;touch-action:manipulation}
+.radio-box input[type=radio]{width:20px;height:20px;accent-color:#1D9E75;touch-action:manipulation;cursor:pointer}
+.nota-pr{width:100%;padding:10px 12px;border:1px solid #eee;border-radius:10px;font-size:14px;font-family:inherit;background:#fafafa;color:#111;resize:none;height:66px}
+.nota-pr:focus{outline:none;border-color:#1D9E75}
 
-.add-row-btn{display:flex;align-items:center;gap:6px;font-size:14px;color:#1D9E75;cursor:pointer;padding:8px 0 2px;background:none;border:none;font-family:inherit;touch-action:manipulation;font-weight:500}
 .submit-btn{width:100%;padding:16px;background:#1D9E75;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;margin-top:20px;font-family:inherit;touch-action:manipulation;min-height:56px;transition:all 0.2s}
 .submit-btn:active{opacity:0.85}
 .submit-btn:disabled{opacity:0.6;cursor:not-allowed}
@@ -87,7 +96,7 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 <body>
 <div class="app">
   <div class="logo">
-    <div class="logo-icon"><i class="ti ti-ball-basketball"></i></div>
+    <div class="logo-icon">🏀</div>
     <div>
       <div class="logo-text">Hero Tacna Academia</div>
       <div class="logo-sub" id="ds"><span class="spinner"></span>Cargando alumnos...</div>
@@ -142,8 +151,13 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
       </div>
     </div>
     <div class="extra-box" id="sec-inv" style="display:none">
-      <div id="rows-inv"></div>
-      <button class="add-row-btn" onclick="addInv()">➕ Agregar otro alumno</button>
+      <input class="search-input" type="text" id="buscador"
+        placeholder="🔍 Buscar alumno por nombre o código..."
+        oninput="filtrar()" autocomplete="off">
+      <div class="drop-list" id="dropdown"></div>
+      <div id="lista-inv">
+        <div class="empty-list">Busca y toca un alumno para agregarlo</div>
+      </div>
     </div>
   </div>
 
@@ -161,7 +175,7 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
     </div>
     <div class="extra-box" id="sec-pr" style="display:none">
       <div id="rows-pr"></div>
-      <button class="add-row-btn" onclick="addPr()">➕ Agregar otro alumno prueba</button>
+      <button class="add-btn" onclick="addPr()">➕ Agregar otro alumno prueba</button>
     </div>
   </div>
 
@@ -171,7 +185,7 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 
 <script>
 const API="https://script.google.com/macros/s/AKfycbzjKtixs--bCWGHAGeranHFlbQnbwr03jcRPKF2fUwHJM6xUhG4RwiTMa1YUeZRAP6Exg/exec";
-let APT={},TODOS=[],turno=null,invN=0,prN=0;
+let APT={},TODOS=[],turno=null,prN=0,invitados=[];
 
 async function init(){
   try{
@@ -179,7 +193,7 @@ async function init(){
     const d=await r.json();
     TODOS=d;APT={};
     d.forEach(a=>{const t=(a.turno||"").toUpperCase();if(!APT[t])APT[t]=[];APT[t].push(a);});
-    document.getElementById('ds').innerHTML='🟢 '+d.length+' alumnos cargados';
+    document.getElementById('ds').innerHTML='<span class="status-dot"></span>'+d.length+' alumnos cargados';
     if(turno)renderTabla(turno);
   }catch(e){
     document.getElementById('ds').innerHTML='⚠️ Sin conexión — intenta de nuevo';
@@ -211,61 +225,96 @@ function togSec(tipo,val){
   const sec=document.getElementById('sec-'+tipo);
   if(val==='si'){
     sec.style.display='block';
-    if(!document.getElementById('rows-'+tipo).children.length){tipo==='inv'?addInv():addPr();}
-  }else sec.style.display='none';
+    if(tipo==='pr'&&!document.getElementById('rows-pr').children.length) addPr();
+    if(tipo==='inv') setTimeout(()=>document.getElementById('buscador').focus(),100);
+  } else sec.style.display='none';
 }
 
-function addInv(){
-  const c=document.getElementById('rows-inv');
-  const n=invN++;
-  const div=document.createElement('div');
-  div.className='inv-card';div.id='ic'+n;
-  div.innerHTML=`
-    <input class="search-input" type="text" id="si${n}" placeholder="Escribe nombre o código del alumno..." oninput="filtrar(${n})" autocomplete="off">
-    <div id="dl${n}"></div>
-    <div id="sv${n}"></div>
-    <div class="inv-row-bottom">
-      <div class="radio-box">
-        <label><input type="radio" name="ir${n}" value="SI"> Asistió</label>
-        <label><input type="radio" name="ir${n}" value="NO"> No asistió</label>
-      </div>
-      <textarea class="nota-ta" id="in${n}" placeholder="Turno original, motivo..."></textarea>
-    </div>`;
-  c.appendChild(div);
-}
-
-function filtrar(n){
-  const q=document.getElementById('si'+n).value.toLowerCase().trim();
-  const res=q.length>0?TODOS.filter(a=>a.nom.toLowerCase().includes(q)||a.cod.includes(q)):[];
-  const dl=document.getElementById('dl'+n);
-  if(!res.length){dl.innerHTML='';return;}
-  dl.innerHTML='<div class="drop-list">'+res.slice(0,30).map(a=>`
-    <div class="drop-row" onclick="elegir(${n},'${a.cod}','${a.nom.replace(/'/g,"\\'")}','${a.turno||''}')">
+/* ── INVITADOS ── */
+function filtrar(){
+  const q=document.getElementById('buscador').value.toLowerCase().trim();
+  const dd=document.getElementById('dropdown');
+  if(!q){dd.style.display='none';dd.innerHTML='';return;}
+  const res=TODOS.filter(a=>!invitados.find(i=>i.cod===a.cod)&&(a.nom.toLowerCase().includes(q)||a.cod.includes(q)));
+  if(!res.length){dd.style.display='none';dd.innerHTML='';return;}
+  dd.innerHTML=res.slice(0,25).map(a=>`
+    <div class="drop-row" onmousedown="agregar('${a.cod}','${a.nom.replace(/'/g,"\\'")}','${a.turno||''}')">
       <div><div class="drop-name">${a.nom.split(' ').slice(0,3).join(' ')}</div><div class="drop-cod">${a.cod}</div></div>
       <div class="turno-pill">Turno ${a.turno||'—'}</div>
-    </div>`).join('')+'</div>';
+    </div>`).join('');
+  dd.style.display='block';
 }
 
-function elegir(n,cod,nom,t){
-  document.getElementById('si'+n).value='';
-  document.getElementById('dl'+n).innerHTML='';
-  const sv=document.getElementById('sv'+n);
-  sv.innerHTML=`
-    <div class="selected-row">
-      <div><div class="sel-name">${nom.split(' ').slice(0,3).join(' ')}</div><div class="sel-cod">${cod}</div></div>
-      <div class="turno-pill">Turno ${t||'—'}</div>
-      <button class="clear-x" onclick="limpiar(${n})">✕</button>
-    </div>`;
-  sv.dataset.cod=cod;sv.dataset.nom=nom;sv.dataset.turno=t;
+function agregar(cod,nom,turno_orig){
+  document.getElementById('buscador').value='';
+  document.getElementById('dropdown').style.display='none';
+  document.getElementById('dropdown').innerHTML='';
+  invitados.push({cod,nom,turno:turno_orig,nota:''});
+  renderInvitados();
 }
 
-function limpiar(n){
-  const sv=document.getElementById('sv'+n);
-  sv.innerHTML='';delete sv.dataset.cod;
-  document.getElementById('si'+n).value='';
-  document.getElementById('dl'+n).innerHTML='';
+function eliminarInv(cod){
+  invitados=invitados.filter(a=>a.cod!==cod);
+  renderInvitados();
 }
 
+function renderInvitados(){
+  const c=document.getElementById('lista-inv');
+  if(!invitados.length){
+    c.innerHTML='<div class="empty-list">Busca y toca un alumno para agregarlo</div>';
+    return;
+  }
+  c.innerHTML=invitados.map((a,i)=>`
+    <div class="inv-item">
+      <div class="inv-left">
+        <div class="inv-name">${a.nom.split(' ').slice(0,2).join(' ')}</div>
+        <div class="inv-cod">${a.cod}</div>
+      </div>
+      <div class="inv-pill">Turno ${a.turno||'—'}</div>
+      <div class="nota-wrap">
+        <div class="nota-display ${a.nota?'has-text':''}" id="nd_${i}" onclick="abrirNota(${i})">${a.nota||'Comentario...'}</div>
+        <input type="text" class="nota-input-inv" id="ni_${i}"
+          value="${a.nota}" placeholder="Comentario..."
+          oninput="actualizarNotaInv('${a.cod}',this.value)"
+          onblur="cerrarNota(${i})">
+      </div>
+      <button class="del-btn" onclick="eliminarInv('${a.cod}')">🗑</button>
+    </div>`).join('');
+}
+
+function abrirNota(i){
+  document.getElementById('nd_'+i).style.display='none';
+  const inp=document.getElementById('ni_'+i);
+  inp.style.display='block';
+  inp.focus();
+  inp.setSelectionRange(inp.value.length,inp.value.length);
+}
+
+function cerrarNota(i){
+  const inp=document.getElementById('ni_'+i);
+  const nd=document.getElementById('nd_'+i);
+  if(!inp||!nd)return;
+  const val=inp.value.trim();
+  nd.textContent=val||'Comentario...';
+  nd.className='nota-display'+(val?' has-text':'');
+  inp.style.display='none';
+  nd.style.display='flex';
+}
+
+function actualizarNotaInv(cod,val){
+  const inv=invitados.find(a=>a.cod===cod);
+  if(inv) inv.nota=val;
+}
+
+document.addEventListener('touchstart',cerrarDD);
+document.addEventListener('mousedown',cerrarDD);
+function cerrarDD(e){
+  const dd=document.getElementById('dropdown');
+  const bus=document.getElementById('buscador');
+  if(dd&&bus&&!dd.contains(e.target)&&e.target!==bus) dd.style.display='none';
+}
+
+/* ── PRUEBA ── */
 function addPr(){
   const c=document.getElementById('rows-pr');
   const n=prN++;
@@ -273,30 +322,28 @@ function addPr(){
   div.className='pr-card';
   div.innerHTML=`
     <input type="text" id="pn${n}" placeholder="Nombre completo del niño/a">
-    <div class="inv-row-bottom">
+    <div class="pr-bottom">
       <div class="radio-box">
         <label><input type="radio" name="pr${n}" value="SI"> Asistió</label>
         <label><input type="radio" name="pr${n}" value="NO"> No asistió</label>
       </div>
-      <textarea class="nota-ta" id="pt${n}" placeholder="Tel, edad, colegio, notas..."></textarea>
+      <textarea class="nota-pr" id="pt${n}" placeholder="Tel, edad, colegio, notas..."></textarea>
     </div>`;
   c.appendChild(div);
 }
 
+/* ── ENVIAR ── */
 async function enviar(){
   const fecha=document.getElementById('fecha').value;
   const prof=document.getElementById('profesor').value;
-  if(!fecha||!prof||!turno){alert('Completa fecha, profesor y turno antes de enviar.');return;}
+  if(!fecha||!prof||!turno){alert('Completa fecha, profesor y turno.');return;}
+
   const lista=APT[turno]||[];
-  const alumnos=lista.map((a,i)=>{const s=document.querySelector(`input[name="a${i}"]:checked`);return{cod:a.cod,nom:a.nom,asistencia:s?s.value:'—'};});
-  const invitados=[];
-  document.querySelectorAll('.inv-card').forEach(card=>{
-    const n=card.id.replace('ic','');
-    const sv=document.getElementById('sv'+n);
-    if(!sv||!sv.dataset.cod)return;
-    const s=card.querySelector('input[type=radio]:checked');
-    invitados.push({cod:sv.dataset.cod,nom:sv.dataset.nom,turnoOrigen:sv.dataset.turno,asistencia:s?s.value:'—',nota:document.getElementById('in'+n).value});
+  const alumnos=lista.map((a,i)=>{
+    const s=document.querySelector(`input[name="a${i}"]:checked`);
+    return{cod:a.cod,nom:a.nom,asistencia:s?s.value:'—'};
   });
+
   const prueba=[];
   document.querySelectorAll('.pr-card').forEach(card=>{
     const inp=card.querySelector('input[type=text]');
@@ -306,8 +353,10 @@ async function enviar(){
     const s=card.querySelector('input[type=radio]:checked');
     prueba.push({nom,asistencia:s?s.value:'—',nota:document.getElementById('pt'+n).value});
   });
+
   const btn=document.getElementById('sbtn');
   btn.disabled=true;btn.innerHTML='⏳ Enviando...';
+
   try{
     await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({fecha,profesor:prof,turno,alumnos,invitados,prueba})});
     btn.innerHTML='✅ Asistencia enviada';btn.style.background='#085041';
