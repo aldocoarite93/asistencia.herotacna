@@ -19,7 +19,6 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .paso.done{background:#1D9E75}
 .paso.active{background:#1D9E75;opacity:0.5}
 .step-header{font-size:12px;font-weight:500;color:#888;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px}
-.blk{margin-bottom:18px}
 .search-input{width:100%;padding:13px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;background:#fff;color:#111;font-family:inherit;margin-bottom:6px}
 .search-input:focus{outline:none;border-color:#1D9E75}
 .drop-list{background:#fff;border:1px solid #ddd;border-radius:10px;max-height:220px;overflow-y:auto;margin-bottom:10px;display:none}
@@ -42,25 +41,35 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .form-label{font-size:13px;font-weight:500;color:#555;margin-bottom:8px;display:block}
 .form-input{width:100%;padding:11px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;background:#fff;color:#111}
 .form-input:focus{outline:none;border-color:#1D9E75}
-.talla-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.form-textarea{width:100%;padding:11px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;background:#fff;color:#111;resize:none;height:70px}
+.form-textarea:focus{outline:none;border-color:#1D9E75}
+.talla-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.talla-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .talla-btn{padding:11px 4px;border:1px solid #ddd;border-radius:8px;background:#fff;font-size:13px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333}
 .talla-btn.active{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.talla-hint{font-size:11px;color:#888;margin-top:6px;line-height:1.4}
 .cat-badge{display:inline-block;font-size:12px;padding:4px 12px;border-radius:20px;background:#E1F5EE;color:#0F6E56;font-weight:500;margin-bottom:10px}
-.num-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:10px}
-.num-btn{padding:9px 2px;border:1px solid #ddd;border-radius:7px;background:#fff;font-size:12px;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333;font-weight:500}
-.num-btn.ocupado{background:#fff0f0;border-color:#fdd;color:#bbb;cursor:not-allowed;text-decoration:line-through}
-.num-btn.active{background:#1D9E75;color:#fff;border-color:#1D9E75}
-.num-legend{display:flex;gap:12px;font-size:12px;color:#888;margin-top:10px;flex-wrap:wrap}
-.leg-sq{width:12px;height:12px;border-radius:3px;display:inline-block;margin-right:4px;vertical-align:middle}
+.num-wrap{display:flex;gap:10px;align-items:center;margin-bottom:12px}
+.num-input{flex:1;padding:14px;border:1px solid #ddd;border-radius:10px;font-size:28px;font-weight:500;text-align:center;font-family:inherit;background:#fff;color:#111}
+.num-input:focus{outline:none;border-color:#1D9E75}
+.num-estado{font-size:13px;font-weight:500;width:110px;min-width:110px;text-align:center;padding:14px 8px;border-radius:10px;background:#f5f5f5;color:#888;line-height:1.3}
+.ocupados-box{background:#fff8f0;border:1px solid #fde8c8;border-radius:10px;padding:12px}
+.ocupados-title{font-size:12px;font-weight:500;color:#854F0B;margin-bottom:6px}
+.ocupados-nums{font-size:14px;color:#993C1D;font-weight:500;line-height:1.8}
+.pago-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
+.pago-btn{padding:10px 4px;border:1px solid #ddd;border-radius:8px;background:#fff;font-size:13px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333}
+.pago-btn.active{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.voucher-area{border:2px dashed #ddd;border-radius:12px;padding:16px;text-align:center;cursor:pointer;touch-action:manipulation;background:#fafafa;margin-top:8px}
+.voucher-area.has-foto{border-color:#1D9E75;background:#f0faf6}
+.voucher-preview{width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-top:8px;display:none}
+.back-btn{width:100%;padding:12px;background:none;color:#888;border:1px solid #ddd;border-radius:12px;font-size:14px;cursor:pointer;font-family:inherit;touch-action:manipulation;margin-bottom:10px}
+.submit-btn{width:100%;padding:15px;background:#1D9E75;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;touch-action:manipulation;min-height:52px}
+.submit-btn:disabled{opacity:0.5;cursor:not-allowed}
 .resumen-card{background:#f0faf6;border:1px solid #c8ead9;border-radius:12px;padding:14px;margin-bottom:16px}
 .resumen-row{display:flex;justify-content:space-between;font-size:14px;padding:5px 0;border-bottom:1px solid #d5eee2;color:#333}
 .resumen-row:last-child{border-bottom:none;font-weight:500}
-.submit-btn{width:100%;padding:15px;background:#1D9E75;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;touch-action:manipulation;min-height:52px;margin-top:4px}
-.submit-btn:disabled{opacity:0.5;cursor:not-allowed}
-.back-btn{width:100%;padding:12px;background:none;color:#888;border:1px solid #ddd;border-radius:12px;font-size:14px;cursor:pointer;font-family:inherit;touch-action:manipulation;margin-bottom:12px}
 .ok-msg{text-align:center;padding:24px;background:#e8f8f2;border-radius:12px;color:#0F6E56;font-size:15px;font-weight:500;border:1px solid #c8ead9}
 .info-box{background:#fafafa;border:1px solid #eee;border-radius:10px;padding:12px;font-size:13px;color:#777;margin-top:8px;line-height:1.5}
-.talla-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 </style>
 </head>
 <body>
@@ -69,7 +78,7 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
     <div class="logo-icon">🏀</div>
     <div>
       <div class="logo-text">Hero Tacna — Tienda</div>
-      <div class="logo-sub" id="status"><span class="spinner"></span>Cargando alumnos...</div>
+      <div class="logo-sub" id="status"><span class="spinner"></span>Cargando...</div>
     </div>
   </div>
 
@@ -78,150 +87,160 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
     <div class="paso" id="p2"></div>
     <div class="paso" id="p3"></div>
     <div class="paso" id="p4"></div>
+    <div class="paso" id="p5"></div>
   </div>
 
   <div id="step1">
     <div class="step-header">Paso 1 — Buscar alumno</div>
-    <input class="search-input" type="text" id="busca-alumno" placeholder="🔍 Nombre, código o turno..." oninput="filtrarAlumno()" autocomplete="off">
-    <div class="drop-list" id="drop-alumno"></div>
+    <input class="search-input" type="text" id="busca" placeholder="🔍 Nombre, código o turno..." oninput="filtrar()" autocomplete="off">
+    <div class="drop-list" id="dropdown"></div>
     <div class="info-box">Puedes buscar por nombre, código o turno (TA1, TA2, TB1, TB2, TC1, TC2)</div>
   </div>
 
   <div id="step2" style="display:none">
-    <div id="alumno-sel-card"></div>
+    <div id="alumno-card"></div>
     <div class="step-header">Paso 2 — ¿Qué artículo necesita?</div>
     <div class="productos-grid">
-      <button class="prod-btn" onclick="selProducto('camiseta',this)"><span class="prod-icon">👕</span><span class="prod-name">Camiseta</span></button>
-      <button class="prod-btn" onclick="selProducto('calentador',this)"><span class="prod-icon">🧥</span><span class="prod-name">Calentador</span></button>
-      <button class="prod-btn" onclick="selProducto('buzo',this)"><span class="prod-icon">🩱</span><span class="prod-name">Buzo</span></button>
-      <button class="prod-btn" onclick="selProducto('balon',this)"><span class="prod-icon">🏀</span><span class="prod-name">Balón</span></button>
+      <button class="prod-btn" onclick="selProd('camiseta',this)"><span class="prod-icon">👕</span><span class="prod-name">Camiseta</span></button>
+      <button class="prod-btn" onclick="selProd('balon',this)"><span class="prod-icon">🏀</span><span class="prod-name">Balón</span></button>
+      <button class="prod-btn" onclick="selProd('buzo',this)"><span class="prod-icon">🩱</span><span class="prod-name">Buzo</span></button>
+      <button class="prod-btn" onclick="selProd('calentador',this)"><span class="prod-icon">🧥</span><span class="prod-name">Calentador</span></button>
     </div>
   </div>
 
   <div id="step3" style="display:none"></div>
-  <div id="step4" style="display:none"></div>
+
+  <div id="step4" style="display:none">
+    <button class="back-btn" onclick="irPaso(3)">← Volver</button>
+    <div class="step-header">Paso 4 — Pago y voucher</div>
+    <div class="form-section">
+      <label class="form-label">Forma de pago</label>
+      <div class="pago-grid">
+        <button class="pago-btn" onclick="selPago('YAPE',this)">📱 YAPE</button>
+        <button class="pago-btn" onclick="selPago('EFECTIVO',this)">💵 Efectivo</button>
+        <button class="pago-btn" onclick="selPago('SALDO',this)">✅ Saldo</button>
+      </div>
+      <label class="form-label">Monto pagado (S/)</label>
+      <input class="form-input" type="number" id="monto" placeholder="Ej: 129" oninput="detalle.monto=this.value">
+    </div>
+    <div class="form-section">
+      <label class="form-label">Comentarios (opcional)</label>
+      <textarea class="form-textarea" id="comentario" placeholder="Saldo a favor, descuento, observaciones..." oninput="detalle.comentario=this.value"></textarea>
+    </div>
+    <div class="form-section">
+      <label class="form-label">📎 Adjuntar voucher</label>
+      <div class="voucher-area" id="voucher-area" onclick="document.getElementById('foto-input').click()">
+        <div id="voucher-txt">📸 Toca para tomar foto o adjuntar imagen</div>
+        <img id="voucher-preview" class="voucher-preview">
+      </div>
+      <input type="file" id="foto-input" accept="image/*" capture="environment" style="display:none" onchange="procesarFoto(this)">
+    </div>
+    <button class="submit-btn" onclick="irPaso(5)">Continuar →</button>
+  </div>
+
+  <div id="step5" style="display:none"></div>
   <div id="resultado"></div>
 </div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbzb_Gkb14GvbMcL6ha0N9yHkxTLyVl235J74wZC8HSj0tFTFxXLha_KFLr6tIej4xwscQ/exec";
-let TODOS=[], alumnoSel=null, productoSel=null, detalle={};
+const API_DATA = "https://script.google.com/macros/s/AKfycbyQQprlOIrWh7viURwiQwpZT9ruAeg8k3IHcD6V6sVQgoPvHcYnG61AMsXqIgRLvz_a8A/exec";
+const API_PEDIDOS = "https://script.google.com/macros/s/AKfycbw0zfzTtXgRc1Q7TPRBstqld4up0lkkjXLs1cgE5yAw-rFMbAnkUeQys-46_EKnvJBoOQ/exec";
+
+let TODOS=[], alumno=null, producto=null, detalle={}, fotoBase64='', fotoNombre='';
+
+async function init(){
+  try{
+    const r=await fetch(API_DATA);
+    const d=await r.json();
+    TODOS=d.filter(a=>a.cod&&a.nom);
+    document.getElementById('status').innerHTML='🟢 '+TODOS.length+' alumnos cargados';
+  }catch(e){
+    document.getElementById('status').innerHTML='⚠️ Sin conexión — recarga la página';
+  }
+}
+
+function filtrar(){
+  const q=document.getElementById('busca').value.toLowerCase().trim();
+  const dd=document.getElementById('dropdown');
+  if(!q){dd.style.display='none';return;}
+  const res=TODOS.filter(a=>(a.nom||'').toLowerCase().includes(q)||String(a.cod||'').includes(q)||(a.turno||'').toLowerCase().includes(q));
+  if(!res.length){dd.style.display='none';return;}
+  dd.innerHTML=res.slice(0,20).map(a=>`
+    <div class="drop-row" onmousedown="elegir('${a.cod}')">
+      <div><div class="drop-name">${a.nom.split(' ').slice(0,3).join(' ')}</div>
+      <div class="drop-info">Cod: ${a.cod} · ${a.categoria||'—'}</div></div>
+      <div class="turno-pill">${a.turno||'—'}</div>
+    </div>`).join('');
+  dd.style.display='block';
+}
+
+function elegir(cod){
+  alumno=TODOS.find(a=>String(a.cod)===String(cod));
+  document.getElementById('busca').value='';
+  document.getElementById('dropdown').style.display='none';
+  irPaso(2);
+}
+
+function selProd(prod,btn){
+  producto=prod;
+  document.querySelectorAll('.prod-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  setTimeout(()=>irPaso(3),150);
+}
 
 function getCatNum(cat){
-  const n=parseInt(String(cat).toUpperCase().replace('U',''));
+  const n=parseInt(String(cat).replace('U',''));
   if(isNaN(n)) return null;
-  return n%2===0 ? n+1 : n;
+  return n%2===0?n+1:n;
 }
 
 function numOcupados(catNum){
   const uPar='U'+(catNum-1), uImpar='U'+catNum;
   return TODOS.filter(a=>{
     const c=String(a.categoria||'').toUpperCase().trim();
-    return (c===uPar||c===uImpar) && a.numCamiseta && String(a.numCamiseta).trim()!=='';
+    return (c===uPar||c===uImpar)&&a.numCamiseta&&String(a.numCamiseta).trim()!=='';
   }).map(a=>parseInt(a.numCamiseta)).filter(n=>!isNaN(n)&&n>0);
 }
 
-async function init(){
-  try{
-    const r=await fetch(API);
-    const d=await r.json();
-    // API ALUMNOS devuelve col1=CATEGORIA, col2=COD, col3=Nombre, col4=Apellido
-    // col5=HORARIO, col16=NUMERO DE CAMISETA, col17=TALLA
-    TODOS=d.filter(a=>a.col2&&a.col3&&a['LEYENDA:']!=='N°').map(a=>({
-      cod:String(a.col2||'').trim(),
-      nom:(String(a.col3||'').trim()+' '+String(a.col4||'').trim()).trim(),
-      turno:String(a.col5||'').toUpperCase().trim(),
-      categoria:String(a.col1||'').toUpperCase().trim(),
-      numCamiseta:a.col16!==null&&a.col16!==''?String(a.col16).trim():'',
-      talla:String(a.col17||'').trim()
-    })).filter(a=>a.cod&&a.nom&&a.cod!=='COD');
-    console.log('Total alumnos:', TODOS.length);
-    if(TODOS.length>0) console.log('Primer alumno:', JSON.stringify(TODOS[0]));
-    // Debug temporal - mostrar campos del primer alumno
-    if(d.length>0){
-      const keys = Object.keys(d[0]);
-      console.log('Campos disponibles:', keys);
-      console.log('Alumno[0] completo:', JSON.stringify(d[0]));
-      // Intentar detectar campo categoria automaticamente
-      const camposCat = keys.filter(k=>k.toUpperCase().includes('CAT')||k.toUpperCase().includes('CATEG'));
-      const camposNum = keys.filter(k=>k.toUpperCase().includes('NUM')||k.toUpperCase().includes('#'));
-      console.log('Campos categoria encontrados:', camposCat);
-      console.log('Campos numero encontrados:', camposNum);
-    }
-    document.getElementById('status').innerHTML='🟢 '+TODOS.length+' alumnos cargados';
-  }catch(e){
-    document.getElementById('status').innerHTML='⚠️ Sin conexión — reintenta';
-  }
-}
-
-function filtrarAlumno(){
-  const q=document.getElementById('busca-alumno').value.toLowerCase().trim();
-  const dd=document.getElementById('drop-alumno');
-  if(!q){dd.style.display='none';return;}
-  const res=TODOS.filter(a=>(a.nom||'').toLowerCase().includes(q)||String(a.cod||'').includes(q)||(a.turno||'').toLowerCase().includes(q));
-  if(!res.length){dd.style.display='none';return;}
-  dd.innerHTML=res.slice(0,20).map(a=>`
-    <div class="drop-row" onmousedown="elegirAlumno('${a.cod}')">
-      <div><div class="drop-name">${(a.nom||'').split(' ').slice(0,3).join(' ')}</div>
-      <div class="drop-info">Cod: ${a.cod} · Cat: ${a.categoria||'—'}</div></div>
-      <div class="turno-pill">${a.turno||'—'}</div>
-    </div>`).join('');
-  dd.style.display='block';
-}
-
-function elegirAlumno(cod){
-  alumnoSel=TODOS.find(a=>String(a.cod)===String(cod));
-  document.getElementById('busca-alumno').value='';
-  document.getElementById('drop-alumno').style.display='none';
-  irPaso(2);
-}
-
-function selProducto(prod,btn){
-  productoSel=prod;
-  document.querySelectorAll('.prod-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  setTimeout(()=>irPaso(3),150);
-}
-
 function irPaso(n){
-  [1,2,3,4].forEach(i=>{
+  [1,2,3,4,5].forEach(i=>{
     document.getElementById('step'+i).style.display=i===n?'block':'none';
     const p=document.getElementById('p'+i);
-    p.className='paso'+(i<n?' done':i===n?' active':'');
+    if(p) p.className='paso'+(i<n?' done':i===n?' active':'');
   });
-  if(n===2) document.getElementById('alumno-sel-card').innerHTML=alumnoCardHTML();
+  if(n===2) renderAlumnoCard();
   if(n===3) renderPaso3();
-  if(n===4) renderPaso4();
+  if(n===5) renderResumen();
 }
 
-function alumnoCardHTML(){
-  const a=alumnoSel, cat=getCatNum(a.categoria);
-  return `<div class="alumno-card">
-    <div><div class="alumno-nombre">${(a.nom||'').split(' ').slice(0,3).join(' ')}</div>
-    <div class="alumno-det">Cod: ${a.cod} · ${a.categoria||'—'} · Cat ${cat||'—'} · ${a.turno||'—'}</div></div>
-    <button class="clear-btn" onclick="volverP1()">✕</button>
-  </div>`;
+function renderAlumnoCard(){
+  const cat=getCatNum(alumno.categoria);
+  document.getElementById('alumno-card').innerHTML=`
+    <div class="alumno-card">
+      <div><div class="alumno-nombre">${alumno.nom.split(' ').slice(0,3).join(' ')}</div>
+      <div class="alumno-det">Cod: ${alumno.cod} · ${alumno.categoria||'—'} · ${alumno.turno||'—'}</div></div>
+      <button class="clear-btn" onclick="alumno=null;irPaso(1)">✕</button>
+    </div>`;
 }
 
 function renderPaso3(){
   const s=document.getElementById('step3');
-  const a=alumnoSel, cat=getCatNum(a.categoria);
   detalle={};
 
-  if(productoSel==='camiseta'){
-    const ocup=numOcupados(cat);
-    const ocupOrden=ocup.slice().sort((a,b)=>a-b);
+  if(producto==='camiseta'){
+    const cat=getCatNum(alumno.categoria);
+    const ocup=numOcupados(cat).sort((a,b)=>a-b);
     s.innerHTML=`
       <div style="display:flex;gap:8px;margin-bottom:14px">
         <button class="back-btn" style="margin:0;flex:1" onclick="irPaso(2)">← Volver</button>
-        <button class="submit-btn" style="flex:1;margin:0;padding:12px;font-size:14px" onclick="validarYContinuar()">Continuar →</button>
+        <button class="submit-btn" style="flex:1;margin:0;padding:12px;font-size:14px" onclick="validarCamiseta()">Continuar →</button>
       </div>
       <div class="step-header">Paso 3 — Detalles de la camiseta</div>
       <div class="form-section">
-        <div class="cat-badge">Categoría ${cat} (${a.categoria||'—'})</div>
+        <div class="cat-badge">Categoría ${cat} (${alumno.categoria||'—'})</div>
         <label class="form-label">Talla</label>
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
-          ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this)">${t}</button>`).join('')}
+        <div class="talla-grid-4">
+          ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this,'c')">${t}</button>`).join('')}
         </div>
       </div>
       <div class="form-section">
@@ -230,151 +249,256 @@ function renderPaso3(){
       </div>
       <div class="form-section">
         <label class="form-label">Número de camiseta</label>
-        <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px">
-          <input class="form-input" type="number" id="inp-num" min="1" max="99" placeholder="Ej: 10" oninput="verificarNum(this.value)" style="flex:1;font-size:28px;font-weight:500;text-align:center;padding:14px">
-          <div id="num-estado" style="font-size:13px;font-weight:500;width:110px;min-width:110px;text-align:center;padding:14px 8px;border-radius:10px;background:#f5f5f5;color:#888;line-height:1.3">—</div>
+        <div class="num-wrap">
+          <input class="num-input" type="number" id="inp-num" min="1" max="99" placeholder="Ej: 10" oninput="verificarNum(this.value)">
+          <div class="num-estado" id="num-est">—</div>
         </div>
-        <div style="background:#fff8f0;border:1px solid #fde8c8;border-radius:10px;padding:12px">
-          <div style="font-size:12px;font-weight:500;color:#854F0B;margin-bottom:6px">🚫 No disponibles en Categoría ${cat}:</div>
-          <div style="font-size:14px;color:#993C1D;font-weight:500;line-height:1.8;letter-spacing:0.5px">${ocupOrden.length>0?ocupOrden.join('   '):'Todos los números están disponibles ✅'}</div>
+        <div class="ocupados-box">
+          <div class="ocupados-title">🚫 No disponibles en Categoría ${cat}:</div>
+          <div class="ocupados-nums">${ocup.length>0?ocup.join('   '):'Todos disponibles ✅'}</div>
         </div>
       </div>
       <div style="display:flex;gap:8px;margin-top:8px">
         <button class="back-btn" style="margin:0;flex:1" onclick="irPaso(2)">← Volver</button>
-        <button class="submit-btn" style="flex:1;margin:0" onclick="validarYContinuar()">Continuar →</button>
+        <button class="submit-btn" style="flex:1;margin:0" onclick="validarCamiseta()">Continuar →</button>
       </div>`;
-} else if(productoSel==='balon'){
+
+  } else if(producto==='balon'){
     s.innerHTML=`
       <button class="back-btn" onclick="irPaso(2)">← Volver</button>
       <div class="step-header">Paso 3 — Detalles del balón</div>
       <div class="form-section">
         <label class="form-label">Talla del balón</label>
         <div class="talla-grid-3">
-          ${['Talla 5','Talla 6','Talla 7'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this)">${t}</button>`).join('')}
+          <button class="talla-btn" onclick="selTalla('Talla 5',this,'b')">Talla 5</button>
+          <button class="talla-btn" onclick="selTalla('Talla 6',this,'b')">Talla 6</button>
+          <button class="talla-btn" onclick="selTalla('Talla 7',this,'b')">Talla 7</button>
+        </div>
+        <div class="talla-hint">
+          🔵 <b>Talla 5</b> — Niños de 5 a 11 años<br>
+          🔴 <b>Talla 6</b> — Mujeres a partir de 12 años<br>
+          🟢 <b>Talla 7</b> — Varones a partir de 12 años
         </div>
       </div>
       <div class="form-section">
-        <label class="form-label">Observación (opcional)</label>
-        <input class="form-input" type="text" placeholder="Ej: para uso personal, marca..." oninput="detalle.obs=this.value">
+        <label class="form-label">Cantidad</label>
+        <input class="form-input" type="number" id="cant-balon" min="1" value="1" placeholder="1" oninput="detalle.cantidad=this.value">
       </div>
-      <button class="submit-btn" onclick="irPaso(4)" style="margin-top:4px">Continuar →</button>`;
+      <div class="form-section">
+        <label class="form-label">Color / descripción</label>
+        <input class="form-input" type="text" id="color-balon" placeholder="Ej: Naranja con negro" oninput="detalle.color=this.value">
+      </div>
+      <button class="submit-btn" onclick="validarBalon()" style="margin-top:4px">Continuar →</button>`;
 
-  } else {
-    const prod=productoSel==='calentador'?'Calentador':'Buzo';
+  } else if(producto==='buzo'){
     s.innerHTML=`
       <button class="back-btn" onclick="irPaso(2)">← Volver</button>
-      <div class="step-header">Paso 3 — Detalles del ${prod.toLowerCase()}</div>
+      <div class="step-header">Paso 3 — Detalles del buzo</div>
       <div class="form-section">
         <label class="form-label">Talla</label>
-        <div class="talla-grid">
-          ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this)">${t}</button>`).join('')}
+        <div class="talla-grid-4">
+          ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this,'bz')">${t}</button>`).join('')}
         </div>
       </div>
       <div class="form-section">
-        <label class="form-label">Nombre en el ${prod.toLowerCase()} (opcional)</label>
-        <input class="form-input" type="text" placeholder="Ej: MATIAS" oninput="detalle.nombreProd=this.value.toUpperCase();this.value=this.value.toUpperCase()">
+        <label class="form-label">Nombre en el buzo (opcional)</label>
+        <input class="form-input" type="text" id="nom-buzo" placeholder="Ej: MATIAS" oninput="detalle.nombre=this.value.toUpperCase();this.value=this.value.toUpperCase()">
       </div>
       <div class="form-section">
-        <label class="form-label">Observación</label>
-        <input class="form-input" type="text" placeholder="Color, modelo, urgencia..." oninput="detalle.obs=this.value">
+        <label class="form-label">Cantidad</label>
+        <input class="form-input" type="number" id="cant-buzo" min="1" value="1" oninput="detalle.cantidad=this.value">
       </div>
-      <button class="submit-btn" onclick="irPaso(4)" style="margin-top:4px">Continuar →</button>`;
+      <div class="form-section">
+        <label class="form-label">Observaciones</label>
+        <input class="form-input" type="text" id="obs-buzo" placeholder="Color, modelo, urgencia..." oninput="detalle.obs=this.value">
+      </div>
+      <button class="submit-btn" onclick="validarRopa('buzo')" style="margin-top:4px">Continuar →</button>`;
+
+  } else if(producto==='calentador'){
+    s.innerHTML=`
+      <button class="back-btn" onclick="irPaso(2)">← Volver</button>
+      <div class="step-header">Paso 3 — Detalles del calentador</div>
+      <div class="form-section">
+        <label class="form-label">Talla</label>
+        <div class="talla-grid-4">
+          ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this,'ca')">${t}</button>`).join('')}
+        </div>
+      </div>
+      <div class="form-section">
+        <label class="form-label">Nombre en el calentador (opcional)</label>
+        <input class="form-input" type="text" id="nom-cal" placeholder="Ej: SANTIAGO" oninput="detalle.nombre=this.value.toUpperCase();this.value=this.value.toUpperCase()">
+      </div>
+      <div class="form-section">
+        <label class="form-label">Cantidad</label>
+        <input class="form-input" type="number" id="cant-cal" min="1" value="1" oninput="detalle.cantidad=this.value">
+      </div>
+      <div class="form-section">
+        <label class="form-label">Observaciones</label>
+        <input class="form-input" type="text" id="obs-cal" placeholder="Color, modelo, urgencia..." oninput="detalle.obs=this.value">
+      </div>
+      <button class="submit-btn" onclick="validarRopa('calentador')" style="margin-top:4px">Continuar →</button>`;
   }
 }
 
-function selTalla(t,btn){
-  btn.closest('.talla-grid,talla-grid-3,.form-section').querySelectorAll('.talla-btn').forEach(b=>b.classList.remove('active'));
+function selTalla(t,btn,grupo){
+  btn.closest('.form-section').querySelectorAll('.talla-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   detalle.talla=t;
 }
 
+function selPago(p,btn){
+  document.querySelectorAll('.pago-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  detalle.pago=p;
+}
+
 function verificarNum(val){
   const n=parseInt(val);
-  const est=document.getElementById('num-estado');
-  if(!val||isNaN(n)||n<1||n>99){
-    est.style.background='#f5f5f5';est.style.color='#888';est.textContent='—';
-    detalle.numero=null;return;
-  }
-  const cat=getCatNum(alumnoSel.categoria);
+  const est=document.getElementById('num-est');
+  if(!val||isNaN(n)||n<1||n>99){est.style.background='#f5f5f5';est.style.color='#888';est.textContent='—';detalle.numero=null;return;}
+  const cat=getCatNum(alumno.categoria);
   const ocup=numOcupados(cat);
   if(ocup.includes(n)){
-    est.style.background='#fff0f0';est.style.color='#c0392b';est.textContent='❌ Ocupado';
-    detalle.numero=null;
-  } else {
-    est.style.background='#e8f8f2';est.style.color='#0F6E56';est.textContent='✅ Disponible';
-    detalle.numero=n;
+    est.style.background='#fff0f0';est.style.color='#c0392b';est.textContent='❌ Ocupado';detalle.numero=null;
+  }else{
+    est.style.background='#e8f8f2';est.style.color='#0F6E56';est.textContent='✅ Disponible';detalle.numero=n;
   }
 }
 
-function validarYContinuar(){
+function validarCamiseta(){
   if(!detalle.talla){alert('Selecciona una talla.');return;}
-  const inp=document.getElementById('inp-num');
-  if(inp) verificarNum(inp.value);
-  if(!detalle.numero){alert('Ingresa un número de camiseta disponible.');return;}
+  if(!detalle.numero){alert('Ingresa un número disponible.');return;}
   irPaso(4);
 }
 
-function renderPaso4(){
-  const a=alumnoSel, cat=getCatNum(a.categoria);
-  const prods={camiseta:'Camiseta',calentador:'Calentador',buzo:'Buzo',balon:'Balón'};
+function validarBalon(){
+  if(!detalle.talla){alert('Selecciona una talla de balón.');return;}
+  detalle.cantidad=document.getElementById('cant-balon').value||1;
+  detalle.color=document.getElementById('color-balon').value;
+  irPaso(4);
+}
+
+function validarRopa(tipo){
+  if(!detalle.talla){alert('Selecciona una talla.');return;}
+  irPaso(4);
+}
+
+function procesarFoto(input){
+  const file=input.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      const canvas=document.createElement('canvas');
+      const MAX=800;
+      let w=img.width,h=img.height;
+      if(w>h){if(w>MAX){h=h*(MAX/w);w=MAX;}}else{if(h>MAX){w=w*(MAX/h);h=MAX;}}
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      fotoBase64=canvas.toDataURL('image/jpeg',0.7).split(',')[1];
+      fotoNombre='voucher_'+alumno.cod+'_'+Date.now()+'.jpg';
+      const prev=document.getElementById('voucher-preview');
+      prev.src=canvas.toDataURL('image/jpeg',0.7);
+      prev.style.display='block';
+      document.getElementById('voucher-txt').textContent='✅ Voucher adjuntado';
+      document.getElementById('voucher-area').classList.add('has-foto');
+    };
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function renderResumen(){
+  const prods={camiseta:'Camiseta',balon:'Balón',buzo:'Buzo',calentador:'Calentador'};
   const filas=[
-    ['Alumno',(a.nom||'').split(' ').slice(0,3).join(' ')],
-    ['Código',a.cod],
-    ['Categoría',`${a.categoria} (Cat ${cat})`],
-    ['Turno',a.turno||'—'],
-    ['Artículo',prods[productoSel]],
+    ['Alumno',alumno.nom.split(' ').slice(0,3).join(' ')],
+    ['Código',alumno.cod],
+    ['Categoría',alumno.categoria||'—'],
+    ['Turno',alumno.turno||'—'],
+    ['Artículo',prods[producto]],
     detalle.talla?['Talla',detalle.talla]:null,
     detalle.numero?['Número','#'+detalle.numero]:null,
-    detalle.nombreCamiseta?['Nombre en camiseta',detalle.nombreCamiseta]:null,
-    detalle.nombreProd?['Nombre en artículo',detalle.nombreProd]:null,
+    detalle.nombreCamiseta?['Nombre camiseta',detalle.nombreCamiseta]:null,
+    detalle.nombre?['Nombre en artículo',detalle.nombre]:null,
+    detalle.cantidad?['Cantidad',detalle.cantidad]:null,
+    detalle.color?['Color',detalle.color]:null,
     detalle.obs?['Observación',detalle.obs]:null,
+    detalle.pago?['Forma de pago',detalle.pago]:null,
+    detalle.monto?['Monto','S/'+detalle.monto]:null,
+    detalle.comentario?['Comentario',detalle.comentario]:null,
+    fotoBase64?['Voucher','✅ Adjuntado']:null,
   ].filter(Boolean);
 
-  document.getElementById('step4').innerHTML=`
-    <button class="back-btn" onclick="irPaso(3)">← Modificar</button>
-    <div class="step-header">Paso 4 — Confirmar pedido</div>
+  document.getElementById('step5').innerHTML=`
+    <button class="back-btn" onclick="irPaso(4)">← Modificar pago</button>
+    <div class="step-header">Paso 5 — Confirmar pedido</div>
     <div class="resumen-card">
       ${filas.map(([k,v])=>`<div class="resumen-row"><span style="color:#666">${k}</span><span>${v}</span></div>`).join('')}
     </div>
     <button class="submit-btn" id="btn-confirmar" onclick="confirmar()">✅ Confirmar pedido</button>`;
 }
 
-function confirmar(){
+async function confirmar(){
   const btn=document.getElementById('btn-confirmar');
-  btn.disabled=true; btn.textContent='⏳ Guardando...';
-  const prods={camiseta:'Camiseta',calentador:'Calentador',buzo:'Buzo',balon:'Balón'};
-  setTimeout(()=>{
-    document.getElementById('step4').style.display='none';
+  btn.disabled=true;btn.innerHTML='⏳ Guardando...';
+  const prods={camiseta:'Camiseta',balon:'Balón',buzo:'Buzo',calentador:'Calentador'};
+  let detalleTexto='';
+  if(producto==='camiseta') detalleTexto=`Nombre:${detalle.nombreCamiseta||''} Num:#${detalle.numero||''}`;
+  else if(producto==='balon') detalleTexto=`Color:${detalle.color||''} Cant:${detalle.cantidad||1}`;
+  else detalleTexto=`Nombre:${detalle.nombre||''} Obs:${detalle.obs||''} Cant:${detalle.cantidad||1}`;
+
+  const payload={
+    cod:alumno.cod,
+    alumno:alumno.nom,
+    categoria:alumno.categoria||'',
+    articulo:prods[producto],
+    detalle:detalleTexto,
+    talla:detalle.talla||'',
+    cantidad:detalle.cantidad||1,
+    pago:detalle.pago||'',
+    monto:detalle.monto||'',
+    comentario:detalle.comentario||'',
+    foto:fotoBase64||'',
+    nombreFoto:fotoNombre||''
+  };
+
+  try{
+    await fetch(API_PEDIDOS,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
+    document.getElementById('step5').style.display='none';
     document.getElementById('pasos').style.display='none';
     document.getElementById('resultado').innerHTML=`
       <div class="ok-msg">
         ✅ Pedido registrado correctamente<br>
         <span style="font-size:13px;font-weight:400;opacity:0.85;display:block;margin-top:6px">
-          ${(alumnoSel.nom||'').split(' ')[0]} · ${prods[productoSel]}
+          ${alumno.nom.split(' ')[0]} · ${prods[producto]}
+          ${detalle.talla?' · '+detalle.talla:''}
           ${detalle.numero?' · #'+detalle.numero:''}
-          ${detalle.talla?' · Talla '+detalle.talla:''}
         </span>
         <button onclick="nuevoPedido()" style="margin-top:14px;padding:9px 24px;border-radius:20px;border:1px solid #0F6E56;background:none;color:#0F6E56;font-size:14px;cursor:pointer;font-family:inherit;font-weight:500">+ Nuevo pedido</button>
       </div>`;
-  },700);
+  }catch(e){
+    btn.disabled=false;btn.innerHTML='✅ Confirmar pedido';
+    alert('Error al guardar. Revisa tu conexión.');
+  }
 }
 
 function nuevoPedido(){
-  alumnoSel=null;productoSel=null;detalle={};
+  alumno=null;producto=null;detalle={};fotoBase64='';fotoNombre='';
   document.getElementById('resultado').innerHTML='';
   document.getElementById('pasos').style.display='flex';
+  document.querySelectorAll('.prod-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.pago-btn').forEach(b=>b.classList.remove('active'));
   irPaso(1);
 }
 
-function volverP1(){alumnoSel=null;irPaso(1);}
-
 document.addEventListener('touchstart',e=>{
-  if(!e.target.closest('#busca-alumno')&&!e.target.closest('#drop-alumno'))
-    document.getElementById('drop-alumno').style.display='none';
+  if(!e.target.closest('#busca')&&!e.target.closest('#dropdown'))
+    document.getElementById('dropdown').style.display='none';
 });
 document.addEventListener('mousedown',e=>{
-  if(!e.target.closest('#busca-alumno')&&!e.target.closest('#drop-alumno'))
-    document.getElementById('drop-alumno').style.display='none';
+  if(!e.target.closest('#busca')&&!e.target.closest('#dropdown'))
+    document.getElementById('dropdown').style.display='none';
 });
 
 init();
