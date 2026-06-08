@@ -125,14 +125,18 @@ async function init(){
   try{
     const r=await fetch(API);
     const d=await r.json();
-    TODOS=d.map(a=>({
-      cod:a.cod,
-      nom:a.nom,
-      turno:(a.turno||'').toUpperCase(),
-      categoria:(a.categoria||'').toString().toUpperCase().trim(),
-      numCamiseta:a.numCamiseta ? String(a.numCamiseta).trim() : '',
-      talla:(a.talla||'').toString().trim()
-    }));
+    // El script devuelve col1=CATEGORIA, col2=COD, col3=Nombre, col4=Apellido
+    // col5=HORARIO, col16=NUMERO DE CAMISETA, col17=TALLA, col18=NOMBRE
+    TODOS=d.filter(a=>a.col2&&a.col3&&typeof a.col2==='number').map(a=>({
+      cod:String(a.col2||'').trim(),
+      nom:(String(a.col3||'').trim()+' '+String(a.col4||'').trim()).trim(),
+      turno:String(a.col5||'').toUpperCase().trim(),
+      categoria:String(a.col1||'').toUpperCase().trim(),
+      numCamiseta:a.col16!==null&&a.col16!==''?String(a.col16).trim():'',
+      talla:String(a.col17||'').trim()
+    })).filter(a=>a.cod&&a.nom);
+    console.log('Total alumnos:', TODOS.length);
+    if(TODOS.length>0) console.log('Primer alumno:', JSON.stringify(TODOS[0]));
     // Debug temporal - mostrar campos del primer alumno
     if(d.length>0){
       const keys = Object.keys(d[0]);
