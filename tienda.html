@@ -104,7 +104,7 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 </div>
 
 <script>
-const API = "https://script.google.com/macros/s/AKfycbzjKtixs--bCWGHAGeranHFlbQnbwr03jcRPKF2fUwHJM6xUhG4RwiTMa1YUeZRAP6Exg/exec";
+const API = "https://script.google.com/macros/s/AKfycbyFjqDUObocneqxC4l5ig-jAb-G_ZTTpAGDTmSGSABa3qEkIdNrY6gOK47p7Lr6s0u3TA/exec";
 let TODOS=[], alumnoSel=null, productoSel=null, detalle={};
 
 function getCatNum(cat){
@@ -126,11 +126,24 @@ async function init(){
     const r=await fetch(API);
     const d=await r.json();
     TODOS=d.map(a=>({
-      cod:a.cod, nom:a.nom, turno:(a.turno||'').toUpperCase(),
-      categoria:(a.categoria||a.CATEGORIA||'').toString().toUpperCase().trim(),
-      numCamiseta:a.numCamiseta||a['NUMERO DE CAMISETA']||a['#']||null,
-      talla:a.talla||a.TALLA||''
+      cod:a.cod,
+      nom:a.nom,
+      turno:(a.turno||'').toUpperCase(),
+      categoria:(a.categoria||'').toString().toUpperCase().trim(),
+      numCamiseta:a.numCamiseta ? String(a.numCamiseta).trim() : '',
+      talla:(a.talla||'').toString().trim()
     }));
+    // Debug temporal - mostrar campos del primer alumno
+    if(d.length>0){
+      const keys = Object.keys(d[0]);
+      console.log('Campos disponibles:', keys);
+      console.log('Alumno[0] completo:', JSON.stringify(d[0]));
+      // Intentar detectar campo categoria automaticamente
+      const camposCat = keys.filter(k=>k.toUpperCase().includes('CAT')||k.toUpperCase().includes('CATEG'));
+      const camposNum = keys.filter(k=>k.toUpperCase().includes('NUM')||k.toUpperCase().includes('#'));
+      console.log('Campos categoria encontrados:', camposCat);
+      console.log('Campos numero encontrados:', camposNum);
+    }
     document.getElementById('status').innerHTML='🟢 '+TODOS.length+' alumnos cargados';
   }catch(e){
     document.getElementById('status').innerHTML='⚠️ Sin conexión — reintenta';
@@ -193,18 +206,17 @@ function renderPaso3(){
 
   if(productoSel==='camiseta'){
     const ocup=numOcupados(cat);
-    let nums='';
-    for(let i=1;i<=99;i++){
-      const oc=ocup.includes(i);
-      nums+=`<button class="num-btn${oc?' ocupado':''}" id="nb${i}" onclick="selNum(${i},${oc})">${i}</button>`;
-    }
+    const ocupOrden=ocup.slice().sort((a,b)=>a-b);
     s.innerHTML=`
-      <button class="back-btn" onclick="irPaso(2)">← Volver</button>
+      <div style="display:flex;gap:8px;margin-bottom:14px">
+        <button class="back-btn" style="margin:0;flex:1" onclick="irPaso(2)">← Volver</button>
+        <button class="submit-btn" style="flex:1;margin:0;padding:12px;font-size:14px" onclick="validarYContinuar()">Continuar →</button>
+      </div>
       <div class="step-header">Paso 3 — Detalles de la camiseta</div>
       <div class="form-section">
-        <div class="cat-badge">Categoría ${cat} (${a.categoria})</div>
+        <div class="cat-badge">Categoría ${cat} (${a.categoria||'—'})</div>
         <label class="form-label">Talla</label>
-        <div class="talla-grid">
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px">
           ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this)">${t}</button>`).join('')}
         </div>
       </div>
@@ -214,17 +226,20 @@ function renderPaso3(){
       </div>
       <div class="form-section">
         <label class="form-label">Número de camiseta</label>
-        <div class="num-legend">
-          <span><span class="leg-sq" style="background:#fff;border:1px solid #ddd"></span>Libre</span>
-          <span><span class="leg-sq" style="background:#fff0f0;border:1px solid #fdd"></span>Ocupado (${ocup.length})</span>
-          <span><span class="leg-sq" style="background:#1D9E75"></span>Elegido</span>
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:12px">
+          <input class="form-input" type="number" id="inp-num" min="1" max="99" placeholder="Ej: 10" oninput="verificarNum(this.value)" style="flex:1;font-size:28px;font-weight:500;text-align:center;padding:14px">
+          <div id="num-estado" style="font-size:13px;font-weight:500;width:110px;min-width:110px;text-align:center;padding:14px 8px;border-radius:10px;background:#f5f5f5;color:#888;line-height:1.3">—</div>
         </div>
-        <div class="num-grid">${nums}</div>
-        <div style="font-size:12px;color:#888;margin-top:8px">Números ocupados en Cat ${cat}: ${ocup.length>0?ocup.sort((a,b)=>a-b).join(', '):'ninguno aún'}</div>
+        <div style="background:#fff8f0;border:1px solid #fde8c8;border-radius:10px;padding:12px">
+          <div style="font-size:12px;font-weight:500;color:#854F0B;margin-bottom:6px">🚫 No disponibles en Categoría ${cat}:</div>
+          <div style="font-size:14px;color:#993C1D;font-weight:500;line-height:1.8;letter-spacing:0.5px">${ocupOrden.length>0?ocupOrden.join('   '):'Todos los números están disponibles ✅'}</div>
+        </div>
       </div>
-      <button class="submit-btn" onclick="validarYContinuar()">Continuar →</button>`;
-
-  } else if(productoSel==='balon'){
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button class="back-btn" style="margin:0;flex:1" onclick="irPaso(2)">← Volver</button>
+        <button class="submit-btn" style="flex:1;margin:0" onclick="validarYContinuar()">Continuar →</button>
+      </div>`;
+} else if(productoSel==='balon'){
     s.innerHTML=`
       <button class="back-btn" onclick="irPaso(2)">← Volver</button>
       <div class="step-header">Paso 3 — Detalles del balón</div>
