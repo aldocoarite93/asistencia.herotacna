@@ -382,20 +382,37 @@ function verificarNum(val){
 }
 
 function validarCamiseta(){
+  // Leer campos del DOM antes de validar
+  var nomCam = document.getElementById('nom-cam');
+  if(nomCam) detalle.nombreCamiseta = nomCam.value.toUpperCase();
+  var inpNum = document.getElementById('inp-num');
+  if(inpNum && inpNum.value) verificarNum(inpNum.value);
+  
   if(!detalle.talla){alert('Selecciona una talla.');return;}
   if(!detalle.numero){alert('Ingresa un número disponible.');return;}
+  console.log('Detalle camiseta:', JSON.stringify(detalle));
   irPaso(4);
 }
 
 function validarBalon(){
   if(!detalle.talla){alert('Selecciona una talla de balón.');return;}
-  detalle.cantidad=document.getElementById('cant-balon').value||1;
-  detalle.color=document.getElementById('color-balon').value;
+  var cantBalon = document.getElementById('cant-balon');
+  var colorBalon = document.getElementById('color-balon');
+  detalle.cantidad = cantBalon ? cantBalon.value||1 : 1;
+  detalle.color = colorBalon ? colorBalon.value : '';
+  console.log('Detalle balon:', JSON.stringify(detalle));
   irPaso(4);
 }
 
 function validarRopa(tipo){
   if(!detalle.talla){alert('Selecciona una talla.');return;}
+  var cantId = tipo==='buzo'?'cant-buzo':'cant-cal';
+  var obsId = tipo==='buzo'?'obs-buzo':'obs-cal';
+  var cant = document.getElementById(cantId);
+  var obs = document.getElementById(obsId);
+  if(cant) detalle.cantidad = cant.value||1;
+  if(obs) detalle.obs = obs.value;
+  console.log('Detalle '+tipo+':', JSON.stringify(detalle));
   irPaso(4);
 }
 
