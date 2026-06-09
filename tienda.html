@@ -171,11 +171,16 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
     </div>
     <div class="fs">
       <span class="fl">📎 Voucher de pago</span>
-      <div class="va" id="va" onclick="document.getElementById('fi').click()">
-        <div id="vt">📸 Toca para tomar foto o adjuntar imagen</div>
+      <div id="va" class="va">
+        <div id="vt" style="margin-bottom:10px;font-size:13px;color:#888">Selecciona una opción:</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+          <button type="button" onclick="document.getElementById('fi-cam').click()" style="padding:10px;border:1.5px solid #1D9E75;border-radius:9px;background:#f0faf6;color:#0F6E56;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">📸 Tomar foto</button>
+          <button type="button" onclick="document.getElementById('fi-gal').click()" style="padding:10px;border:1.5px solid #ddd;border-radius:9px;background:#fff;color:#333;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">🖼️ Adjuntar imagen</button>
+        </div>
         <img id="vp" class="vp">
       </div>
-      <input type="file" id="fi" accept="image/*" capture="environment" style="display:none" onchange="procFoto(this)">
+      <input type="file" id="fi-cam" accept="image/*" capture="environment" style="display:none" onchange="procFoto(this)">
+      <input type="file" id="fi-gal" accept="image/*" style="display:none" onchange="procFoto(this)">
     </div>
     <button class="sb" onclick="vPago()">Continuar →</button>
   </div>
@@ -403,7 +408,7 @@ function selPago(p,btn){
 
 function vPago(){
   if(!D.pago){alert('Selecciona una forma de pago.');return;}
-  if(!FB){alert('Adjunta una foto del voucher de pago.');return;}
+  if(!FB && D.pago!=='SALDO'){alert('Adjunta una foto del voucher de pago.');return;}
   const cm=document.getElementById('coment');
   if(cm)D.comentario=cm.value;
   const mn=document.getElementById('monto');
@@ -529,14 +534,60 @@ async function confirmar(){
   setTimeout(()=>{
     document.getElementById('s5').style.display='none';
     document.getElementById('pasos').style.display='none';
-    document.getElementById('res').innerHTML=`
-      <div class="ok">✅ Pedido registrado<br>
-        <span style="font-size:13px;font-weight:400;display:block;margin-top:5px;opacity:0.85">
-          ${A.nom.split(' ')[0]} · ${NOMBRES[PROD]}${D.talla?' · '+D.talla:''}${D.numCamiseta?' · #'+D.numCamiseta:''}
-        </span>
-        <button onclick="nuevo()" style="margin-top:12px;padding:8px 22px;border-radius:20px;border:1.5px solid #0F6E56;background:none;color:#0F6E56;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600">+ Nuevo pedido</button>
+    const resHTML = `
+      <div id="res-card" style="background:#fff;border-radius:14px;padding:20px;border:2px solid #1D9E75">
+        <div style="text-align:center;margin-bottom:14px">
+          <div style="font-size:13px;color:#1D9E75;font-weight:600;margin-bottom:4px">✅ PEDIDO REGISTRADO</div>
+          <div style="font-size:20px;font-weight:800;color:#111;line-height:1.2">${A.nom.split(' ').slice(0,3).join(' ')}</div>
+          <div style="font-size:13px;color:#666;margin-top:4px">${A.categoria||'—'} · Turno ${A.turno||'—'} · Cod: ${A.cod}</div>
+        </div>
+        <div style="background:#f5f5f5;border-radius:10px;padding:12px;margin-bottom:12px">
+          <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:8px">${ICONOS[PROD]} ${NOMBRES[PROD]}</div>
+          ${D.talla?`<div style="font-size:14px;color:#444;margin-bottom:4px">📏 Talla: <b>${D.talla}</b></div>`:''}
+          ${D.numCamiseta?`<div style="font-size:14px;color:#1D9E75;margin-bottom:4px;font-weight:700">🔢 Número: #${D.numCamiseta}</div>`:''}
+          ${D.nomCamiseta?`<div style="font-size:14px;color:#444;margin-bottom:4px">✍️ Nombre: <b>${D.nomCamiseta}</b></div>`:''}
+          ${D.cantidad&&PROD!=='camiseta'?`<div style="font-size:14px;color:#444;margin-bottom:4px">📦 Cantidad: <b>${D.cantidad}</b></div>`:''}
+          ${D.color?`<div style="font-size:14px;color:#444;margin-bottom:4px">🎨 Color: <b>${D.color}</b></div>`:''}
+        </div>
+        <div style="background:#f5f5f5;border-radius:10px;padding:12px;margin-bottom:14px">
+          <div style="font-size:14px;color:#444;margin-bottom:4px">💳 Pago: <b>${D.pago||'—'}</b></div>
+          ${D.monto?`<div style="font-size:16px;font-weight:800;color:#1D9E75">S/ ${D.monto}</div>`:''}
+          ${D.comentario?`<div style="font-size:13px;color:#666;margin-top:6px">💬 ${D.comentario}</div>`:''}
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button onclick="compartir()" style="padding:11px;border:1.5px solid #25D366;border-radius:10px;background:#25D366;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">📤 Compartir</button>
+          <button onclick="nuevo()" style="padding:11px;border:1.5px solid #1D9E75;border-radius:10px;background:none;color:#1D9E75;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">+ Nuevo pedido</button>
+        </div>
       </div>`;
+    document.getElementById('res').innerHTML = resHTML;
   }, 1500);
+}
+
+async function compartir(){
+  const card = document.getElementById('res-card');
+  if(!card) return;
+  try {
+    // Usar html2canvas si está disponible, sino Web Share API con texto
+    if(navigator.share){
+      const texto = card.innerText;
+      await navigator.share({
+        title: 'Pedido Hero Tacna',
+        text: texto
+      });
+    } else {
+      // Copiar al portapapeles
+      navigator.clipboard.writeText(card.innerText);
+      alert('✅ Información copiada al portapapeles');
+    }
+  } catch(e) {
+    // Fallback: copiar texto
+    try {
+      navigator.clipboard.writeText(card.innerText);
+      alert('✅ Información copiada');
+    } catch(e2) {
+      alert('Usa el botón de compartir de tu navegador');
+    }
+  }
 }
 
 function nuevo(){
@@ -546,7 +597,8 @@ function nuevo(){
   document.getElementById('busca').value='';
   document.getElementById('monto').value='';
   document.getElementById('coment').value='';
-  document.getElementById('fi').value='';
+  if(document.getElementById('fi-cam'))document.getElementById('fi-cam').value='';
+  if(document.getElementById('fi-gal'))document.getElementById('fi-gal').value='';
   document.getElementById('vp').style.display='none';
   document.getElementById('vp').src='';
   document.getElementById('vt').textContent='📸 Toca para tomar foto o adjuntar imagen';
