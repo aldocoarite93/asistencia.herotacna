@@ -354,9 +354,12 @@ function renderPaso3(){
 }
 
 function selTalla(t,btn,grupo){
-  btn.closest('.form-section').querySelectorAll('.talla-btn').forEach(b=>b.classList.remove('active'));
+  // Buscar el contenedor padre que tiene los botones de talla
+  var container = btn.closest('.form-section') || btn.closest('div') || btn.parentElement;
+  if(container) container.querySelectorAll('.talla-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   detalle.talla=t;
+  console.log('Talla seleccionada:', t, '| detalle:', JSON.stringify(detalle));
 }
 
 function selPago(p,btn){
@@ -510,6 +513,7 @@ async function confirmar(){
     nombreFoto:fotoNombre||''
   };
 
+  console.log('PAYLOAD ENVIADO:', JSON.stringify(payload));
   try{
     // Intentar con fetch normal primero, si falla usar no-cors
     let enviado = false;
