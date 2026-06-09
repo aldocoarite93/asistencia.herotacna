@@ -187,7 +187,7 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 
 <script>
 const API_D = "https://script.google.com/macros/s/AKfycbyQQprlOIrWh7viURwiQwpZT9ruAeg8k3IHcD6V6sVQgoPvHcYnG61AMsXqIgRLvz_a8A/exec";
-const API_P = "https://script.google.com/macros/s/AKfycbxaXq3ipFaDSo58qBDXwfFP9rjWMT0GitMpEInVgnvmM91A5j6BrmZEIrHp8QvvHZhcaQ/exec";
+const API_P = "https://script.google.com/macros/s/AKfycbzmFfrOnBlzRlHaNWuPEDPy_P5xGIotlInlm5Ds_-zXG51PPJTMJrPpLTo6HsTjZUGT_g/exec";
 
 let AL=[], A=null, PROD=null, D={}, FB='', FN='';
 
@@ -514,41 +514,21 @@ async function confirmar(){
     nombreFoto:FN||''
   };
 
-  console.log('PAYLOAD:', JSON.stringify(payload));
+  console.log('PAYLOAD:', JSON.stringify({...payload, foto: payload.foto?'[foto]':''}));
 
-  try{
-    // Enviar por GET usando script tag (evita CORS completamente)
-    const params = new URLSearchParams();
-    // Enviar foto por separado si existe (muy pesada para URL)
-    const payloadSinFoto = {...payload, foto: payload.foto ? 'SI' : ''};
-    params.append('data', JSON.stringify(payloadSinFoto));
-    if(payload.foto) params.append('foto', payload.foto);
-    
-    const url = API_P + '?' + params.toString();
-    
-    const script = document.createElement('script');
-    script.src = url;
-    script.onload = () => {
-      document.body.removeChild(script);
-      mostrarExito();
-    };
-    script.onerror = () => {
-      document.body.removeChild(script);
-      mostrarExito(); // Asumir éxito aunque haya error de script
-    };
-    document.body.appendChild(script);
-    
-    setTimeout(mostrarExito, 3000); // Fallback después de 3 segundos
+  // Mismo método que app de asistencia - no-cors con JSON
+  const payloadFinal = {...payload};
+  
+  fetch(API_P, {
+    method:'POST',
+    mode:'no-cors',
+    body: JSON.stringify(payloadFinal)
+  });
 
-  }catch(ex){
-    mostrarExito();
-  }
-
-  function mostrarExito(){
-    if(document.getElementById('s5'))
-      document.getElementById('s5').style.display='none';
-    if(document.getElementById('pasos'))
-      document.getElementById('pasos').style.display='none';
+  // Mostrar éxito inmediatamente (no-cors no devuelve respuesta)
+  setTimeout(()=>{
+    document.getElementById('s5').style.display='none';
+    document.getElementById('pasos').style.display='none';
     document.getElementById('res').innerHTML=`
       <div class="ok">✅ Pedido registrado<br>
         <span style="font-size:13px;font-weight:400;display:block;margin-top:5px;opacity:0.85">
@@ -556,7 +536,7 @@ async function confirmar(){
         </span>
         <button onclick="nuevo()" style="margin-top:12px;padding:8px 22px;border-radius:20px;border:1.5px solid #0F6E56;background:none;color:#0F6E56;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600">+ Nuevo pedido</button>
       </div>`;
-  }
+  }, 1500);
 }
 
 function nuevo(){
