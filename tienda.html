@@ -187,7 +187,7 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 
 <script>
 const API_D = "https://script.google.com/macros/s/AKfycbyQQprlOIrWh7viURwiQwpZT9ruAeg8k3IHcD6V6sVQgoPvHcYnG61AMsXqIgRLvz_a8A/exec";
-const API_P = "https://script.google.com/macros/s/AKfycby_56msU28JTZWtqA6NK0QHaH5pvN5QxLbMl4Xl69yW51GE4X3qqNc2AGZffjd4zJK_nA/exec";
+const API_P = "https://script.google.com/macros/s/AKfycbywVbdJaV2Mn8-OnTc1f9VgK5bDNStlrCw8SamXkK_wbFOeIvT--ydqdC3DW-HjBgSTpw/exec";
 
 let AL=[], A=null, PROD=null, D={}, FB='', FN='';
 
@@ -517,16 +517,54 @@ async function confirmar(){
   console.log('PAYLOAD:', JSON.stringify(payload));
 
   try{
-    await fetch(API_P,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)});
-    document.getElementById('s5').style.display='none';
-    document.getElementById('pasos').style.display='none';
-    document.getElementById('res').innerHTML=`
-      <div class="ok">✅ Pedido registrado<br>
-        <span style="font-size:13px;font-weight:400;display:block;margin-top:5px;opacity:0.85">
-          ${A.nom.split(' ')[0]} · ${NOMBRES[PROD]}${D.talla?' · '+D.talla:''}${D.numCamiseta?' · #'+D.numCamiseta:''}
-        </span>
-        <button onclick="nuevo()" style="margin-top:12px;padding:8px 22px;border-radius:20px;border:1.5px solid #0F6E56;background:none;color:#0F6E56;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600">+ Nuevo pedido</button>
-      </div>`;
+    // Usar iframe + form para evitar CORS
+    let iframe = document.getElementById('submit-frame');
+    if(!iframe){
+      iframe = document.createElement('iframe');
+      iframe.name = 'submit-frame';
+      iframe.id = 'submit-frame';
+      iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+    }
+
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = API_P;
+    form.target = 'submit-frame';
+    form.style.display = 'none';
+
+    // Agregar todos los campos como inputs ocultos
+    Object.keys(payload).forEach(key => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = key;
+      input.value = payload[key];
+      form.appendChild(input);
+    });
+
+    // Campo especial con todo el JSON
+    const jsonInput = document.createElement('input');
+    jsonInput.type = 'hidden';
+    jsonInput.name = 'jsonData';
+    jsonInput.value = JSON.stringify(payload);
+    form.appendChild(jsonInput);
+
+    document.body.appendChild(form);
+    form.submit();
+    document.body.removeChild(form);
+
+    setTimeout(()=>{
+      document.getElementById('s5').style.display='none';
+      document.getElementById('pasos').style.display='none';
+      document.getElementById('res').innerHTML=`
+        <div class="ok">✅ Pedido registrado<br>
+          <span style="font-size:13px;font-weight:400;display:block;margin-top:5px;opacity:0.85">
+            ${A.nom.split(' ')[0]} · ${NOMBRES[PROD]}${D.talla?' · '+D.talla:''}${D.numCamiseta?' · #'+D.numCamiseta:''}
+          </span>
+          <button onclick="nuevo()" style="margin-top:12px;padding:8px 22px;border-radius:20px;border:1.5px solid #0F6E56;background:none;color:#0F6E56;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600">+ Nuevo pedido</button>
+        </div>`;
+    }, 2000);
+
   }catch(ex){
     btn.disabled=false;btn.textContent='✅ Confirmar pedido';
     alert('Error al guardar. Revisa tu conexión.');
