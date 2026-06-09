@@ -6,70 +6,108 @@
 <title>Hero Tacna — Tienda</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding:16px}
-.app{max-width:480px;margin:0 auto;background:#fff;border-radius:16px;padding:20px;box-shadow:0 2px 12px rgba(0,0,0,0.08)}
-.logo{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid #eee}
-.logo-icon{width:44px;height:44px;min-width:44px;background:#1D9E75;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px}
-.logo-text{font-size:17px;font-weight:600;color:#111}
-.logo-sub{font-size:13px;color:#888;margin-top:2px}
-.spinner{display:inline-block;width:12px;height:12px;border:2px solid #ddd;border-top-color:#1D9E75;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:4px}
+body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding:12px}
+.app{max-width:460px;margin:0 auto;background:#fff;border-radius:16px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,0.1)}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #eee}
+.logo-icon{width:42px;height:42px;min-width:42px;background:#1D9E75;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
+.logo-text{font-size:16px;font-weight:700;color:#111}
+.logo-sub{font-size:12px;color:#999;margin-top:1px}
+.spinner{display:inline-block;width:11px;height:11px;border:2px solid #ddd;border-top-color:#1D9E75;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:4px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.pasos{display:flex;gap:4px;margin-bottom:20px}
-.paso{height:4px;border-radius:2px;background:#eee;flex:1}
+.pasos{display:flex;gap:4px;margin-bottom:18px}
+.paso{height:4px;border-radius:2px;background:#eee;flex:1;transition:all 0.3s}
 .paso.done{background:#1D9E75}
-.paso.active{background:#1D9E75;opacity:0.5}
-.step-header{font-size:12px;font-weight:500;color:#888;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px}
-.search-input{width:100%;padding:13px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;background:#fff;color:#111;font-family:inherit;margin-bottom:6px}
-.search-input:focus{outline:none;border-color:#1D9E75}
-.drop-list{background:#fff;border:1px solid #ddd;border-radius:10px;max-height:220px;overflow-y:auto;margin-bottom:10px;display:none}
-.drop-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;touch-action:manipulation;min-height:50px}
-.drop-row:last-child{border-bottom:none}
-.drop-row:active{background:#f7faf8}
-.drop-name{font-size:14px;color:#111;font-weight:500}
-.drop-info{font-size:12px;color:#999;margin-top:2px}
-.turno-pill{font-size:11px;padding:4px 9px;border-radius:6px;border:1px solid #ddd;background:#f5f5f5;color:#333;font-weight:500;white-space:nowrap;flex-shrink:0;margin-left:8px}
-.alumno-card{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;background:#f0faf6;border:1px solid #c8ead9;border-radius:10px;margin-bottom:16px}
-.alumno-nombre{font-size:15px;font-weight:500;color:#111}
-.alumno-det{font-size:12px;color:#666;margin-top:2px}
-.clear-btn{background:none;border:none;font-size:20px;cursor:pointer;color:#aaa;padding:4px 8px;touch-action:manipulation}
-.productos-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.prod-btn{padding:18px 10px;border:1px solid #ddd;border-radius:12px;background:#fff;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;transition:all 0.15s}
-.prod-btn.active{border-color:#1D9E75;background:#f0faf6}
-.prod-icon{font-size:30px;display:block;margin-bottom:8px}
-.prod-name{font-size:14px;font-weight:500;color:#111}
-.form-section{background:#fafafa;border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:12px}
-.form-label{font-size:13px;font-weight:500;color:#555;margin-bottom:8px;display:block}
-.form-input{width:100%;padding:11px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;background:#fff;color:#111}
-.form-input:focus{outline:none;border-color:#1D9E75}
-.form-textarea{width:100%;padding:11px 14px;border:1px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;background:#fff;color:#111;resize:none;height:70px}
-.form-textarea:focus{outline:none;border-color:#1D9E75}
-.talla-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
-.talla-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
-.talla-btn{padding:11px 4px;border:1px solid #ddd;border-radius:8px;background:#fff;font-size:13px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333}
-.talla-btn.active{background:#1D9E75;color:#fff;border-color:#1D9E75}
-.talla-hint{font-size:11px;color:#888;margin-top:6px;line-height:1.4}
-.cat-badge{display:inline-block;font-size:12px;padding:4px 12px;border-radius:20px;background:#E1F5EE;color:#0F6E56;font-weight:500;margin-bottom:10px}
-.num-wrap{display:flex;gap:10px;align-items:center;margin-bottom:12px}
-.num-input{flex:1;padding:14px;border:1px solid #ddd;border-radius:10px;font-size:28px;font-weight:500;text-align:center;font-family:inherit;background:#fff;color:#111}
-.num-input:focus{outline:none;border-color:#1D9E75}
-.num-estado{font-size:13px;font-weight:500;width:110px;min-width:110px;text-align:center;padding:14px 8px;border-radius:10px;background:#f5f5f5;color:#888;line-height:1.3}
-.ocupados-box{background:#fff8f0;border:1px solid #fde8c8;border-radius:10px;padding:12px}
-.ocupados-title{font-size:12px;font-weight:500;color:#854F0B;margin-bottom:6px}
-.ocupados-nums{font-size:14px;color:#993C1D;font-weight:500;line-height:1.8}
-.pago-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px}
-.pago-btn{padding:10px 4px;border:1px solid #ddd;border-radius:8px;background:#fff;font-size:13px;font-weight:500;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333}
-.pago-btn.active{background:#1D9E75;color:#fff;border-color:#1D9E75}
-.voucher-area{border:2px dashed #ddd;border-radius:12px;padding:16px;text-align:center;cursor:pointer;touch-action:manipulation;background:#fafafa;margin-top:8px}
-.voucher-area.has-foto{border-color:#1D9E75;background:#f0faf6}
-.voucher-preview{width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-top:8px;display:none}
-.back-btn{width:100%;padding:12px;background:none;color:#888;border:1px solid #ddd;border-radius:12px;font-size:14px;cursor:pointer;font-family:inherit;touch-action:manipulation;margin-bottom:10px}
-.submit-btn{width:100%;padding:15px;background:#1D9E75;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer;font-family:inherit;touch-action:manipulation;min-height:52px}
-.submit-btn:disabled{opacity:0.5;cursor:not-allowed}
-.resumen-card{background:#f0faf6;border:1px solid #c8ead9;border-radius:12px;padding:14px;margin-bottom:16px}
-.resumen-row{display:flex;justify-content:space-between;font-size:14px;padding:5px 0;border-bottom:1px solid #d5eee2;color:#333}
-.resumen-row:last-child{border-bottom:none;font-weight:500}
-.ok-msg{text-align:center;padding:24px;background:#e8f8f2;border-radius:12px;color:#0F6E56;font-size:15px;font-weight:500;border:1px solid #c8ead9}
-.info-box{background:#fafafa;border:1px solid #eee;border-radius:10px;padding:12px;font-size:13px;color:#777;margin-top:8px;line-height:1.5}
+.paso.act{background:#1D9E75;opacity:0.45}
+.sh{font-size:11px;font-weight:600;color:#999;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.6px}
+/* Alumno header */
+.ah{display:flex;align-items:center;gap:10px;background:#f0faf6;border:1px solid #c8ead9;border-radius:10px;padding:10px 12px;margin-bottom:14px}
+.ah-av{width:34px;height:34px;background:#1D9E75;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;flex-shrink:0}
+.ah-nom{font-size:14px;font-weight:700;color:#0F6E56}
+.ah-det{font-size:11px;color:#666;margin-top:1px}
+/* Búsqueda */
+.si{width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;color:#111;background:#fff;margin-bottom:6px}
+.si:focus{outline:none;border-color:#1D9E75}
+.dl{background:#fff;border:1.5px solid #ddd;border-radius:10px;max-height:210px;overflow-y:auto;margin-bottom:10px;display:none;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.dr{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;touch-action:manipulation}
+.dr:last-child{border-bottom:none}
+.dr:active{background:#f5faf8}
+.dn{font-size:14px;color:#111;font-weight:500}
+.di{font-size:11px;color:#aaa;margin-top:1px}
+.tp{font-size:11px;padding:3px 8px;border-radius:6px;border:1px solid #e0e0e0;background:#f7f7f7;color:#444;font-weight:500;white-space:nowrap;margin-left:8px;flex-shrink:0}
+/* Alumno card */
+.ac{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#f0faf6;border:1px solid #c8ead9;border-radius:10px;margin-bottom:14px}
+.acn{font-size:14px;font-weight:600;color:#111}
+.acd{font-size:11px;color:#666;margin-top:1px}
+.xb{background:none;border:none;font-size:18px;cursor:pointer;color:#bbb;padding:4px 6px;touch-action:manipulation}
+/* Productos */
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pb{padding:16px 8px;border:1.5px solid #e8e8e8;border-radius:12px;background:#fff;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation}
+.pb.on{border-color:#1D9E75;background:#f0faf6}
+.pi{font-size:28px;display:block;margin-bottom:6px}
+.pn{font-size:13px;font-weight:600;color:#222}
+/* Form */
+.fs{background:#fafafa;border:1px solid #ececec;border-radius:11px;padding:13px;margin-bottom:11px}
+.fl{font-size:12px;font-weight:600;color:#555;margin-bottom:7px;display:block}
+.fi{width:100%;padding:10px 13px;border:1.5px solid #ddd;border-radius:9px;font-size:15px;font-family:inherit;background:#fff;color:#111}
+.fi:focus{outline:none;border-color:#1D9E75}
+.fta{width:100%;padding:10px 13px;border:1.5px solid #ddd;border-radius:9px;font-size:14px;font-family:inherit;background:#fff;color:#111;resize:none;height:65px}
+.fta:focus{outline:none;border-color:#1D9E75}
+.tg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.tg3{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.tb{padding:10px 3px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333}
+.tb.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.th{font-size:11px;color:#888;margin-top:6px;line-height:1.5}
+/* Badge */
+.cb{display:inline-block;font-size:12px;padding:3px 11px;border-radius:20px;background:#E1F5EE;color:#0F6E56;font-weight:600;margin-bottom:8px}
+/* Número */
+.nw{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.ni{flex:1;padding:12px;border:1.5px solid #ddd;border-radius:9px;font-size:26px;font-weight:700;text-align:center;font-family:inherit;background:#fff;color:#111}
+.ni:focus{outline:none;border-color:#1D9E75}
+.ne{font-size:12px;font-weight:600;width:100px;min-width:100px;text-align:center;padding:12px 6px;border-radius:9px;background:#f5f5f5;color:#999;line-height:1.3}
+.ob{background:#fff8f0;border:1px solid #fde8c8;border-radius:9px;padding:11px}
+.ot{font-size:11px;font-weight:600;color:#854F0B;margin-bottom:5px}
+.on2{font-size:13px;color:#993C1D;font-weight:600;line-height:1.7}
+/* Pago */
+.ppg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:10px}
+.ppb{padding:9px 3px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333}
+.ppb.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
+/* Voucher */
+.va{border:2px dashed #ddd;border-radius:11px;padding:14px;text-align:center;cursor:pointer;touch-action:manipulation;background:#fafafa}
+.va.ok{border-color:#1D9E75;background:#f0faf6}
+.vp{width:100%;max-height:180px;object-fit:cover;border-radius:8px;margin-top:8px;display:none}
+/* Botones */
+.bb{width:100%;padding:11px;background:none;color:#999;border:1.5px solid #e0e0e0;border-radius:11px;font-size:14px;cursor:pointer;font-family:inherit;touch-action:manipulation;margin-bottom:9px}
+.sb{width:100%;padding:14px;background:#1D9E75;color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation;min-height:50px}
+.sb:disabled{opacity:0.5;cursor:not-allowed}
+.row2{display:flex;gap:8px;margin-bottom:12px}
+.row2 .bb{margin:0;flex:1}
+.row2 .sb{flex:1;margin:0;padding:11px;font-size:14px}
+/* Resumen */
+.rc{background:#f0faf6;border:1px solid #c8ead9;border-radius:12px;padding:13px;margin-bottom:14px}
+.rr{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid #d5eee2;color:#333}
+.rr:last-child{border-bottom:none;font-weight:700}
+/* OK */
+.ok{text-align:center;padding:22px;background:#e8f8f2;border-radius:12px;color:#0F6E56;font-size:15px;font-weight:600;border:1px solid #c8ead9}
+.ib{background:#f5f5f5;border:1px solid #eee;border-radius:9px;padding:11px;font-size:12px;color:#888;line-height:1.5;margin-top:8px}
+/* Resumen visual paso 5 */
+.rv-head{background:#1D9E75;border-radius:12px;padding:14px;margin-bottom:11px;color:#fff}
+.rv-label{font-size:10px;opacity:0.75;margin-bottom:3px;letter-spacing:0.5px}
+.rv-name{font-size:17px;font-weight:800}
+.rv-sub{font-size:12px;opacity:0.8;margin-top:2px}
+.rv-art{background:#fafafa;border:1px solid #ececec;border-radius:12px;padding:13px;margin-bottom:11px}
+.rv-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.rv-cell{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:9px;text-align:center}
+.rv-cell-l{font-size:10px;color:#aaa;margin-bottom:2px}
+.rv-cell-v{font-size:17px;font-weight:800;color:#111}
+.rv-nom{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:9px;margin-top:7px;text-align:center}
+.rv-nom-l{font-size:10px;color:#aaa;margin-bottom:2px}
+.rv-nom-v{font-size:15px;font-weight:800;color:#111;letter-spacing:1px}
+.rv-pago{background:#fafafa;border:1px solid #ececec;border-radius:12px;padding:13px;margin-bottom:14px}
+.rv-pago-row{display:flex;justify-content:space-between;align-items:center}
+.rv-pago-tipo{font-size:15px;font-weight:600;color:#333}
+.rv-pago-monto{font-size:22px;font-weight:800;color:#1D9E75}
+.rv-coment{margin-top:8px;padding-top:8px;border-top:1px solid #eee;font-size:12px;color:#666}
+.rv-voucher{margin-top:6px;font-size:12px;color:#1D9E75;font-weight:600}
 </style>
 </head>
 <body>
@@ -78,519 +116,436 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
     <div class="logo-icon">🏀</div>
     <div>
       <div class="logo-text">Hero Tacna — Tienda</div>
-      <div class="logo-sub" id="status"><span class="spinner"></span>Cargando...</div>
+      <div class="logo-sub" id="st"><span class="spinner"></span>Cargando...</div>
     </div>
   </div>
-
   <div class="pasos" id="pasos">
-    <div class="paso active" id="p1"></div>
+    <div class="paso act" id="p1"></div>
     <div class="paso" id="p2"></div>
     <div class="paso" id="p3"></div>
     <div class="paso" id="p4"></div>
     <div class="paso" id="p5"></div>
   </div>
 
-  <div id="step1">
-    <div class="step-header">Paso 1 — Buscar alumno</div>
-    <input class="search-input" type="text" id="busca" placeholder="🔍 Nombre, código o turno..." oninput="filtrar()" autocomplete="off">
-    <div class="drop-list" id="dropdown"></div>
-    <div class="info-box">Puedes buscar por nombre, código o turno (TA1, TA2, TB1, TB2, TC1, TC2)</div>
+  <!-- PASO 1 -->
+  <div id="s1">
+    <div class="sh">Paso 1 — Buscar alumno</div>
+    <input class="si" id="busca" type="text" placeholder="🔍 Nombre, código o turno..." oninput="filtrar()" autocomplete="off">
+    <div class="dl" id="drop"></div>
+    <div class="ib">Busca por nombre, código o turno: TA1, TA2, TB1, TB2, TC1, TC2</div>
   </div>
 
-  <div id="step2" style="display:none">
-    <div id="alumno-card"></div>
-    <div class="step-header">Paso 2 — ¿Qué artículo necesita?</div>
-    <div class="productos-grid">
-      <button class="prod-btn" onclick="selProd('camiseta',this)"><span class="prod-icon">👕</span><span class="prod-name">Camiseta</span></button>
-      <button class="prod-btn" onclick="selProd('balon',this)"><span class="prod-icon">🏀</span><span class="prod-name">Balón</span></button>
-      <button class="prod-btn" onclick="selProd('buzo',this)"><span class="prod-icon">🩱</span><span class="prod-name">Buzo</span></button>
-      <button class="prod-btn" onclick="selProd('calentador',this)"><span class="prod-icon">🧥</span><span class="prod-name">Calentador</span></button>
+  <!-- PASO 2 -->
+  <div id="s2" style="display:none">
+    <div id="ac2"></div>
+    <div class="sh">Paso 2 — ¿Qué artículo necesita?</div>
+    <div class="pg">
+      <button class="pb" onclick="selProd('camiseta',this)"><span class="pi">👕</span><span class="pn">Camiseta</span></button>
+      <button class="pb" onclick="selProd('balon',this)"><span class="pi">🏀</span><span class="pn">Balón</span></button>
+      <button class="pb" onclick="selProd('buzo',this)"><span class="pi">🩱</span><span class="pn">Buzo</span></button>
+      <button class="pb" onclick="selProd('calentador',this)"><span class="pi">🧥</span><span class="pn">Calentador</span></button>
     </div>
   </div>
 
-  <div id="step3" style="display:none"></div>
+  <!-- PASO 3 -->
+  <div id="s3" style="display:none"></div>
 
-  <div id="step4" style="display:none">
-    <div id="alumno-header-p4"></div>
-    <button class="back-btn" onclick="irPaso(3)">← Volver</button>
-    <div class="step-header">Paso 4 — Pago y voucher</div>
-    <div class="form-section">
-      <label class="form-label">Forma de pago</label>
-      <div class="pago-grid">
-        <button class="pago-btn" onclick="selPago('YAPE',this)">📱 YAPE</button>
-        <button class="pago-btn" onclick="selPago('EFECTIVO',this)">💵 Efectivo</button>
-        <button class="pago-btn" onclick="selPago('SALDO',this)">✅ Saldo</button>
+  <!-- PASO 4 -->
+  <div id="s4" style="display:none">
+    <div id="ah4"></div>
+    <button class="bb" onclick="ip(3)">← Volver</button>
+    <div class="sh">Paso 4 — Pago y voucher</div>
+    <div class="fs">
+      <span class="fl">Forma de pago</span>
+      <div class="ppg">
+        <button class="ppb" onclick="selPago('YAPE',this)">📱 YAPE</button>
+        <button class="ppb" onclick="selPago('EFECTIVO',this)">💵 Efectivo</button>
+        <button class="ppb" onclick="selPago('SALDO',this)">✅ Saldo</button>
       </div>
-      <label class="form-label">Monto pagado (S/)</label>
-      <input class="form-input" type="number" id="monto" placeholder="" oninput="detalle.monto=this.value">
+      <span class="fl">Monto (S/)</span>
+      <input class="fi" type="number" id="monto" placeholder="" oninput="D.monto=this.value" style="font-size:18px;font-weight:600">
     </div>
-    <div class="form-section">
-      <label class="form-label">Comentarios (opcional)</label>
-      <textarea class="form-textarea" id="comentario" placeholder="Saldo a favor, descuento, observaciones..." oninput="detalle.comentario=this.value"></textarea>
+    <div class="fs">
+      <span class="fl">Comentarios (opcional)</span>
+      <textarea class="fta" id="coment" placeholder="Saldo a favor, descuento, notas..." oninput="D.comentario=this.value"></textarea>
     </div>
-    <div class="form-section">
-      <label class="form-label">📎 Adjuntar voucher</label>
-      <div class="voucher-area" id="voucher-area" onclick="document.getElementById('foto-input').click()">
-        <div id="voucher-txt">📸 Toca para tomar foto o adjuntar imagen</div>
-        <img id="voucher-preview" class="voucher-preview">
+    <div class="fs">
+      <span class="fl">📎 Voucher de pago</span>
+      <div class="va" id="va" onclick="document.getElementById('fi').click()">
+        <div id="vt">📸 Toca para tomar foto o adjuntar imagen</div>
+        <img id="vp" class="vp">
       </div>
-      <input type="file" id="foto-input" accept="image/*" capture="environment" style="display:none" onchange="procesarFoto(this)">
+      <input type="file" id="fi" accept="image/*" capture="environment" style="display:none" onchange="procFoto(this)">
     </div>
-    <button class="submit-btn" onclick="irPaso(5)">Continuar →</button>
+    <button class="sb" onclick="ip(5)">Continuar →</button>
   </div>
 
-  <div id="step5" style="display:none"></div>
-  <div id="resultado"></div>
+  <!-- PASO 5 -->
+  <div id="s5" style="display:none"></div>
+  <div id="res"></div>
 </div>
 
 <script>
-const API_DATA = "https://script.google.com/macros/s/AKfycbyQQprlOIrWh7viURwiQwpZT9ruAeg8k3IHcD6V6sVQgoPvHcYnG61AMsXqIgRLvz_a8A/exec";
-const API_PEDIDOS = "https://script.google.com/macros/s/AKfycbwUW_HISzY07-Pczsx-eUu3ka7yKecMYWiigbRSvZKab29lsaD03NAONhvt13SeHOk83A/exec";
+const API_D = "https://script.google.com/macros/s/AKfycbyQQprlOIrWh7viURwiQwpZT9ruAeg8k3IHcD6V6sVQgoPvHcYnG61AMsXqIgRLvz_a8A/exec";
+const API_P = "https://script.google.com/macros/s/AKfycbwUW_HISzY07-Pczsx-eUu3ka7yKecMYWiigbRSvZKab29lsaD03NAONhvt13SeHOk83A/exec";
 
-let TODOS=[], alumno=null, producto=null, detalle={}, fotoBase64='', fotoNombre='';
+let AL=[], A=null, PROD=null, D={}, FB='', FN='';
+
+const PRECIOS={camiseta:90,balon:75,buzo:134,calentador:59};
+const NOMBRES={camiseta:'Camiseta',balon:'Balón',buzo:'Buzo',calentador:'Calentador'};
+const ICONOS={camiseta:'👕',balon:'🏀',buzo:'🩱',calentador:'🧥'};
 
 async function init(){
   try{
-    const r=await fetch(API_DATA);
+    const r=await fetch(API_D);
     const d=await r.json();
-    TODOS=d.filter(a=>a.cod&&a.nom);
-    document.getElementById('status').innerHTML='🟢 '+TODOS.length+' alumnos cargados';
+    AL=d.filter(a=>a.cod&&a.nom);
+    document.getElementById('st').innerHTML='🟢 '+AL.length+' alumnos cargados';
   }catch(e){
-    document.getElementById('status').innerHTML='⚠️ Sin conexión — recarga la página';
+    document.getElementById('st').innerHTML='⚠️ Sin conexión';
   }
+}
+
+function catNum(c){
+  const n=parseInt(String(c||'').replace('U',''));
+  if(isNaN(n))return null;
+  return n%2===0?n+1:n;
+}
+
+function numsOcup(cn){
+  const u1='U'+(cn-1), u2='U'+cn;
+  return AL.filter(a=>{
+    const c=String(a.categoria||'').toUpperCase().trim();
+    return (c===u1||c===u2)&&a.numCamiseta&&String(a.numCamiseta).trim()!=='';
+  }).map(a=>parseInt(a.numCamiseta)).filter(n=>!isNaN(n)&&n>0).sort((a,b)=>a-b);
 }
 
 function filtrar(){
   const q=document.getElementById('busca').value.toLowerCase().trim();
-  const dd=document.getElementById('dropdown');
+  const dd=document.getElementById('drop');
   if(!q){dd.style.display='none';return;}
-  const res=TODOS.filter(a=>(a.nom||'').toLowerCase().includes(q)||String(a.cod||'').includes(q)||(a.turno||'').toLowerCase().includes(q));
-  if(!res.length){dd.style.display='none';return;}
-  dd.innerHTML=res.slice(0,20).map(a=>`
-    <div class="drop-row" onmousedown="elegir('${a.cod}')">
-      <div><div class="drop-name">${a.nom.split(' ').slice(0,3).join(' ')}</div>
-      <div class="drop-info">Cod: ${a.cod} · ${a.categoria||'—'}</div></div>
-      <div class="turno-pill">${a.turno||'—'}</div>
+  const r=AL.filter(a=>(a.nom||'').toLowerCase().includes(q)||String(a.cod||'').includes(q)||(a.turno||'').toLowerCase().includes(q));
+  if(!r.length){dd.style.display='none';return;}
+  dd.innerHTML=r.slice(0,20).map(a=>`
+    <div class="dr" onmousedown="elegir('${a.cod}')">
+      <div><div class="dn">${a.nom.split(' ').slice(0,3).join(' ')}</div>
+      <div class="di">Cod: ${a.cod} · ${a.categoria||'—'}</div></div>
+      <div class="tp">${a.turno||'—'}</div>
     </div>`).join('');
   dd.style.display='block';
 }
 
 function elegir(cod){
-  alumno=TODOS.find(a=>String(a.cod)===String(cod));
+  A=AL.find(a=>String(a.cod)===String(cod));
   document.getElementById('busca').value='';
-  document.getElementById('dropdown').style.display='none';
-  irPaso(2);
+  document.getElementById('drop').style.display='none';
+  ip(2);
 }
 
-function selProd(prod,btn){
-  producto=prod;
-  document.querySelectorAll('.prod-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  setTimeout(()=>irPaso(3),150);
+function ahHTML(){
+  if(!A)return'';
+  return`<div class="ah"><div class="ah-av">👤</div><div><div class="ah-nom">${A.nom.split(' ').slice(0,3).join(' ')}</div><div class="ah-det">${A.categoria||'—'} · Turno ${A.turno||'—'} · Cod: ${A.cod}</div></div></div>`;
 }
 
-function getCatNum(cat){
-  const n=parseInt(String(cat).replace('U',''));
-  if(isNaN(n)) return null;
-  return n%2===0?n+1:n;
+function selProd(p,btn){
+  PROD=p;D={};
+  document.querySelectorAll('.pb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  setTimeout(()=>ip(3),150);
 }
 
-function numOcupados(catNum){
-  const uPar='U'+(catNum-1), uImpar='U'+catNum;
-  return TODOS.filter(a=>{
-    const c=String(a.categoria||'').toUpperCase().trim();
-    return (c===uPar||c===uImpar)&&a.numCamiseta&&String(a.numCamiseta).trim()!=='';
-  }).map(a=>parseInt(a.numCamiseta)).filter(n=>!isNaN(n)&&n>0);
-}
-
-function irPaso(n){
+function ip(n){
   [1,2,3,4,5].forEach(i=>{
-    document.getElementById('step'+i).style.display=i===n?'block':'none';
+    const s=document.getElementById('s'+i);
+    if(s)s.style.display=i===n?'block':'none';
     const p=document.getElementById('p'+i);
-    if(p) p.className='paso'+(i<n?' done':i===n?' active':'');
+    if(p)p.className='paso'+(i<n?' done':i===n?' act':'');
   });
-  if(n===2) renderAlumnoCard();
-  if(n===3) renderPaso3();
-  if(n===4) {
-    document.getElementById('alumno-header-p4').innerHTML=alumnoHeaderHTML();
-    const precios={camiseta:90,balon:75,buzo:134,calentador:59};
-    const precio=precios[producto]||0;
-    document.getElementById('monto').placeholder='Sugerido: S/ '+precio;
+  if(n===2){document.getElementById('ac2').innerHTML=`<div class="ac"><div><div class="acn">${A.nom.split(' ').slice(0,3).join(' ')}</div><div class="acd">Cod: ${A.cod} · ${A.categoria||'—'} · ${A.turno||'—'}</div></div><button class="xb" onclick="A=null;ip(1)">✕</button></div>`;}
+  if(n===3)rP3();
+  if(n===4){
+    document.getElementById('ah4').innerHTML=ahHTML();
+    document.getElementById('monto').placeholder='Sugerido: S/ '+PRECIOS[PROD];
   }
-  if(n===5) renderResumen();
+  if(n===5)rP5();
 }
 
-function renderAlumnoCard(){
-  document.getElementById('alumno-card').innerHTML=`
-    <div class="alumno-card">
-      <div><div class="alumno-nombre">${alumno.nom.split(' ').slice(0,3).join(' ')}</div>
-      <div class="alumno-det">Cod: ${alumno.cod} · ${alumno.categoria||'—'} · ${alumno.turno||'—'}</div></div>
-      <button class="clear-btn" onclick="alumno=null;irPaso(1)">✕</button>
-    </div>`;
-}
-
-function alumnoHeaderHTML(){
-  if(!alumno) return '';
-  return `<div style="background:#f0faf6;border:1px solid #c8ead9;border-radius:10px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
-    <div style="width:36px;height:36px;background:#1D9E75;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0">👤</div>
-    <div>
-      <div style="font-size:14px;font-weight:600;color:#0F6E56">${alumno.nom.split(' ').slice(0,3).join(' ')}</div>
-      <div style="font-size:12px;color:#666">${alumno.categoria||'—'} · Turno ${alumno.turno||'—'} · Cod: ${alumno.cod}</div>
-    </div>
-  </div>`;
-}
-
-function renderPaso3(){
-  const s=document.getElementById('step3');
-  detalle={};
-
-  if(producto==='camiseta'){
-    const cat=getCatNum(alumno.categoria);
-    const ocup=numOcupados(cat).sort((a,b)=>a-b);
+function rP3(){
+  const s=document.getElementById('s3');
+  if(PROD==='camiseta'){
+    const cn=catNum(A.categoria);
+    const oc=numsOcup(cn);
     s.innerHTML=`
-      ${alumnoHeaderHTML()}
-      <div style="display:flex;gap:8px;margin-bottom:14px">
-        <button class="back-btn" style="margin:0;flex:1" onclick="irPaso(2)">← Volver</button>
-        <button class="submit-btn" style="flex:1;margin:0;padding:12px;font-size:14px" onclick="validarCamiseta()">Continuar →</button>
+      ${ahHTML()}
+      <div class="row2">
+        <button class="bb" onclick="ip(2)">← Volver</button>
+        <button class="sb" onclick="vCam()">Continuar →</button>
       </div>
-      <div class="step-header">Paso 3 — Detalles de la camiseta</div>
-      <div class="form-section">
-        <div class="cat-badge">Categoría ${cat} (${alumno.categoria||'—'})</div>
-        <label class="form-label">Talla</label>
-        <div class="talla-grid-4">
-          ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this,'c')">${t}</button>`).join('')}
+      <div class="sh">Paso 3 — Detalles de la camiseta</div>
+      <div class="fs">
+        <div class="cb">Categoría ${cn} (${A.categoria||'—'})</div>
+        <span class="fl">Talla</span>
+        <div class="tg" id="tg-c">
+          ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="tb" onclick="sTalla(this,'${t}')">${t}</button>`).join('')}
         </div>
       </div>
-      <div class="form-section">
-        <label class="form-label">Nombre en la camiseta</label>
-        <input class="form-input" type="text" id="nom-cam" placeholder="Ej: GIANFRANCO" oninput="detalle.nombreCamiseta=this.value.toUpperCase();this.value=this.value.toUpperCase()">
+      <div class="fs">
+        <span class="fl">Nombre en la camiseta</span>
+        <input class="fi" id="nc" type="text" placeholder="Ej: GIANFRANCO" style="text-transform:uppercase">
       </div>
-      <div class="form-section">
-        <label class="form-label">Número de camiseta</label>
-        <div class="num-wrap">
-          <input class="num-input" type="number" id="inp-num" min="1" max="99" placeholder="Ej: 10" oninput="verificarNum(this.value)">
-          <div class="num-estado" id="num-est">—</div>
+      <div class="fs">
+        <span class="fl">Número de camiseta (1–99)</span>
+        <div class="nw">
+          <input class="ni" id="nn" type="number" min="1" max="99" placeholder="Ej: 10" oninput="vNum(this.value)">
+          <div class="ne" id="ne">—</div>
         </div>
-        <div class="ocupados-box">
-          <div class="ocupados-title">🚫 No disponibles en Categoría ${cat}:</div>
-          <div class="ocupados-nums">${ocup.length>0?ocup.join('   '):'Todos disponibles ✅'}</div>
+        <div class="ob">
+          <div class="ot">🚫 Ocupados en Categoría ${cn}:</div>
+          <div class="on2">${oc.length?oc.join('   '):'Todos disponibles ✅'}</div>
         </div>
       </div>
-      <div style="display:flex;gap:8px;margin-top:8px">
-        <button class="back-btn" style="margin:0;flex:1" onclick="irPaso(2)">← Volver</button>
-        <button class="submit-btn" style="flex:1;margin:0" onclick="validarCamiseta()">Continuar →</button>
+      <div class="row2">
+        <button class="bb" onclick="ip(2)">← Volver</button>
+        <button class="sb" onclick="vCam()">Continuar →</button>
       </div>`;
 
-  } else if(producto==='balon'){
+  } else if(PROD==='balon'){
     s.innerHTML=`
-      ${alumnoHeaderHTML()}
-      <button class="back-btn" onclick="irPaso(2)">← Volver</button>
-      <div class="step-header">Paso 3 — Detalles del balón</div>
-      <div class="form-section">
-        <label class="form-label">Talla del balón</label>
-        <div class="talla-grid-3">
-          <button class="talla-btn" onclick="selTalla('Talla 5',this,'b')">Talla 5</button>
-          <button class="talla-btn" onclick="selTalla('Talla 6',this,'b')">Talla 6</button>
-          <button class="talla-btn" onclick="selTalla('Talla 7',this,'b')">Talla 7</button>
+      ${ahHTML()}
+      <button class="bb" onclick="ip(2)">← Volver</button>
+      <div class="sh">Paso 3 — Detalles del balón</div>
+      <div class="fs">
+        <span class="fl">Talla del balón</span>
+        <div class="tg3" id="tg-b">
+          <button class="tb" onclick="sTalla(this,'Talla 5')">Talla 5</button>
+          <button class="tb" onclick="sTalla(this,'Talla 6')">Talla 6</button>
+          <button class="tb" onclick="sTalla(this,'Talla 7')">Talla 7</button>
         </div>
-        <div class="talla-hint">
-          🔵 <b>Talla 5</b> — Niños de 5 a 11 años<br>
-          🔴 <b>Talla 6</b> — Mujeres a partir de 12 años<br>
-          🟢 <b>Talla 7</b> — Varones a partir de 12 años
-        </div>
+        <div class="th">🔵 <b>Talla 5</b> — Niños 5–11 años &nbsp;|&nbsp; 🔴 <b>Talla 6</b> — Mujeres 12+ &nbsp;|&nbsp; 🟢 <b>Talla 7</b> — Varones 12+</div>
       </div>
-      <div class="form-section">
-        <label class="form-label">Cantidad</label>
-        <input class="form-input" type="number" id="cant-balon" min="1" value="1" placeholder="1" oninput="detalle.cantidad=this.value">
+      <div class="fs">
+        <span class="fl">Cantidad</span>
+        <input class="fi" id="cb-c" type="number" min="1" value="1" style="font-size:18px;font-weight:600">
       </div>
-      <div class="form-section">
-        <label class="form-label">Color / descripción</label>
-        <input class="form-input" type="text" id="color-balon" placeholder="Ej: Naranja con negro" oninput="detalle.color=this.value">
+      <div class="fs">
+        <span class="fl">Color del balón</span>
+        <input class="fi" id="cb-col" type="text" placeholder="Ej: Naranja con negro">
       </div>
-      <button class="submit-btn" onclick="validarBalon()" style="margin-top:4px">Continuar →</button>`;
+      <button class="sb" onclick="vBal()" style="margin-top:4px">Continuar →</button>`;
 
-  } else if(producto==='buzo'){
+  } else {
+    const nom=NOMBRES[PROD].toLowerCase();
     s.innerHTML=`
-      ${alumnoHeaderHTML()}
-      <button class="back-btn" onclick="irPaso(2)">← Volver</button>
-      <div class="step-header">Paso 3 — Detalles del buzo</div>
-      <div class="form-section">
-        <label class="form-label">Talla</label>
-        <div class="talla-grid-4">
-          ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this,'bz')">${t}</button>`).join('')}
+      ${ahHTML()}
+      <button class="bb" onclick="ip(2)">← Volver</button>
+      <div class="sh">Paso 3 — Detalles del ${nom}</div>
+      <div class="fs">
+        <span class="fl">Talla</span>
+        <div class="tg" id="tg-r">
+          ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="tb" onclick="sTalla(this,'${t}')">${t}</button>`).join('')}
         </div>
       </div>
-      <div class="form-section">
-        <label class="form-label">Cantidad</label>
-        <input class="form-input" type="number" id="cant-buzo" min="1" value="1" oninput="detalle.cantidad=this.value">
+      <div class="fs">
+        <span class="fl">Cantidad</span>
+        <input class="fi" id="rp-c" type="number" min="1" value="1" style="font-size:18px;font-weight:600">
       </div>
-      <div class="form-section">
-        <label class="form-label">Observaciones</label>
-        <input class="form-input" type="text" id="obs-buzo" placeholder="Color, modelo, urgencia..." oninput="detalle.obs=this.value">
+      <div class="fs">
+        <span class="fl">Observaciones (color, modelo...)</span>
+        <input class="fi" id="rp-o" type="text" placeholder="Ej: azul marino, urgente...">
       </div>
-      <button class="submit-btn" onclick="validarRopa('buzo')" style="margin-top:4px">Continuar →</button>`;
-
-  } else if(producto==='calentador'){
-    s.innerHTML=`
-      ${alumnoHeaderHTML()}
-      <button class="back-btn" onclick="irPaso(2)">← Volver</button>
-      <div class="step-header">Paso 3 — Detalles del calentador</div>
-      <div class="form-section">
-        <label class="form-label">Talla</label>
-        <div class="talla-grid-4">
-          ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this,'ca')">${t}</button>`).join('')}
-        </div>
-      </div>
-      <div class="form-section">
-        <label class="form-label">Cantidad</label>
-        <input class="form-input" type="number" id="cant-cal" min="1" value="1" oninput="detalle.cantidad=this.value">
-      </div>
-      <div class="form-section">
-        <label class="form-label">Observaciones</label>
-        <input class="form-input" type="text" id="obs-cal" placeholder="Color, modelo, urgencia..." oninput="detalle.obs=this.value">
-      </div>
-      <button class="submit-btn" onclick="validarRopa('calentador')" style="margin-top:4px">Continuar →</button>`;
+      <button class="sb" onclick="vRop()" style="margin-top:4px">Continuar →</button>`;
   }
 }
 
-function selTalla(t,btn,grupo){
-  // Buscar el contenedor padre que tiene los botones de talla
-  var container = btn.closest('.form-section') || btn.closest('div') || btn.parentElement;
-  if(container) container.querySelectorAll('.talla-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  detalle.talla=t;
-  console.log('Talla seleccionada:', t, '| detalle:', JSON.stringify(detalle));
+function sTalla(btn,t){
+  btn.closest('.fs').querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  D.talla=t;
+}
+
+function vNum(v){
+  const n=parseInt(v),e=document.getElementById('ne');
+  if(!v||isNaN(n)||n<1||n>99){e.style.background='#f5f5f5';e.style.color='#999';e.textContent='—';D.numCamiseta='';return;}
+  const cn=catNum(A.categoria),oc=numsOcup(cn);
+  if(oc.includes(n)){e.style.background='#fff0f0';e.style.color='#c0392b';e.textContent='❌ Ocupado';D.numCamiseta='';}
+  else{e.style.background='#e8f8f2';e.style.color='#0F6E56';e.textContent='✅ Libre';D.numCamiseta=String(n);}
+}
+
+function vCam(){
+  // Leer campos directamente del DOM
+  const nc=document.getElementById('nc');
+  const nn=document.getElementById('nn');
+  D.nomCamiseta=nc?nc.value.toUpperCase().trim():'';
+  if(nn&&nn.value)vNum(nn.value);
+  if(!D.talla){alert('Selecciona una talla.');return;}
+  if(!D.numCamiseta){alert('Ingresa un número de camiseta disponible.');return;}
+  ip(4);
+}
+
+function vBal(){
+  const c=document.getElementById('cb-c');
+  const col=document.getElementById('cb-col');
+  D.cantidad=c?c.value||1:1;
+  D.color=col?col.value.trim():'';
+  if(!D.talla){alert('Selecciona una talla de balón.');return;}
+  ip(4);
+}
+
+function vRop(){
+  const c=document.getElementById('rp-c');
+  const o=document.getElementById('rp-o');
+  D.cantidad=c?c.value||1:1;
+  D.obs=o?o.value.trim():'';
+  if(!D.talla){alert('Selecciona una talla.');return;}
+  ip(4);
 }
 
 function selPago(p,btn){
-  document.querySelectorAll('.pago-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');
-  detalle.pago=p;
+  document.querySelectorAll('.ppb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  D.pago=p;
 }
 
-function verificarNum(val){
-  const n=parseInt(val);
-  const est=document.getElementById('num-est');
-  if(!val||isNaN(n)||n<1||n>99){est.style.background='#f5f5f5';est.style.color='#888';est.textContent='—';detalle.numero=null;return;}
-  const cat=getCatNum(alumno.categoria);
-  const ocup=numOcupados(cat);
-  if(ocup.includes(n)){
-    est.style.background='#fff0f0';est.style.color='#c0392b';est.textContent='❌ Ocupado';detalle.numero=null;
-  }else{
-    est.style.background='#e8f8f2';est.style.color='#0F6E56';est.textContent='✅ Disponible';detalle.numero=n;
-  }
-}
-
-function validarCamiseta(){
-  // Leer campos del DOM antes de validar
-  var nomCam = document.getElementById('nom-cam');
-  if(nomCam) detalle.nombreCamiseta = nomCam.value.toUpperCase();
-  var inpNum = document.getElementById('inp-num');
-  if(inpNum && inpNum.value) verificarNum(inpNum.value);
-  
-  if(!detalle.talla){alert('Selecciona una talla.');return;}
-  if(!detalle.numero){alert('Ingresa un número disponible.');return;}
-  console.log('Detalle camiseta:', JSON.stringify(detalle));
-  irPaso(4);
-}
-
-function validarBalon(){
-  if(!detalle.talla){alert('Selecciona una talla de balón.');return;}
-  var cantBalon = document.getElementById('cant-balon');
-  var colorBalon = document.getElementById('color-balon');
-  detalle.cantidad = cantBalon ? cantBalon.value||1 : 1;
-  detalle.color = colorBalon ? colorBalon.value : '';
-  console.log('Detalle balon:', JSON.stringify(detalle));
-  irPaso(4);
-}
-
-function validarRopa(tipo){
-  if(!detalle.talla){alert('Selecciona una talla.');return;}
-  var cantId = tipo==='buzo'?'cant-buzo':'cant-cal';
-  var obsId = tipo==='buzo'?'obs-buzo':'obs-cal';
-  var cant = document.getElementById(cantId);
-  var obs = document.getElementById(obsId);
-  if(cant) detalle.cantidad = cant.value||1;
-  if(obs) detalle.obs = obs.value;
-  console.log('Detalle '+tipo+':', JSON.stringify(detalle));
-  irPaso(4);
-}
-
-function procesarFoto(input){
-  const file=input.files[0];
-  if(!file) return;
+function procFoto(input){
+  const file=input.files[0];if(!file)return;
   const reader=new FileReader();
   reader.onload=function(e){
     const img=new Image();
     img.onload=function(){
-      const canvas=document.createElement('canvas');
-      const MAX=800;
-      let w=img.width,h=img.height;
-      if(w>h){if(w>MAX){h=h*(MAX/w);w=MAX;}}else{if(h>MAX){w=w*(MAX/h);h=MAX;}}
-      canvas.width=w;canvas.height=h;
-      canvas.getContext('2d').drawImage(img,0,0,w,h);
-      fotoBase64=canvas.toDataURL('image/jpeg',0.7).split(',')[1];
-      fotoNombre='voucher_'+alumno.cod+'_'+Date.now()+'.jpg';
-      const prev=document.getElementById('voucher-preview');
-      prev.src=canvas.toDataURL('image/jpeg',0.7);
-      prev.style.display='block';
-      document.getElementById('voucher-txt').textContent='✅ Voucher adjuntado';
-      document.getElementById('voucher-area').classList.add('has-foto');
-    };
-    img.src=e.target.result;
-  };
-  reader.readAsDataURL(file);
+      const c=document.createElement('canvas');
+      const M=800;let w=img.width,h=img.height;
+      if(w>h){if(w>M){h=h*(M/w);w=M;}}else{if(h>M){w=w*(M/h);h=M;}}
+      c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      FB=c.toDataURL('image/jpeg',0.7).split(',')[1];
+      FN='v_'+A.cod+'_'+Date.now()+'.jpg';
+      const vp=document.getElementById('vp');
+      vp.src=c.toDataURL('image/jpeg',0.7);vp.style.display='block';
+      document.getElementById('vt').textContent='✅ Voucher listo';
+      document.getElementById('va').classList.add('ok');
+    };img.src=e.target.result;
+  };reader.readAsDataURL(file);
 }
 
-function renderResumen(){
-  const prods={camiseta:'Camiseta',balon:'Balón',buzo:'Buzo',calentador:'Calentador'};
-  const iconos={camiseta:'👕',balon:'🏀',buzo:'🩱',calentador:'🧥'};
-  if(producto==='balon' && detalle.color && !detalle.comentario.includes('Color:')){
-    detalle.comentario = (detalle.comentario?detalle.comentario+' | ':'') + 'Color: '+detalle.color;
-  }
+function rP5(){
+  // Leer comentario actualizado
+  const cm=document.getElementById('coment');
+  if(cm)D.comentario=cm.value;
+  const mn=document.getElementById('monto');
+  if(mn)D.monto=mn.value;
 
-  let detalleArticulo = '';
-  if(producto==='camiseta'){
-    detalleArticulo = `
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
-        ${detalle.talla?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">TALLA</div><div style="font-size:18px;font-weight:700;color:#111">${detalle.talla}</div></div>`:''}
-        ${detalle.numero?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">NÚMERO</div><div style="font-size:18px;font-weight:700;color:#1D9E75">#${detalle.numero}</div></div>`:''}
-      </div>
-      ${detalle.nombreCamiseta?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;margin-top:8px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">NOMBRE EN CAMISETA</div><div style="font-size:16px;font-weight:700;color:#111;letter-spacing:1px">${detalle.nombreCamiseta}</div></div>`:''}`;
-  } else if(producto==='balon'){
-    detalleArticulo = `
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
-        ${detalle.talla?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">TALLA</div><div style="font-size:16px;font-weight:700;color:#111">${detalle.talla}</div></div>`:''}
-        ${detalle.cantidad?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">CANTIDAD</div><div style="font-size:18px;font-weight:700;color:#111">${detalle.cantidad}</div></div>`:''}
-      </div>`;
+  let artDetalle='';
+  if(PROD==='camiseta'){
+    artDetalle=`<div class="rv-grid">
+      ${D.talla?`<div class="rv-cell"><div class="rv-cell-l">TALLA</div><div class="rv-cell-v">${D.talla}</div></div>`:''}
+      ${D.numCamiseta?`<div class="rv-cell"><div class="rv-cell-l">NÚMERO</div><div class="rv-cell-v" style="color:#1D9E75">#${D.numCamiseta}</div></div>`:''}
+    </div>
+    ${D.nomCamiseta?`<div class="rv-nom"><div class="rv-nom-l">NOMBRE EN CAMISETA</div><div class="rv-nom-v">${D.nomCamiseta}</div></div>`:''}`;
+  } else if(PROD==='balon'){
+    artDetalle=`<div class="rv-grid">
+      ${D.talla?`<div class="rv-cell"><div class="rv-cell-l">TALLA</div><div class="rv-cell-v">${D.talla}</div></div>`:''}
+      ${D.cantidad?`<div class="rv-cell"><div class="rv-cell-l">CANTIDAD</div><div class="rv-cell-v">${D.cantidad}</div></div>`:''}
+    </div>
+    ${D.color?`<div class="rv-nom" style="margin-top:7px"><div class="rv-nom-l">COLOR</div><div class="rv-nom-v" style="font-size:13px">${D.color}</div></div>`:''}`;
   } else {
-    detalleArticulo = `
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
-        ${detalle.talla?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">TALLA</div><div style="font-size:18px;font-weight:700;color:#111">${detalle.talla}</div></div>`:''}
-        ${detalle.cantidad?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">CANTIDAD</div><div style="font-size:18px;font-weight:700;color:#111">${detalle.cantidad}</div></div>`:''}
-      </div>
-      ${detalle.obs?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;margin-top:8px"><div style="font-size:11px;color:#888;margin-bottom:2px">OBSERVACIÓN</div><div style="font-size:14px;color:#333">${detalle.obs}</div></div>`:''}`;
+    artDetalle=`<div class="rv-grid">
+      ${D.talla?`<div class="rv-cell"><div class="rv-cell-l">TALLA</div><div class="rv-cell-v">${D.talla}</div></div>`:''}
+      ${D.cantidad?`<div class="rv-cell"><div class="rv-cell-l">CANTIDAD</div><div class="rv-cell-v">${D.cantidad}</div></div>`:''}
+    </div>
+    ${D.obs?`<div class="rv-nom" style="margin-top:7px"><div class="rv-nom-l">OBSERVACIÓN</div><div class="rv-nom-v" style="font-size:13px">${D.obs}</div></div>`:''}`;
   }
 
-  document.getElementById('step5').innerHTML=`
-    <button class="back-btn" onclick="irPaso(4)">← Modificar</button>
+  const comentFinal=(D.comentario||'')+(D.color?' | Color: '+D.color:'');
 
-    <div style="background:#1D9E75;border-radius:12px;padding:16px;margin-bottom:12px;color:#fff">
-      <div style="font-size:11px;opacity:0.8;margin-bottom:4px">PEDIDO PARA</div>
-      <div style="font-size:18px;font-weight:700">${alumno.nom.split(' ').slice(0,3).join(' ')}</div>
-      <div style="font-size:13px;opacity:0.85;margin-top:2px">${alumno.categoria||'—'} · Turno ${alumno.turno||'—'} · Cod: ${alumno.cod}</div>
+  document.getElementById('s5').innerHTML=`
+    <button class="bb" onclick="ip(4)">← Modificar</button>
+    <div class="rv-head">
+      <div class="rv-label">PEDIDO PARA</div>
+      <div class="rv-name">${A.nom.split(' ').slice(0,3).join(' ')}</div>
+      <div class="rv-sub">${A.categoria||'—'} · Turno ${A.turno||'—'} · Cod: ${A.cod}</div>
     </div>
-
-    <div style="background:#fafafa;border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:12px">
-      <div style="font-size:11px;color:#888;margin-bottom:6px">ARTÍCULO</div>
-      <div style="font-size:20px;font-weight:700;color:#111">${iconos[producto]} ${prods[producto]}</div>
-      ${detalleArticulo}
+    <div class="rv-art">
+      <div class="rv-label" style="color:#888">ARTÍCULO</div>
+      <div style="font-size:19px;font-weight:800;color:#111;margin-bottom:4px">${ICONOS[PROD]} ${NOMBRES[PROD]}</div>
+      ${artDetalle}
     </div>
-
-    <div style="background:#fafafa;border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:12px">
-      <div style="font-size:11px;color:#888;margin-bottom:8px">PAGO</div>
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div style="font-size:16px;font-weight:600;color:#333">${detalle.pago||'No especificado'}</div>
-        <div style="font-size:22px;font-weight:700;color:#1D9E75">${detalle.monto?'S/ '+detalle.monto:'—'}</div>
+    <div class="rv-pago">
+      <div class="rv-label" style="color:#888;margin-bottom:6px">PAGO</div>
+      <div class="rv-pago-row">
+        <div class="rv-pago-tipo">${D.pago||'No especificado'}</div>
+        <div class="rv-pago-monto">${D.monto?'S/ '+D.monto:'—'}</div>
       </div>
-      ${detalle.comentario?`<div style="margin-top:8px;padding-top:8px;border-top:1px solid #eee;font-size:13px;color:#666">💬 ${detalle.comentario}</div>`:''}
-      ${fotoBase64?`<div style="margin-top:8px;padding-top:8px;border-top:1px solid #eee;font-size:13px;color:#1D9E75">📎 Voucher adjuntado ✅</div>`:''}
+      ${comentFinal?`<div class="rv-coment">💬 ${comentFinal}</div>`:''}
+      ${FB?`<div class="rv-voucher">📎 Voucher adjuntado ✅</div>`:''}
     </div>
-
-    <button class="submit-btn" id="btn-confirmar" onclick="confirmar()">✅ Confirmar pedido</button>`;
+    <button class="sb" id="bcf" onclick="confirmar()">✅ Confirmar pedido</button>`;
 }
 
 async function confirmar(){
-  const btn=document.getElementById('btn-confirmar');
-  btn.disabled=true;btn.innerHTML='⏳ Guardando...';
-  const prods={camiseta:'Camiseta',balon:'Balón',buzo:'Buzo',calentador:'Calentador'};
-  let detalleTexto='';
-  if(producto==='camiseta') detalleTexto=`Nombre:${detalle.nombreCamiseta||''} Num:#${detalle.numero||''}`;
-  else if(producto==='balon') detalleTexto=`Color:${detalle.color||''} Cant:${detalle.cantidad||1}`;
-  else detalleTexto=`Nombre:${detalle.nombre||''} Obs:${detalle.obs||''} Cant:${detalle.cantidad||1}`;
+  const btn=document.getElementById('bcf');
+  btn.disabled=true;btn.textContent='⏳ Guardando...';
 
-  // Color balón va a comentario
-  if(producto==='balon' && detalle.color && !(detalle.comentario||'').includes('Color:')){
-    detalle.comentario = (detalle.comentario?detalle.comentario+' | ':'') + detalle.color;
-  }
+  const cm=document.getElementById('coment');
+  if(cm)D.comentario=cm.value;
+  const mn=document.getElementById('monto');
+  if(mn)D.monto=mn.value;
+
+  const comentFinal=(D.comentario||'')+(D.color?' | Color: '+D.color:'');
+
   const payload={
-    cod:alumno.cod,
-    alumno:alumno.nom,
-    categoria:alumno.categoria||'',
-    articulo:prods[producto],
-    talla:detalle.talla||'',
-    cantidad:producto==='camiseta'?1:(detalle.cantidad||1),
-    nomCamiseta:detalle.nombreCamiseta||'',
-    numCamiseta:detalle.numero?String(detalle.numero):'',
-    pago:detalle.pago||'',
-    monto:detalle.monto||'',
-    comentario:detalle.comentario||'',
-    obs:detalle.obs||'',
-    foto:fotoBase64||'',
-    nombreFoto:fotoNombre||''
+    cod:       String(A.cod||''),
+    alumno:    String(A.nom||''),
+    categoria: String(A.categoria||''),
+    articulo:  NOMBRES[PROD],
+    talla:     String(D.talla||''),
+    cantidad:  PROD==='camiseta'?'1':String(D.cantidad||1),
+    nomCamiseta: String(D.nomCamiseta||''),
+    numCamiseta: String(D.numCamiseta||''),
+    pago:      String(D.pago||''),
+    monto:     String(D.monto||''),
+    comentario:String(comentFinal),
+    obs:       String(D.obs||''),
+    foto:      FB||'',
+    nombreFoto:FN||''
   };
 
-  console.log('PAYLOAD ENVIADO:', JSON.stringify(payload));
+  console.log('PAYLOAD:', JSON.stringify(payload));
+
   try{
-    // Intentar con fetch normal primero, si falla usar no-cors
-    let enviado = false;
-    try {
-      const resp = await fetch(API_PEDIDOS, {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body:JSON.stringify(payload)
-      });
-      const result = await resp.json();
-      enviado = result.ok !== false;
-    } catch(e2) {
-      // Fallback no-cors
-      await fetch(API_PEDIDOS,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
-      enviado = true;
-    }
-    document.getElementById('step5').style.display='none';
+    await fetch(API_P,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)});
+    document.getElementById('s5').style.display='none';
     document.getElementById('pasos').style.display='none';
-    document.getElementById('resultado').innerHTML=`
-      <div class="ok-msg">
-        ✅ Pedido registrado correctamente<br>
-        <span style="font-size:13px;font-weight:400;opacity:0.85;display:block;margin-top:6px">
-          ${alumno.nom.split(' ')[0]} · ${prods[producto]}
-          ${detalle.talla?' · '+detalle.talla:''}
-          ${detalle.numero?' · #'+detalle.numero:''}
+    document.getElementById('res').innerHTML=`
+      <div class="ok">✅ Pedido registrado<br>
+        <span style="font-size:13px;font-weight:400;display:block;margin-top:5px;opacity:0.85">
+          ${A.nom.split(' ')[0]} · ${NOMBRES[PROD]}${D.talla?' · '+D.talla:''}${D.numCamiseta?' · #'+D.numCamiseta:''}
         </span>
-        <button onclick="nuevoPedido()" style="margin-top:14px;padding:9px 24px;border-radius:20px;border:1px solid #0F6E56;background:none;color:#0F6E56;font-size:14px;cursor:pointer;font-family:inherit;font-weight:500">+ Nuevo pedido</button>
+        <button onclick="nuevo()" style="margin-top:12px;padding:8px 22px;border-radius:20px;border:1.5px solid #0F6E56;background:none;color:#0F6E56;font-size:13px;cursor:pointer;font-family:inherit;font-weight:600">+ Nuevo pedido</button>
       </div>`;
-  }catch(e){
-    btn.disabled=false;btn.innerHTML='✅ Confirmar pedido';
+  }catch(ex){
+    btn.disabled=false;btn.textContent='✅ Confirmar pedido';
     alert('Error al guardar. Revisa tu conexión.');
   }
 }
 
-function nuevoPedido(){
-  alumno=null;producto=null;detalle={};fotoBase64='';fotoNombre='';
-  // Limpiar todos los campos
-  document.getElementById('resultado').innerHTML='';
+function nuevo(){
+  A=null;PROD=null;D={};FB='';FN='';
+  document.getElementById('res').innerHTML='';
   document.getElementById('pasos').style.display='flex';
   document.getElementById('busca').value='';
   document.getElementById('monto').value='';
-  document.getElementById('comentario').value='';
-  document.getElementById('foto-input').value='';
-  document.getElementById('voucher-preview').style.display='none';
-  document.getElementById('voucher-preview').src='';
-  document.getElementById('voucher-txt').textContent='📸 Toca para tomar foto o adjuntar imagen';
-  document.getElementById('voucher-area').classList.remove('has-foto');
-  document.querySelectorAll('.prod-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.pago-btn').forEach(b=>b.classList.remove('active'));
-  irPaso(1);
+  document.getElementById('coment').value='';
+  document.getElementById('fi').value='';
+  document.getElementById('vp').style.display='none';
+  document.getElementById('vp').src='';
+  document.getElementById('vt').textContent='📸 Toca para tomar foto o adjuntar imagen';
+  document.getElementById('va').classList.remove('ok');
+  document.querySelectorAll('.pb,.ppb').forEach(b=>b.classList.remove('on'));
+  ip(1);
 }
 
-document.addEventListener('touchstart',e=>{
-  if(!e.target.closest('#busca')&&!e.target.closest('#dropdown'))
-    document.getElementById('dropdown').style.display='none';
-});
-document.addEventListener('mousedown',e=>{
-  if(!e.target.closest('#busca')&&!e.target.closest('#dropdown'))
-    document.getElementById('dropdown').style.display='none';
-});
+document.addEventListener('touchstart',e=>{if(!e.target.closest('#busca')&&!e.target.closest('#drop'))document.getElementById('drop').style.display='none';});
+document.addEventListener('mousedown',e=>{if(!e.target.closest('#busca')&&!e.target.closest('#drop'))document.getElementById('drop').style.display='none';});
 
 init();
 </script>
