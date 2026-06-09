@@ -111,6 +111,7 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
   <div id="step3" style="display:none"></div>
 
   <div id="step4" style="display:none">
+    <div id="alumno-header-p4"></div>
     <button class="back-btn" onclick="irPaso(3)">← Volver</button>
     <div class="step-header">Paso 4 — Pago y voucher</div>
     <div class="form-section">
@@ -121,7 +122,7 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
         <button class="pago-btn" onclick="selPago('SALDO',this)">✅ Saldo</button>
       </div>
       <label class="form-label">Monto pagado (S/)</label>
-      <input class="form-input" type="number" id="monto" placeholder="Ej: 129" oninput="detalle.monto=this.value">
+      <input class="form-input" type="number" id="monto" placeholder="" oninput="detalle.monto=this.value">
     </div>
     <div class="form-section">
       <label class="form-label">Comentarios (opcional)</label>
@@ -144,7 +145,7 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 
 <script>
 const API_DATA = "https://script.google.com/macros/s/AKfycbyQQprlOIrWh7viURwiQwpZT9ruAeg8k3IHcD6V6sVQgoPvHcYnG61AMsXqIgRLvz_a8A/exec";
-const API_PEDIDOS = "https://script.google.com/macros/s/AKfycbw0zfzTtXgRc1Q7TPRBstqld4up0lkkjXLs1cgE5yAw-rFMbAnkUeQys-46_EKnvJBoOQ/exec";
+const API_PEDIDOS = "https://script.google.com/macros/s/AKfycbwUW_HISzY07-Pczsx-eUu3ka7yKecMYWiigbRSvZKab29lsaD03NAONhvt13SeHOk83A/exec";
 
 let TODOS=[], alumno=null, producto=null, detalle={}, fotoBase64='', fotoNombre='';
 
@@ -210,17 +211,33 @@ function irPaso(n){
   });
   if(n===2) renderAlumnoCard();
   if(n===3) renderPaso3();
+  if(n===4) {
+    document.getElementById('alumno-header-p4').innerHTML=alumnoHeaderHTML();
+    const precios={camiseta:90,balon:75,buzo:134,calentador:59};
+    const precio=precios[producto]||0;
+    document.getElementById('monto').placeholder='Sugerido: S/ '+precio;
+  }
   if(n===5) renderResumen();
 }
 
 function renderAlumnoCard(){
-  const cat=getCatNum(alumno.categoria);
   document.getElementById('alumno-card').innerHTML=`
     <div class="alumno-card">
       <div><div class="alumno-nombre">${alumno.nom.split(' ').slice(0,3).join(' ')}</div>
       <div class="alumno-det">Cod: ${alumno.cod} · ${alumno.categoria||'—'} · ${alumno.turno||'—'}</div></div>
       <button class="clear-btn" onclick="alumno=null;irPaso(1)">✕</button>
     </div>`;
+}
+
+function alumnoHeaderHTML(){
+  if(!alumno) return '';
+  return `<div style="background:#f0faf6;border:1px solid #c8ead9;border-radius:10px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
+    <div style="width:36px;height:36px;background:#1D9E75;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0">👤</div>
+    <div>
+      <div style="font-size:14px;font-weight:600;color:#0F6E56">${alumno.nom.split(' ').slice(0,3).join(' ')}</div>
+      <div style="font-size:12px;color:#666">${alumno.categoria||'—'} · Turno ${alumno.turno||'—'} · Cod: ${alumno.cod}</div>
+    </div>
+  </div>`;
 }
 
 function renderPaso3(){
@@ -231,6 +248,7 @@ function renderPaso3(){
     const cat=getCatNum(alumno.categoria);
     const ocup=numOcupados(cat).sort((a,b)=>a-b);
     s.innerHTML=`
+      ${alumnoHeaderHTML()}
       <div style="display:flex;gap:8px;margin-bottom:14px">
         <button class="back-btn" style="margin:0;flex:1" onclick="irPaso(2)">← Volver</button>
         <button class="submit-btn" style="flex:1;margin:0;padding:12px;font-size:14px" onclick="validarCamiseta()">Continuar →</button>
@@ -265,6 +283,7 @@ function renderPaso3(){
 
   } else if(producto==='balon'){
     s.innerHTML=`
+      ${alumnoHeaderHTML()}
       <button class="back-btn" onclick="irPaso(2)">← Volver</button>
       <div class="step-header">Paso 3 — Detalles del balón</div>
       <div class="form-section">
@@ -292,6 +311,7 @@ function renderPaso3(){
 
   } else if(producto==='buzo'){
     s.innerHTML=`
+      ${alumnoHeaderHTML()}
       <button class="back-btn" onclick="irPaso(2)">← Volver</button>
       <div class="step-header">Paso 3 — Detalles del buzo</div>
       <div class="form-section">
@@ -299,10 +319,6 @@ function renderPaso3(){
         <div class="talla-grid-4">
           ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this,'bz')">${t}</button>`).join('')}
         </div>
-      </div>
-      <div class="form-section">
-        <label class="form-label">Nombre en el buzo (opcional)</label>
-        <input class="form-input" type="text" id="nom-buzo" placeholder="Ej: MATIAS" oninput="detalle.nombre=this.value.toUpperCase();this.value=this.value.toUpperCase()">
       </div>
       <div class="form-section">
         <label class="form-label">Cantidad</label>
@@ -316,6 +332,7 @@ function renderPaso3(){
 
   } else if(producto==='calentador'){
     s.innerHTML=`
+      ${alumnoHeaderHTML()}
       <button class="back-btn" onclick="irPaso(2)">← Volver</button>
       <div class="step-header">Paso 3 — Detalles del calentador</div>
       <div class="form-section">
@@ -323,10 +340,6 @@ function renderPaso3(){
         <div class="talla-grid-4">
           ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="talla-btn" onclick="selTalla('${t}',this,'ca')">${t}</button>`).join('')}
         </div>
-      </div>
-      <div class="form-section">
-        <label class="form-label">Nombre en el calentador (opcional)</label>
-        <input class="form-input" type="text" id="nom-cal" placeholder="Ej: SANTIAGO" oninput="detalle.nombre=this.value.toUpperCase();this.value=this.value.toUpperCase()">
       </div>
       <div class="form-section">
         <label class="form-label">Cantidad</label>
@@ -411,31 +424,59 @@ function procesarFoto(input){
 
 function renderResumen(){
   const prods={camiseta:'Camiseta',balon:'Balón',buzo:'Buzo',calentador:'Calentador'};
-  const filas=[
-    ['Alumno',alumno.nom.split(' ').slice(0,3).join(' ')],
-    ['Código',alumno.cod],
-    ['Categoría',alumno.categoria||'—'],
-    ['Turno',alumno.turno||'—'],
-    ['Artículo',prods[producto]],
-    detalle.talla?['Talla',detalle.talla]:null,
-    detalle.numero?['Número','#'+detalle.numero]:null,
-    detalle.nombreCamiseta?['Nombre camiseta',detalle.nombreCamiseta]:null,
-    detalle.nombre?['Nombre en artículo',detalle.nombre]:null,
-    detalle.cantidad?['Cantidad',detalle.cantidad]:null,
-    detalle.color?['Color',detalle.color]:null,
-    detalle.obs?['Observación',detalle.obs]:null,
-    detalle.pago?['Forma de pago',detalle.pago]:null,
-    detalle.monto?['Monto','S/'+detalle.monto]:null,
-    detalle.comentario?['Comentario',detalle.comentario]:null,
-    fotoBase64?['Voucher','✅ Adjuntado']:null,
-  ].filter(Boolean);
+  const iconos={camiseta:'👕',balon:'🏀',buzo:'🩱',calentador:'🧥'};
+  if(producto==='balon' && detalle.color && !detalle.comentario.includes('Color:')){
+    detalle.comentario = (detalle.comentario?detalle.comentario+' | ':'') + 'Color: '+detalle.color;
+  }
+
+  let detalleArticulo = '';
+  if(producto==='camiseta'){
+    detalleArticulo = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+        ${detalle.talla?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">TALLA</div><div style="font-size:18px;font-weight:700;color:#111">${detalle.talla}</div></div>`:''}
+        ${detalle.numero?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">NÚMERO</div><div style="font-size:18px;font-weight:700;color:#1D9E75">#${detalle.numero}</div></div>`:''}
+      </div>
+      ${detalle.nombreCamiseta?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;margin-top:8px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">NOMBRE EN CAMISETA</div><div style="font-size:16px;font-weight:700;color:#111;letter-spacing:1px">${detalle.nombreCamiseta}</div></div>`:''}`;
+  } else if(producto==='balon'){
+    detalleArticulo = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+        ${detalle.talla?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">TALLA</div><div style="font-size:16px;font-weight:700;color:#111">${detalle.talla}</div></div>`:''}
+        ${detalle.cantidad?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">CANTIDAD</div><div style="font-size:18px;font-weight:700;color:#111">${detalle.cantidad}</div></div>`:''}
+      </div>`;
+  } else {
+    detalleArticulo = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px">
+        ${detalle.talla?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">TALLA</div><div style="font-size:18px;font-weight:700;color:#111">${detalle.talla}</div></div>`:''}
+        ${detalle.cantidad?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;text-align:center"><div style="font-size:11px;color:#888;margin-bottom:2px">CANTIDAD</div><div style="font-size:18px;font-weight:700;color:#111">${detalle.cantidad}</div></div>`:''}
+      </div>
+      ${detalle.obs?`<div style="background:#fff;border:1px solid #ddd;border-radius:8px;padding:10px;margin-top:8px"><div style="font-size:11px;color:#888;margin-bottom:2px">OBSERVACIÓN</div><div style="font-size:14px;color:#333">${detalle.obs}</div></div>`:''}`;
+  }
 
   document.getElementById('step5').innerHTML=`
-    <button class="back-btn" onclick="irPaso(4)">← Modificar pago</button>
-    <div class="step-header">Paso 5 — Confirmar pedido</div>
-    <div class="resumen-card">
-      ${filas.map(([k,v])=>`<div class="resumen-row"><span style="color:#666">${k}</span><span>${v}</span></div>`).join('')}
+    <button class="back-btn" onclick="irPaso(4)">← Modificar</button>
+
+    <div style="background:#1D9E75;border-radius:12px;padding:16px;margin-bottom:12px;color:#fff">
+      <div style="font-size:11px;opacity:0.8;margin-bottom:4px">PEDIDO PARA</div>
+      <div style="font-size:18px;font-weight:700">${alumno.nom.split(' ').slice(0,3).join(' ')}</div>
+      <div style="font-size:13px;opacity:0.85;margin-top:2px">${alumno.categoria||'—'} · Turno ${alumno.turno||'—'} · Cod: ${alumno.cod}</div>
     </div>
+
+    <div style="background:#fafafa;border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-size:11px;color:#888;margin-bottom:6px">ARTÍCULO</div>
+      <div style="font-size:20px;font-weight:700;color:#111">${iconos[producto]} ${prods[producto]}</div>
+      ${detalleArticulo}
+    </div>
+
+    <div style="background:#fafafa;border:1px solid #eee;border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-size:11px;color:#888;margin-bottom:8px">PAGO</div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div style="font-size:16px;font-weight:600;color:#333">${detalle.pago||'No especificado'}</div>
+        <div style="font-size:22px;font-weight:700;color:#1D9E75">${detalle.monto?'S/ '+detalle.monto:'—'}</div>
+      </div>
+      ${detalle.comentario?`<div style="margin-top:8px;padding-top:8px;border-top:1px solid #eee;font-size:13px;color:#666">💬 ${detalle.comentario}</div>`:''}
+      ${fotoBase64?`<div style="margin-top:8px;padding-top:8px;border-top:1px solid #eee;font-size:13px;color:#1D9E75">📎 Voucher adjuntado ✅</div>`:''}
+    </div>
+
     <button class="submit-btn" id="btn-confirmar" onclick="confirmar()">✅ Confirmar pedido</button>`;
 }
 
@@ -448,23 +489,43 @@ async function confirmar(){
   else if(producto==='balon') detalleTexto=`Color:${detalle.color||''} Cant:${detalle.cantidad||1}`;
   else detalleTexto=`Nombre:${detalle.nombre||''} Obs:${detalle.obs||''} Cant:${detalle.cantidad||1}`;
 
+  // Color balón va a comentario
+  if(producto==='balon' && detalle.color && !(detalle.comentario||'').includes('Color:')){
+    detalle.comentario = (detalle.comentario?detalle.comentario+' | ':'') + detalle.color;
+  }
   const payload={
     cod:alumno.cod,
     alumno:alumno.nom,
     categoria:alumno.categoria||'',
     articulo:prods[producto],
-    detalle:detalleTexto,
     talla:detalle.talla||'',
-    cantidad:detalle.cantidad||1,
+    cantidad:producto==='camiseta'?1:(detalle.cantidad||1),
+    nomCamiseta:detalle.nombreCamiseta||'',
+    numCamiseta:detalle.numero?String(detalle.numero):'',
     pago:detalle.pago||'',
     monto:detalle.monto||'',
     comentario:detalle.comentario||'',
+    obs:detalle.obs||'',
     foto:fotoBase64||'',
     nombreFoto:fotoNombre||''
   };
 
   try{
-    await fetch(API_PEDIDOS,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
+    // Intentar con fetch normal primero, si falla usar no-cors
+    let enviado = false;
+    try {
+      const resp = await fetch(API_PEDIDOS, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
+      });
+      const result = await resp.json();
+      enviado = result.ok !== false;
+    } catch(e2) {
+      // Fallback no-cors
+      await fetch(API_PEDIDOS,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
+      enviado = true;
+    }
     document.getElementById('step5').style.display='none';
     document.getElementById('pasos').style.display='none';
     document.getElementById('resultado').innerHTML=`
@@ -485,8 +546,17 @@ async function confirmar(){
 
 function nuevoPedido(){
   alumno=null;producto=null;detalle={};fotoBase64='';fotoNombre='';
+  // Limpiar todos los campos
   document.getElementById('resultado').innerHTML='';
   document.getElementById('pasos').style.display='flex';
+  document.getElementById('busca').value='';
+  document.getElementById('monto').value='';
+  document.getElementById('comentario').value='';
+  document.getElementById('foto-input').value='';
+  document.getElementById('voucher-preview').style.display='none';
+  document.getElementById('voucher-preview').src='';
+  document.getElementById('voucher-txt').textContent='📸 Toca para tomar foto o adjuntar imagen';
+  document.getElementById('voucher-area').classList.remove('has-foto');
   document.querySelectorAll('.prod-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.pago-btn').forEach(b=>b.classList.remove('active'));
   irPaso(1);
