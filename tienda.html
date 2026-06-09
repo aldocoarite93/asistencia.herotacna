@@ -177,7 +177,7 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
       </div>
       <input type="file" id="fi" accept="image/*" capture="environment" style="display:none" onchange="procFoto(this)">
     </div>
-    <button class="sb" onclick="ip(5)">Continuar →</button>
+    <button class="sb" onclick="vPago()">Continuar →</button>
   </div>
 
   <!-- PASO 5 -->
@@ -187,7 +187,7 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 
 <script>
 const API_D = "https://script.google.com/macros/s/AKfycbyQQprlOIrWh7viURwiQwpZT9ruAeg8k3IHcD6V6sVQgoPvHcYnG61AMsXqIgRLvz_a8A/exec";
-const API_P = "https://script.google.com/macros/s/AKfycbwUW_HISzY07-Pczsx-eUu3ka7yKecMYWiigbRSvZKab29lsaD03NAONhvt13SeHOk83A/exec";
+const API_P = "https://script.google.com/macros/s/AKfycbxt_AH6E6NlMGjmhqv4hI1aUtco2rzPLge7Dl-Wj0tE4MErYq18ptFav-FwaqF43xlnHA/exec";
 
 let AL=[], A=null, PROD=null, D={}, FB='', FN='';
 
@@ -317,9 +317,9 @@ function rP3(){
       <div class="fs">
         <span class="fl">Talla del balón</span>
         <div class="tg3" id="tg-b">
-          <button class="tb" onclick="sTalla(this,'Talla 5')">Talla 5</button>
-          <button class="tb" onclick="sTalla(this,'Talla 6')">Talla 6</button>
-          <button class="tb" onclick="sTalla(this,'Talla 7')">Talla 7</button>
+          <button class="tb" onclick="sTalla(this,'5')">Talla 5</button>
+          <button class="tb" onclick="sTalla(this,'6')">Talla 6</button>
+          <button class="tb" onclick="sTalla(this,'7')">Talla 7</button>
         </div>
         <div class="th">🔵 <b>Talla 5</b> — Niños 5–11 años &nbsp;|&nbsp; 🔴 <b>Talla 6</b> — Mujeres 12+ &nbsp;|&nbsp; 🟢 <b>Talla 7</b> — Varones 12+</div>
       </div>
@@ -348,10 +348,6 @@ function rP3(){
       <div class="fs">
         <span class="fl">Cantidad</span>
         <input class="fi" id="rp-c" type="number" min="1" value="1" style="font-size:18px;font-weight:600">
-      </div>
-      <div class="fs">
-        <span class="fl">Observaciones (color, modelo...)</span>
-        <input class="fi" id="rp-o" type="text" placeholder="Ej: azul marino, urgente...">
       </div>
       <button class="sb" onclick="vRop()" style="margin-top:4px">Continuar →</button>`;
   }
@@ -393,9 +389,8 @@ function vBal(){
 
 function vRop(){
   const c=document.getElementById('rp-c');
-  const o=document.getElementById('rp-o');
   D.cantidad=c?c.value||1:1;
-  D.obs=o?o.value.trim():'';
+  D.obs='';
   if(!D.talla){alert('Selecciona una talla.');return;}
   ip(4);
 }
@@ -404,6 +399,16 @@ function selPago(p,btn){
   document.querySelectorAll('.ppb').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
   D.pago=p;
+}
+
+function vPago(){
+  if(!D.pago){alert('Selecciona una forma de pago.');return;}
+  if(!FB){alert('Adjunta una foto del voucher de pago.');return;}
+  const cm=document.getElementById('coment');
+  if(cm)D.comentario=cm.value;
+  const mn=document.getElementById('monto');
+  if(mn)D.monto=mn.value;
+  ip(5);
 }
 
 function procFoto(input){
