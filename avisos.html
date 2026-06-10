@@ -159,7 +159,7 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 
 <script>
 const API_D = "https://script.google.com/macros/s/AKfycbyQQprlOIrWh7viURwiQwpZT9ruAeg8k3IHcD6V6sVQgoPvHcYnG61AMsXqIgRLvz_a8A/exec";
-const API_A = "https://script.google.com/macros/s/AKfycbzUoyCIH-fENavyLZCLwSvrVkGyMvPBrggB1b36FOhhP8PIfPggFp6_IHw7-8029tMD/exec";
+const API_A = "https://script.google.com/macros/s/AKfycbzAdqNynjZLLdTYHIWAzkrIigItar4v8BD1aehO_nKDLLDZBZ1Gr8fO0XxXc1kaqm2Bjg/exec";
 
 let AL=[], TIPO=null, ALU=null;
 let fechaDia = new Date();
@@ -462,11 +462,23 @@ function hoy(){
 }
 
 function formatFecha(iso){
-  if(!iso)return'—';
-  const [y,m,d]=iso.split('-');
-  const dias=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-  const fecha=new Date(y,m-1,d);
-  return `${dias[fecha.getDay()]} ${d}/${m}/${y}`;
+  if(!iso||iso==='undefined'||iso==='')return'—';
+  // Si viene como DD/MM/YYYY
+  if(iso.includes('/')&&iso.length<=10){
+    const [d,m,y]=iso.split('/');
+    if(!d||!m||!y)return iso;
+    const dias=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    const fecha=new Date(y,m-1,d);
+    return `${dias[fecha.getDay()]} ${d}/${m}/${y}`;
+  }
+  // Si viene como YYYY-MM-DD
+  if(iso.includes('-')&&iso.length===10){
+    const [y,m,d]=iso.split('-');
+    const dias=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    const fecha=new Date(y,m-1,d);
+    return `${dias[fecha.getDay()]} ${d}/${m}/${y}`;
+  }
+  return iso;
 }
 
 function initDia(){
