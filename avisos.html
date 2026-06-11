@@ -14,17 +14,10 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .logo-sub{font-size:12px;color:#999;margin-top:1px}
 .spinner{display:inline-block;width:11px;height:11px;border:2px solid #ddd;border-top-color:#2563EB;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:4px}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* Tabs */
 .tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:18px;background:#f0f0f0;border-radius:12px;padding:4px}
 .tab{padding:9px 4px;border:none;border-radius:9px;background:none;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:#888;touch-action:manipulation;text-align:center}
 .tab.on{background:#fff;color:#2563EB;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
-
-/* Secciones */
-.sec{display:none}
-.sec.on{display:block}
-
-/* Form */
+.sec{display:none}.sec.on{display:block}
 .sh{font-size:11px;font-weight:600;color:#999;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.6px}
 .fs{background:#fafafa;border:1px solid #ececec;border-radius:11px;padding:13px;margin-bottom:11px}
 .fl{font-size:12px;font-weight:600;color:#555;margin-bottom:7px;display:block}
@@ -32,8 +25,6 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .fi:focus{outline:none;border-color:#2563EB}
 .fta{width:100%;padding:10px 13px;border:1.5px solid #ddd;border-radius:9px;font-size:14px;font-family:inherit;background:#fff;color:#111;resize:none;height:65px}
 .fta:focus{outline:none;border-color:#2563EB}
-
-/* Búsqueda */
 .si{width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;color:#111;background:#fff;margin-bottom:6px}
 .si:focus{outline:none;border-color:#2563EB}
 .dl{background:#fff;border:1.5px solid #ddd;border-radius:10px;max-height:210px;overflow-y:auto;margin-bottom:10px;display:none;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
@@ -43,59 +34,35 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .dn{font-size:14px;color:#111;font-weight:500}
 .di{font-size:11px;color:#aaa;margin-top:1px}
 .tp{font-size:11px;padding:3px 8px;border-radius:6px;border:1px solid #e0e0e0;background:#f7f7f7;color:#444;font-weight:500;white-space:nowrap;margin-left:8px;flex-shrink:0}
-
-/* Tipo de aviso */
 .tipo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
 .tipo-btn{padding:12px 8px;border:1.5px solid #ddd;border-radius:10px;background:#fff;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;font-size:13px;font-weight:600;color:#444}
 .tipo-btn.on{border-color:#2563EB;background:#EFF6FF;color:#2563EB}
-.tipo-btn.falta{border-color:#ddd}
-.tipo-btn.falta.on{border-color:#EF4444;background:#FEF2F2;color:#EF4444}
-.tipo-btn.recup.on{border-color:#10B981;background:#ECFDF5;color:#10B981}
-.tipo-btn.prueba.on{border-color:#F59E0B;background:#FFFBEB;color:#F59E0B}
-
-/* Alumno card */
+.tipo-btn.fon{border-color:#EF4444;background:#FEF2F2;color:#EF4444}
+.tipo-btn.ron{border-color:#10B981;background:#ECFDF5;color:#10B981}
+.tipo-btn.pon{border-color:#F59E0B;background:#FFFBEB;color:#F59E0B}
 .ac{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;margin-bottom:14px}
 .acn{font-size:14px;font-weight:600;color:#111}
 .acd{font-size:11px;color:#666;margin-top:1px}
 .xb{background:none;border:none;font-size:18px;cursor:pointer;color:#bbb;padding:4px 6px}
-
-/* Botones */
 .sb{width:100%;padding:14px;background:#2563EB;color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation;min-height:50px;margin-top:4px}
-.sb.green{background:#1D9E75}
-.sb.red{background:#EF4444}
-.sb:disabled{opacity:0.5}
 .bb{width:100%;padding:11px;background:none;color:#999;border:1.5px solid #e0e0e0;border-radius:11px;font-size:14px;cursor:pointer;font-family:inherit;touch-action:manipulation;margin-bottom:9px}
-
-/* Resumen card */
-.res-card{background:#fff;border-radius:14px;padding:18px;border:2px solid #2563EB}
-.res-tipo{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;margin-bottom:10px}
-.res-nom{font-size:19px;font-weight:800;color:#111;margin-bottom:4px}
-.res-sub{font-size:12px;color:#666;margin-bottom:12px}
-.res-row{font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0;display:flex;gap:8px}
-.res-row:last-child{border-bottom:none}
-.res-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
-.res-btn{padding:11px;border-radius:10px;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit}
-
-/* Resumen día */
+.res-card{background:#fff;border-radius:14px;padding:18px;border:2px solid #2563EB;margin-top:4px}
+.badge{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;white-space:nowrap;display:inline-block}
+.bf{background:#FEF2F2;color:#EF4444}
+.br{background:#ECFDF5;color:#10B981}
+.bp{background:#FFFBEB;color:#F59E0B}
 .fecha-sel{display:flex;align-items:center;gap:8px;margin-bottom:14px}
-.fecha-nav{padding:8px 14px;border:1.5px solid #ddd;border-radius:9px;background:#fff;font-size:18px;cursor:pointer;touch-action:manipulation}
-.fecha-lbl{flex:1;text-align:center;font-size:15px;font-weight:700;color:#111}
+.fnav{padding:8px 14px;border:1.5px solid #ddd;border-radius:9px;background:#fff;font-size:18px;cursor:pointer;touch-action:manipulation}
+.flbl{flex:1;text-align:center;font-size:15px;font-weight:700;color:#111}
 .turno-card{border:1px solid #eee;border-radius:11px;margin-bottom:10px;overflow:hidden}
 .turno-head{padding:10px 14px;background:#f5f5f5;font-size:12px;font-weight:700;color:#555}
-.aviso-row{padding:10px 14px;border-bottom:1px solid #f5f5f5;font-size:13px;color:#333;display:flex;align-items:center;gap:8px}
+.aviso-row{padding:10px 14px;border-bottom:1px solid #f5f5f5;font-size:13px;color:#333}
 .aviso-row:last-child{border-bottom:none}
-.badge{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;white-space:nowrap}
-.badge.falta{background:#FEF2F2;color:#EF4444}
-.badge.recup{background:#ECFDF5;color:#10B981}
-.badge.prueba{background:#FFFBEB;color:#F59E0B}
-
-/* Perfil */
+.semana-head{font-size:12px;font-weight:700;color:#2563EB;padding:8px 0 4px;border-bottom:1px solid #BFDBFE;margin-bottom:6px}
 .perfil-aviso{border:1px solid #eee;border-radius:10px;padding:12px;margin-bottom:8px}
-.perfil-tipo{font-size:11px;font-weight:700;margin-bottom:6px}
-.perfil-det{font-size:13px;color:#444;line-height:1.6}
-
 .empty{text-align:center;padding:30px;color:#bbb;font-size:14px}
-.ok-msg{background:#ECFDF5;border:1px solid #A7F3D0;border-radius:11px;padding:14px;text-align:center;color:#065F46;font-size:14px;font-weight:600;margin-bottom:12px}
+.res-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
+.res-btn{padding:11px;border-radius:10px;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation}
 </style>
 </head>
 <body>
@@ -107,166 +74,165 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
       <div class="logo-sub" id="st"><span class="spinner"></span>Cargando...</div>
     </div>
   </div>
-
   <div class="tabs">
     <button class="tab on" onclick="showTab('reg',this)">➕ Registrar</button>
     <button class="tab" onclick="showTab('dia',this)">📅 Día</button>
     <button class="tab" onclick="showTab('per',this)">🔍 Alumno</button>
   </div>
 
-  <!-- TAB 1: REGISTRAR -->
+  <!-- TAB REGISTRAR -->
   <div class="sec on" id="tab-reg">
-    
-    <!-- Paso 1: Tipo -->
-    <div id="r-paso1">
+    <div id="r1">
       <div class="sh">¿Qué vas a registrar?</div>
       <div class="tipo-grid">
-        <button class="tipo-btn falta" onclick="selTipo('falta',this)">❌ Falta</button>
-        <button class="tipo-btn recup" onclick="selTipo('recup',this)">🔄 Recuperación</button>
-        <button class="tipo-btn falta recup" onclick="selTipo('ambos',this)">❌🔄 Falta + Recuperación</button>
-        <button class="tipo-btn prueba" onclick="selTipo('prueba',this)">🆕 Clase de Prueba</button>
+        <button class="tipo-btn" id="tb-falta" onclick="selTipo('falta')">❌ Falta</button>
+        <button class="tipo-btn" id="tb-recup" onclick="selTipo('recup')">🔄 Recuperación</button>
+        <button class="tipo-btn" id="tb-ambos" onclick="selTipo('ambos')" style="grid-column:span 2">❌🔄 Falta + Recuperación</button>
+        <button class="tipo-btn" id="tb-prueba" onclick="selTipo('prueba')" style="grid-column:span 2">🆕 Clase de Prueba</button>
       </div>
     </div>
-
-    <!-- Paso 2: Formulario -->
-    <div id="r-paso2" style="display:none"></div>
-
-    <!-- Resultado -->
-    <div id="r-res"></div>
+    <div id="r2" style="display:none"></div>
+    <div id="r3"></div>
   </div>
 
-  <!-- TAB 2: RESUMEN DEL DÍA -->
+  <!-- TAB DÍA -->
   <div class="sec" id="tab-dia">
     <div class="sh">Resumen de avisos</div>
     <div class="fecha-sel">
-      <button class="fecha-nav" onclick="cambiarFecha(-1)">◀</button>
-      <div class="fecha-lbl" id="fecha-lbl"></div>
-      <button class="fecha-nav" onclick="cambiarFecha(1)">▶</button>
+      <button class="fnav" onclick="cambF(-1)">◀</button>
+      <div class="flbl" id="flbl"></div>
+      <button class="fnav" onclick="cambF(1)">▶</button>
     </div>
-    <div id="dia-contenido"><div class="empty">Cargando avisos...</div></div>
-    <button class="sb green" onclick="compartirDia()" style="margin-top:8px">📤 Compartir al grupo</button>
+    <div id="dia-cont"><div class="empty">Selecciona una fecha</div></div>
+    <button style="width:100%;padding:14px;background:#25D366;color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px" onclick="compartirDia()">📤 Compartir al grupo</button>
   </div>
 
-  <!-- TAB 3: BUSCAR ALUMNO -->
+  <!-- TAB ALUMNO -->
   <div class="sec" id="tab-per">
     <div class="sh">Buscar alumno</div>
-    <input class="si" id="busca-per" type="text" placeholder="🔍 Nombre o código..." oninput="filtrarPer()" autocomplete="off">
-    <div class="dl" id="drop-per"></div>
-    <div id="per-contenido"></div>
+    <input class="si" id="bper" type="text" placeholder="🔍 Nombre o código..." oninput="filtPer()" autocomplete="off">
+    <div class="dl" id="dper"></div>
+    <div id="per-cont"></div>
   </div>
-
 </div>
 
 <script>
 const API_D = "https://script.google.com/macros/s/AKfycbyQQprlOIrWh7viURwiQwpZT9ruAeg8k3IHcD6V6sVQgoPvHcYnG61AMsXqIgRLvz_a8A/exec";
-const API_A = "https://script.google.com/macros/s/AKfycbzAdqNynjZLLdTYHIWAzkrIigItar4v8BD1aehO_nKDLLDZBZ1Gr8fO0XxXc1kaqm2Bjg/exec";
+const API_A = "https://script.google.com/macros/s/AKfycbyWzm9mbEvUb00jviSzyHHCzi3pZxvqobJcHlTfKYekrWR4o1Ev6W2jvv6Cg4D6tAQLag/exec";
 
-let AL=[], TIPO=null, ALU=null;
+let AL=[], TIPO=null, ALU=null, SUB='justificada';
 let fechaDia = new Date();
-let AVISOS_HOY = [];
+let DIA_DATA = [];
 
-const TURNOS_INFO = {
-  TA1:'LMV 3:30–4:30pm · Camelias',
-  TA2:'LMV 4:30–6:00pm · Camelias',
-  TB1:'MJS 4:00–5:00pm · Coliseo',
-  TB2:'MJS 5:00–6:00pm · Coliseo',
-  TC1:'MJS 4:00–5:00pm · Camelias',
-  TC2:'MJS 5:00–6:00pm · Camelias'
-};
+const TI = {TA1:'LMV 3:30–4:30pm·Camelias',TA2:'LMV 4:30–6pm·Camelias',TB1:'MJS 4–5pm·Coliseo',TB2:'MJS 5–6pm·Coliseo',TC1:'MJS 4–5pm·Camelias',TC2:'MJS 5–6pm·Camelias'};
 
 async function init(){
   try{
-    const r = await fetch(API_D);
-    const d = await r.json();
-    AL = d.filter(a=>a.cod&&a.nom);
+    const r=await fetch(API_D);
+    const d=await r.json();
+    AL=d.filter(a=>a.cod&&a.nom);
     document.getElementById('st').innerHTML='🟢 '+AL.length+' alumnos';
-  }catch(e){
-    document.getElementById('st').innerHTML='⚠️ Sin conexión';
-  }
-  initDia();
+  }catch(e){document.getElementById('st').innerHTML='⚠️ Sin conexión';}
+  fechaDia=new Date();
+  updFecha();
 }
 
-// ===== TABS =====
-function showTab(id, btn){
+// FECHAS
+function hoyISO(){return new Date().toISOString().split('T')[0];}
+function isoToDisplay(iso){
+  if(!iso||iso==='undefined'||iso==='')return'—';
+  try{
+    const [y,m,d]=iso.split('-');
+    const dias=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+    const f=new Date(parseInt(y),parseInt(m)-1,parseInt(d));
+    return dias[f.getDay()]+' '+d+'/'+m+'/'+y;
+  }catch(e){return iso;}
+}
+function ddmmToISO(dd){
+  if(!dd)return'';
+  const p=dd.split('/');
+  if(p.length<3)return dd;
+  return p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');
+}
+function fechaISO(d){
+  const m=String(d.getMonth()+1).padStart(2,'0');
+  const dd=String(d.getDate()).padStart(2,'0');
+  return d.getFullYear()+'-'+m+'-'+dd;
+}
+function getLunes(d){
+  const c=new Date(d);
+  const dia=c.getDay();
+  const diff=dia===0?-6:1-dia;
+  c.setDate(c.getDate()+diff);
+  return c;
+}
+function semanaLabel(d){
+  const l=getLunes(d);
+  const s=new Date(l);s.setDate(s.getDate()+6);
+  return isoToDisplay(fechaISO(l))+' → '+isoToDisplay(fechaISO(s));
+}
+
+// TABS
+function showTab(id,btn){
   document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
   btn.classList.add('on');
   document.getElementById('tab-'+id).classList.add('on');
-  if(id==='dia') cargarDia();
+  if(id==='dia')cargarDia();
 }
 
-// ===== TAB REGISTRAR =====
-function selTipo(tipo, btn){
-  document.querySelectorAll('.tipo-btn').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
-  TIPO=tipo; ALU=null;
-  document.getElementById('r-res').innerHTML='';
-  renderFormulario();
+// REGISTRAR
+function selTipo(t){
+  TIPO=t;ALU=null;
+  document.getElementById('r3').innerHTML='';
+  const clases={falta:'fon',recup:'ron',ambos:'on',prueba:'pon'};
+  ['falta','recup','ambos','prueba'].forEach(x=>{
+    const b=document.getElementById('tb-'+x);
+    b.className='tipo-btn'+(t===x?' '+clases[x]:'');
+  });
+  renderR2();
 }
 
-function renderFormulario(){
-  const p2 = document.getElementById('r-paso2');
-  p2.style.display='block';
+function renderR2(){
+  const r2=document.getElementById('r2');
+  r2.style.display='block';
 
   if(TIPO==='prueba'){
-    p2.innerHTML=`
+    r2.innerHTML=`
       <div class="sh" style="margin-top:12px">Datos de clase de prueba</div>
-      <div class="fs">
-        <span class="fl">Nombre completo</span>
-        <input class="fi" id="p-nom" type="text" placeholder="Nombre y apellido">
-      </div>
-      <div class="fs">
-        <span class="fl">Edad</span>
-        <input class="fi" id="p-edad" type="number" placeholder="Ej: 10">
-      </div>
-      <div class="fs">
-        <span class="fl">Apoderado (opcional)</span>
-        <input class="fi" id="p-apod" type="text" placeholder="Nombre del apoderado">
-      </div>
-      <div class="fs">
-        <span class="fl">Teléfono (opcional)</span>
-        <input class="fi" id="p-tel" type="tel" placeholder="Ej: 987654321">
-      </div>
-      <div class="fs">
-        <span class="fl">Turno</span>
-        <select class="fi" id="p-turno">
-          <option value="">Seleccionar turno...</option>
-          ${Object.keys(TURNOS_INFO).map(t=>`<option value="${t}">${t} — ${TURNOS_INFO[t]}</option>`).join('')}
+      <div class="fs"><span class="fl">Nombre completo *</span><input class="fi" id="pn" type="text" placeholder="Nombre y apellido"></div>
+      <div class="fs"><span class="fl">Edad</span><input class="fi" id="pe" type="number" placeholder="Ej: 10" min="4" max="20"></div>
+      <div class="fs"><span class="fl">Apoderado (opcional)</span><input class="fi" id="pa" type="text" placeholder="Nombre del apoderado"></div>
+      <div class="fs"><span class="fl">Teléfono (opcional)</span><input class="fi" id="pt" type="tel" placeholder="Ej: 987654321"></div>
+      <div class="fs"><span class="fl">Turno *</span>
+        <select class="fi" id="ptu">
+          <option value="">Seleccionar...</option>
+          ${Object.keys(TI).map(t=>`<option value="${t}">${t} — ${TI[t]}</option>`).join('')}
         </select>
       </div>
-      <div class="fs">
-        <span class="fl">Hora</span>
-        <input class="fi" id="p-hora" type="time" value="04:00">
-      </div>
-      <div class="fs">
-        <span class="fl">Fecha de prueba</span>
-        <input class="fi" id="p-fecha" type="date" value="${hoy()}">
-      </div>
-      <div class="fs">
-        <span class="fl">Comentario / Seguimiento</span>
-        <textarea class="fta" id="p-coment" placeholder="Notas de seguimiento, quién lo recomendó..."></textarea>
-      </div>
-      <button class="sb" style="background:#F59E0B" onclick="confirmarPrueba()">✅ Registrar clase de prueba</button>`;
+      <div class="fs"><span class="fl">Hora</span><input class="fi" id="ph" type="time" value="04:00"></div>
+      <div class="fs"><span class="fl">Fecha *</span><input class="fi" id="pf" type="date" value="${hoyISO()}"></div>
+      <div class="fs"><span class="fl">Comentario / Seguimiento</span><textarea class="fta" id="pc" placeholder="Notas, quién lo recomendó..."></textarea></div>
+      <button class="sb" style="background:#F59E0B" onclick="confPrueba()">✅ Registrar clase de prueba</button>`;
     return;
   }
 
-  // Para falta, recup, ambos — buscar alumno primero
-  p2.innerHTML=`
+  r2.innerHTML=`
     <div class="sh" style="margin-top:12px">Buscar alumno</div>
-    <input class="si" id="busca-reg" type="text" placeholder="🔍 Nombre o código..." oninput="filtrarReg()" autocomplete="off">
-    <div class="dl" id="drop-reg"></div>
-    <div id="alu-sel"></div>
-    <div id="form-aviso" style="display:none"></div>`;
+    <input class="si" id="breg" type="text" placeholder="🔍 Nombre o código..." oninput="filtReg()" autocomplete="off">
+    <div class="dl" id="dreg"></div>
+    <div id="asel"></div>
+    <div id="fav" style="display:none"></div>`;
 }
 
-function filtrarReg(){
-  const q=document.getElementById('busca-reg').value.toLowerCase().trim();
-  const dd=document.getElementById('drop-reg');
+function filtReg(){
+  const q=document.getElementById('breg').value.toLowerCase().trim();
+  const dd=document.getElementById('dreg');
   if(!q){dd.style.display='none';return;}
   const r=AL.filter(a=>(a.nom||'').toLowerCase().includes(q)||String(a.cod||'').includes(q));
   if(!r.length){dd.style.display='none';return;}
   dd.innerHTML=r.slice(0,15).map(a=>`
-    <div class="dr" onmousedown="elegirAlu('${a.cod}')">
+    <div class="dr" onmousedown="elegReg('${a.cod}')">
       <div><div class="dn">${a.nom.split(' ').slice(0,3).join(' ')}</div>
       <div class="di">Cod: ${a.cod} · ${a.categoria||'—'}</div></div>
       <div class="tp">${a.turno||'—'}</div>
@@ -274,277 +240,196 @@ function filtrarReg(){
   dd.style.display='block';
 }
 
-function elegirAlu(cod){
+function elegReg(cod){
   ALU=AL.find(a=>String(a.cod)===String(cod));
-  document.getElementById('busca-reg').value='';
-  document.getElementById('drop-reg').style.display='none';
-  document.getElementById('alu-sel').innerHTML=`
+  document.getElementById('breg').value='';
+  document.getElementById('dreg').style.display='none';
+  document.getElementById('asel').innerHTML=`
     <div class="ac">
       <div><div class="acn">${ALU.nom.split(' ').slice(0,3).join(' ')}</div>
-      <div class="acd">Cod: ${ALU.cod} · ${ALU.categoria||'—'} · ${ALU.turno||'—'}</div></div>
-      <button class="xb" onclick="ALU=null;document.getElementById('alu-sel').innerHTML='';document.getElementById('form-aviso').style.display='none'">✕</button>
+      <div class="acd">${ALU.categoria||'—'} · Turno ${ALU.turno||'—'}</div></div>
+      <button class="xb" onclick="ALU=null;document.getElementById('asel').innerHTML='';document.getElementById('fav').style.display='none'">✕</button>
     </div>`;
-  renderFormAviso();
+  renderFav();
 }
 
-function renderFormAviso(){
-  const f = document.getElementById('form-aviso');
+function renderFav(){
+  const f=document.getElementById('fav');
   f.style.display='block';
-
-  let html = '';
-
+  let h='';
   if(TIPO==='falta'||TIPO==='ambos'){
-    html+=`
-      <div class="fs">
-        <span class="fl">Tipo de falta</span>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-          <button class="tipo-btn falta" id="btn-just" onclick="selSubtipo('justificada')">✅ Justificada</button>
-          <button class="tipo-btn falta" id="btn-injust" onclick="selSubtipo('injustificada')">⚠️ Injustificada</button>
-        </div>
-      </div>
-      <div class="fs">
-        <span class="fl">Fecha de falta</span>
-        <input class="fi" id="f-fecha" type="date" value="${hoy()}">
-      </div>`;
+    h+=`<div class="fs"><span class="fl">Tipo de falta</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button class="tipo-btn" id="bjust" onclick="selSub('justificada')">✅ Justificada</button>
+        <button class="tipo-btn" id="binjust" onclick="selSub('injustificada')">⚠️ Injustificada</button>
+      </div></div>
+      <div class="fs"><span class="fl">Fecha de falta</span><input class="fi" id="ff" type="date" value="${hoyISO()}"></div>`;
   }
-
   if(TIPO==='recup'||TIPO==='ambos'){
-    html+=`
-      <div class="fs">
-        <span class="fl">Fecha de recuperación</span>
-        <input class="fi" id="f-fecha-rec" type="date" value="${hoy()}">
-      </div>
-      <div class="fs">
-        <span class="fl">Turno donde recupera</span>
-        <select class="fi" id="f-turno-rec">
-          <option value="">Seleccionar turno...</option>
-          ${Object.keys(TURNOS_INFO).map(t=>`<option value="${t}" ${t===ALU.turno?'selected':''}>${t} — ${TURNOS_INFO[t]}</option>`).join('')}
+    h+=`<div class="fs"><span class="fl">Fecha de recuperación</span><input class="fi" id="fr" type="date" value="${hoyISO()}"></div>
+      <div class="fs"><span class="fl">Turno donde recupera</span>
+        <select class="fi" id="ftr">
+          <option value="">Seleccionar...</option>
+          ${Object.keys(TI).map(t=>`<option value="${t}" ${t===(ALU&&ALU.turno)?'selected':''}>${t} — ${TI[t]}</option>`).join('')}
         </select>
       </div>`;
   }
-
-  html+=`
-    <div class="fs">
-      <span class="fl">Nota (opcional)</span>
-      <textarea class="fta" id="f-nota" placeholder="Motivo, observaciones..."></textarea>
-    </div>
-    <button class="sb" onclick="confirmarAviso()">✅ Confirmar registro</button>`;
-
-  f.innerHTML=html;
+  h+=`<div class="fs"><span class="fl">Nota (opcional)</span><textarea class="fta" id="fnota" placeholder="Motivo, observaciones..."></textarea></div>
+    <button class="sb" onclick="confAviso()">✅ Confirmar registro</button>`;
+  f.innerHTML=h;
+  selSub('justificada');
 }
 
-let subtipo='justificada';
-function selSubtipo(s){
-  subtipo=s;
-  document.querySelectorAll('#btn-just,#btn-injust').forEach(b=>b.classList.remove('on'));
-  document.getElementById(s==='justificada'?'btn-just':'btn-injust').classList.add('on');
+function selSub(s){
+  SUB=s;
+  const bj=document.getElementById('bjust');
+  const bi=document.getElementById('binjust');
+  if(!bj||!bi)return;
+  bj.className='tipo-btn'+(s==='justificada'?' fon':'');
+  bi.className='tipo-btn'+(s==='injustificada'?' fon':'');
 }
 
-function confirmarAviso(){
+function confAviso(){
   if(!ALU){alert('Selecciona un alumno.');return;}
-  const fechaFalta = TIPO!=='recup'?document.getElementById('f-fecha')?.value:'';
-  const fechaRec = TIPO!=='falta'?document.getElementById('f-fecha-rec')?.value:'';
-  const turnoRec = TIPO!=='falta'?document.getElementById('f-turno-rec')?.value:'';
-  const nota = document.getElementById('f-nota')?.value||'';
-
-  if((TIPO==='falta'||TIPO==='ambos')&&!fechaFalta){alert('Selecciona la fecha de falta.');return;}
-  if((TIPO==='recup'||TIPO==='ambos')&&!fechaRec){alert('Selecciona la fecha de recuperación.');return;}
-  if((TIPO==='recup'||TIPO==='ambos')&&!turnoRec){alert('Selecciona el turno de recuperación.');return;}
+  const ff=TIPO!=='recup'?document.getElementById('ff')?.value:'';
+  const fr=TIPO!=='falta'?document.getElementById('fr')?.value:'';
+  const ftr=TIPO!=='falta'?document.getElementById('ftr')?.value:'';
+  const nota=document.getElementById('fnota')?.value||'';
+  if((TIPO==='falta'||TIPO==='ambos')&&!ff){alert('Selecciona fecha de falta.');return;}
+  if((TIPO==='recup'||TIPO==='ambos')&&!fr){alert('Selecciona fecha de recuperación.');return;}
+  if((TIPO==='recup'||TIPO==='ambos')&&!ftr){alert('Selecciona el turno de recuperación.');return;}
 
   const tipos={falta:'Falta',recup:'Recuperación',ambos:'Falta + Recuperación'};
-  const payload={
-    tipo: tipos[TIPO],
-    subtipo: TIPO!=='recup'?subtipo:'',
-    cod: ALU.cod,
-    alumno: ALU.nom,
-    turno: ALU.turno||'',
-    categoria: ALU.categoria||'',
-    fechaFalta: fechaFalta,
-    fechaRecup: fechaRec,
-    turnoRecup: turnoRec,
-    nota: nota
-  };
+  const payload={accion:'aviso',tipo:tipos[TIPO],subtipo:TIPO!=='recup'?SUB:'',
+    cod:ALU.cod,alumno:ALU.nom,turno:ALU.turno||'',categoria:ALU.categoria||'',
+    fechaFalta:ff,fechaRecup:fr,turnoRecup:ftr,nota};
 
-  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({accion:'aviso',...payload})});
+  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
 
-  // Mostrar resultado
-  const colores={falta:'#FEF2F2',recup:'#ECFDF5',ambos:'#EFF6FF'};
-  const colText={falta:'#EF4444',recup:'#10B981',ambos:'#2563EB'};
-  const iconos={falta:'❌',recup:'🔄',ambos:'❌🔄'};
+  // Texto para compartir al padre
+  let txt=`🏀 HERO TACNA ACADEMIA\n📋 AVISO REGISTRADO\n\n👦 ${ALU.nom.split(' ').slice(0,3).join(' ')}\n⏰ Turno: ${ALU.turno||'—'}`;
+  if(ff) txt+=`\n\n❌ Falta: ${isoToDisplay(ff)} (${SUB})`;
+  if(fr) txt+=`\n🔄 Recupera: ${isoToDisplay(fr)} en turno ${ftr}`;
+  if(nota) txt+=`\n💬 ${nota}`;
+  txt+=`\n\n✅ Quedó registrado correctamente.`;
 
-  const resTexto = generarTextoAviso(payload);
-
-  document.getElementById('r-res').innerHTML=`
-    <div class="res-card" style="border-color:${colText[TIPO]}">
-      <div class="res-tipo" style="background:${colores[TIPO]};color:${colText[TIPO]}">${iconos[TIPO]} ${tipos[TIPO]}</div>
-      <div class="res-nom">${ALU.nom.split(' ').slice(0,3).join(' ')}</div>
-      <div class="res-sub">${ALU.categoria||'—'} · Turno ${ALU.turno||'—'}</div>
-      ${fechaFalta?`<div class="res-row">📅 <span>Falta: <b>${formatFecha(fechaFalta)}</b> — ${subtipo}</span></div>`:''}
-      ${fechaRec?`<div class="res-row">🔄 <span>Recupera: <b>${formatFecha(fechaRec)}</b> en ${turnoRec}</span></div>`:''}
-      ${nota?`<div class="res-row">💬 <span>${nota}</span></div>`:''}
+  const cols={falta:'#EF4444',recup:'#10B981',ambos:'#2563EB'};
+  document.getElementById('r3').innerHTML=`
+    <div class="res-card" style="border-color:${cols[TIPO]}">
+      <div style="margin-bottom:8px"><span class="badge ${TIPO==='falta'?'bf':TIPO==='recup'?'br':'on'}">${tipos[TIPO]}</span></div>
+      <div style="font-size:18px;font-weight:800;color:#111;margin-bottom:4px">${ALU.nom.split(' ').slice(0,3).join(' ')}</div>
+      <div style="font-size:12px;color:#666;margin-bottom:12px">${ALU.categoria||'—'} · ${ALU.turno||'—'}</div>
+      ${ff?`<div style="font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0">📅 Falta: <b>${isoToDisplay(ff)}</b> (${SUB})</div>`:''}
+      ${fr?`<div style="font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0">🔄 Recupera: <b>${isoToDisplay(fr)}</b> en ${ftr}</div>`:''}
+      ${nota?`<div style="font-size:13px;color:#666;padding:5px 0">💬 ${nota}</div>`:''}
       <div class="res-btns">
-        <button class="res-btn" style="background:#25D366;color:#fff" onclick="compartirTexto(\`${resTexto.replace(/`/g,"'")}\`)">📤 Compartir</button>
+        <button class="res-btn" style="background:#25D366;color:#fff" onclick="comp(\`${txt.replace(/`/g,"'")}\`)">📤 Compartir</button>
         <button class="res-btn" style="background:#f0f0f0;color:#333" onclick="resetReg()">+ Nuevo</button>
       </div>
     </div>`;
-
-  document.getElementById('r-paso2').style.display='none';
-  document.getElementById('r-paso1').querySelectorAll('.tipo-btn').forEach(b=>b.classList.remove('on'));
-  TIPO=null;ALU=null;
+  document.getElementById('r2').style.display='none';
 }
 
-function confirmarPrueba(){
-  const nom=document.getElementById('p-nom').value.trim();
-  const edad=document.getElementById('p-edad').value;
-  const apod=document.getElementById('p-apod').value.trim();
-  const tel=document.getElementById('p-tel').value.trim();
-  const turno=document.getElementById('p-turno').value;
-  const hora=document.getElementById('p-hora').value;
-  const fecha=document.getElementById('p-fecha').value;
-  const coment=document.getElementById('p-coment').value.trim();
-
+function confPrueba(){
+  const nom=document.getElementById('pn').value.trim();
+  const edad=document.getElementById('pe').value;
+  const apod=document.getElementById('pa').value.trim();
+  const tel=document.getElementById('pt').value.trim();
+  const turno=document.getElementById('ptu').value;
+  const hora=document.getElementById('ph').value;
+  const fecha=document.getElementById('pf').value;
+  const coment=document.getElementById('pc').value.trim();
   if(!nom){alert('Ingresa el nombre.');return;}
   if(!turno){alert('Selecciona el turno.');return;}
   if(!fecha){alert('Selecciona la fecha.');return;}
 
-  const payload={accion:'prueba',nombre:nom,edad,apoderado:apod,telefono:tel,turno,hora,fecha1:fecha,comentario:coment};
-  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
+  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({accion:'prueba',nombre:nom,edad,apoderado:apod,telefono:tel,turno,hora,fecha1:fecha,comentario:coment})});
 
-  const resTexto=`🏀 HERO TACNA ACADEMIA
-📋 CLASE DE PRUEBA REGISTRADA
+  let txt=`🏀 HERO TACNA ACADEMIA\n📋 CLASE DE PRUEBA REGISTRADA\n\n👦 ${nom}${edad?' ('+edad+' años)':''}`;
+  if(apod) txt+=`\n👨 Apoderado: ${apod}`;
+  if(tel) txt+=`\n📱 ${tel}`;
+  txt+=`\n📅 Fecha: ${isoToDisplay(fecha)}\n⏰ Turno: ${turno} · ${hora}`;
+  if(coment) txt+=`\n📝 ${coment}`;
+  txt+=`\n\n✅ Quedó registrado correctamente.\nPor favor confirma que los datos son correctos.`;
 
-👦 ${nom}${edad?' ('+edad+' años)':''}
-${apod?'👨 Apoderado: '+apod+'\n':''}${tel?'📱 '+tel+'\n':''}📅 Fecha: ${formatFecha(fecha)}
-⏰ Turno: ${turno} · ${hora}
-${coment?'📝 '+coment+'\n':''}
-✅ Quedó registrado correctamente.
-Por favor confirma que los datos son correctos.`;
-
-  document.getElementById('r-res').innerHTML=`
+  document.getElementById('r3').innerHTML=`
     <div class="res-card" style="border-color:#F59E0B">
-      <div class="res-tipo" style="background:#FFFBEB;color:#F59E0B">🆕 Clase de Prueba</div>
-      <div class="res-nom">${nom}</div>
-      <div class="res-sub">${edad?edad+' años · ':''} ${turno} · ${hora}</div>
-      <div class="res-row">📅 <span><b>${formatFecha(fecha)}</b></span></div>
-      ${apod?`<div class="res-row">👨 <span>${apod}${tel?' · '+tel:''}</span></div>`:''}
-      ${coment?`<div class="res-row">💬 <span>${coment}</span></div>`:''}
+      <div style="margin-bottom:8px"><span class="badge bp">🆕 Clase de Prueba</span></div>
+      <div style="font-size:18px;font-weight:800;color:#111;margin-bottom:4px">${nom}</div>
+      <div style="font-size:12px;color:#666;margin-bottom:12px">${edad?edad+' años · ':''}${turno} · ${hora}</div>
+      <div style="font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0">📅 <b>${isoToDisplay(fecha)}</b></div>
+      ${apod?`<div style="font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0">👨 ${apod}${tel?' · 📱'+tel:''}</div>`:''}
+      ${coment?`<div style="font-size:13px;color:#666;padding:5px 0">📝 ${coment}</div>`:''}
       <div class="res-btns">
-        <button class="res-btn" style="background:#25D366;color:#fff" onclick="compartirTexto(\`${resTexto.replace(/`/g,"'")}\`)">📤 Compartir</button>
+        <button class="res-btn" style="background:#25D366;color:#fff" onclick="comp(\`${txt.replace(/`/g,"'")}\`)">📤 Compartir</button>
         <button class="res-btn" style="background:#f0f0f0;color:#333" onclick="resetReg()">+ Nuevo</button>
       </div>
     </div>`;
-
-  document.getElementById('r-paso2').style.display='none';
-  document.getElementById('r-paso1').querySelectorAll('.tipo-btn').forEach(b=>b.classList.remove('on'));
-  TIPO=null;
-}
-
-function generarTextoAviso(p){
-  let txt=`🏀 HERO TACNA ACADEMIA\n📋 AVISO REGISTRADO\n\n👦 ${p.alumno.split(' ').slice(0,3).join(' ')}\n⏰ Turno: ${p.turno||'—'}`;
-  if(p.fechaFalta) txt+=`\n\n❌ Falta: ${formatFecha(p.fechaFalta)} (${p.subtipo})`;
-  if(p.fechaRecup) txt+=`\n🔄 Recupera: ${formatFecha(p.fechaRecup)} en turno ${p.turnoRecup}`;
-  if(p.nota) txt+=`\n💬 ${p.nota}`;
-  txt+=`\n\n✅ Quedó registrado correctamente.`;
-  return txt;
+  document.getElementById('r2').style.display='none';
 }
 
 function resetReg(){
-  document.getElementById('r-res').innerHTML='';
-  document.getElementById('r-paso2').style.display='none';
-  document.getElementById('r-paso1').querySelectorAll('.tipo-btn').forEach(b=>b.classList.remove('on'));
+  document.getElementById('r3').innerHTML='';
+  document.getElementById('r2').style.display='none';
+  document.getElementById('r2').innerHTML='';
+  ['falta','recup','ambos','prueba'].forEach(x=>document.getElementById('tb-'+x).className='tipo-btn');
   TIPO=null;ALU=null;
 }
 
-// ===== TAB DÍA =====
-function hoy(){
-  const d=new Date();
-  return d.toISOString().split('T')[0];
-}
-
-function formatFecha(iso){
-  if(!iso||iso==='undefined'||iso==='')return'—';
-  // Si viene como DD/MM/YYYY
-  if(iso.includes('/')&&iso.length<=10){
-    const [d,m,y]=iso.split('/');
-    if(!d||!m||!y)return iso;
-    const dias=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-    const fecha=new Date(y,m-1,d);
-    return `${dias[fecha.getDay()]} ${d}/${m}/${y}`;
-  }
-  // Si viene como YYYY-MM-DD
-  if(iso.includes('-')&&iso.length===10){
-    const [y,m,d]=iso.split('-');
-    const dias=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-    const fecha=new Date(y,m-1,d);
-    return `${dias[fecha.getDay()]} ${d}/${m}/${y}`;
-  }
-  return iso;
-}
-
-function initDia(){
-  fechaDia=new Date();
-  actualizarFechaLabel();
-  cargarDia();
-}
-
-function actualizarFechaLabel(){
-  const hoyStr=new Date().toDateString();
-  const lbl=document.getElementById('fecha-lbl');
+// DÍA
+function updFecha(){
+  const lbl=document.getElementById('flbl');
   if(!lbl)return;
-  const isHoy=fechaDia.toDateString()===hoyStr;
-  const iso=fechaDia.toISOString().split('T')[0];
-  lbl.textContent=isHoy?'Hoy — '+formatFecha(iso):formatFecha(iso);
+  const iso=fechaISO(fechaDia);
+  const hoy=fechaISO(new Date());
+  lbl.textContent=(iso===hoy?'Hoy — ':'')+isoToDisplay(iso);
 }
 
-function cambiarFecha(dir){
-  fechaDia.setDate(fechaDia.getDate()+dir);
-  actualizarFechaLabel();
+function cambF(d){
+  fechaDia.setDate(fechaDia.getDate()+d);
+  updFecha();
   cargarDia();
 }
 
 async function cargarDia(){
-  const cont=document.getElementById('dia-contenido');
+  const cont=document.getElementById('dia-cont');
   if(!cont)return;
   cont.innerHTML='<div class="empty"><span class="spinner"></span> Cargando...</div>';
-  
+  const iso=fechaISO(fechaDia);
   try{
-    const iso=fechaDia.toISOString().split('T')[0];
     const r=await fetch(API_A+'?accion=avisos&fecha='+iso);
     const d=await r.json();
-    AVISOS_HOY=d.avisos||[];
-    renderDia(AVISOS_HOY, iso);
+    DIA_DATA=d.avisos||[];
+    renderDia();
   }catch(e){
-    // Sin datos aún — mostrar vacío
-    renderDia([], fechaDia.toISOString().split('T')[0]);
+    DIA_DATA=[];
+    renderDia();
   }
 }
 
-function renderDia(avisos, fecha){
-  const cont=document.getElementById('dia-contenido');
-  if(!avisos.length){
-    cont.innerHTML='<div class="empty">Sin avisos para este día</div>';
-    return;
-  }
-  // Agrupar por turno
-  const turnos={TA1:[],TA2:[],TB1:[],TB2:[],TC1:[],TC2:[],SIN:[]};
-  avisos.forEach(a=>{
-    const t=a.turnoRecup||a.turno||'SIN';
-    if(turnos[t]) turnos[t].push(a);
-    else turnos.SIN.push(a);
+function renderDia(){
+  const cont=document.getElementById('dia-cont');
+  if(!DIA_DATA.length){cont.innerHTML='<div class="empty">Sin avisos para este día</div>';return;}
+  const grupos={};
+  DIA_DATA.forEach(a=>{
+    const t=a.turnoRecup||a.turno||'—';
+    if(!grupos[t])grupos[t]=[];
+    grupos[t].push(a);
   });
   let html='';
-  Object.keys(turnos).forEach(t=>{
-    if(!turnos[t].length)return;
-    html+=`<div class="turno-card">
-      <div class="turno-head">⏰ ${t==='SIN'?'Sin turno':t} ${TURNOS_INFO[t]?'· '+TURNOS_INFO[t]:''}</div>`;
-    turnos[t].forEach(a=>{
-      const badge=a.tipo==='Falta'?'falta':a.tipo==='Recuperación'?'recup':'prueba';
-      const icono=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
+  Object.keys(grupos).sort().forEach(t=>{
+    html+=`<div class="turno-card"><div class="turno-head">⏰ ${t} ${TI[t]?'· '+TI[t]:''}</div>`;
+    grupos[t].forEach(a=>{
+      const ic=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
+      const bc=a.tipo==='Falta'?'bf':a.tipo==='Recuperación'?'br':'bp';
       html+=`<div class="aviso-row">
-        ${icono} <span style="flex:1">${a.alumno||a.nombre||'—'}</span>
-        <span class="badge ${badge}">${a.tipo}</span>
-      </div>`;
-      if(a.nota||a.comentario) html+=`<div style="padding:4px 14px 8px;font-size:12px;color:#888">💬 ${a.nota||a.comentario}</div>`;
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <span style="font-weight:600">${ic} ${a.alumno||a.nombre||'—'}</span>
+          <span class="badge ${bc}">${a.tipo}</span>
+        </div>`;
+      if(a.tipo==='Recuperación'&&a.turno) html+=`<div style="font-size:12px;color:#888">viene de turno ${a.turno}</div>`;
+      if(a.nota) html+=`<div style="font-size:12px;color:#888;margin-top:2px">💬 ${a.nota}</div>`;
+      html+='</div>';
     });
     html+='</div>';
   });
@@ -552,39 +437,28 @@ function renderDia(avisos, fecha){
 }
 
 function compartirDia(){
-  const iso=fechaDia.toISOString().split('T')[0];
-  let txt=`📋 AVISOS HERO TACNA — ${formatFecha(iso)}\n`;
-  if(!AVISOS_HOY.length){txt+='Sin avisos para este día.';compartirTexto(txt);return;}
-  const turnos={TA1:[],TA2:[],TB1:[],TB2:[],TC1:[],TC2:[],SIN:[]};
-  AVISOS_HOY.forEach(a=>{const t=a.turnoRecup||a.turno||'SIN';if(turnos[t])turnos[t].push(a);else turnos.SIN.push(a);});
-  Object.keys(turnos).forEach(t=>{
-    if(!turnos[t].length)return;
-    txt+=`\n⏰ ${t==='SIN'?'Sin turno':t}\n`;
-    turnos[t].forEach(a=>{
-      const icono=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
-      txt+=`${icono} ${a.alumno||a.nombre||'—'} — ${a.tipo}`;
-      if(a.turnoRecup&&a.tipo==='Recuperación') txt+=` (viene de ${a.turno})`;
-      if(a.nota||a.comentario) txt+=`\n   💬 ${a.nota||a.comentario}`;
+  const iso=fechaISO(fechaDia);
+  let txt=`📋 AVISOS HERO TACNA — ${isoToDisplay(iso)}\n`;
+  if(!DIA_DATA.length){comp('Sin avisos para este día.');return;}
+  const grupos={};
+  DIA_DATA.forEach(a=>{const t=a.turnoRecup||a.turno||'—';if(!grupos[t])grupos[t]=[];grupos[t].push(a);});
+  Object.keys(grupos).sort().forEach(t=>{
+    txt+=`\n⏰ ${t}\n`;
+    grupos[t].forEach(a=>{
+      const ic=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
+      txt+=`${ic} ${a.alumno||a.nombre||'—'} — ${a.tipo}`;
+      if(a.tipo==='Recuperación'&&a.turno) txt+=` (viene de ${a.turno})`;
+      if(a.nota) txt+=`\n   💬 ${a.nota}`;
       txt+='\n';
     });
   });
-  compartirTexto(txt);
+  comp(txt);
 }
 
-async function compartirTexto(txt){
-  try{
-    if(navigator.share){await navigator.share({title:'Hero Tacna',text:txt});}
-    else{await navigator.clipboard.writeText(txt);alert('✅ Copiado al portapapeles');}
-  }catch(e){
-    try{await navigator.clipboard.writeText(txt);alert('✅ Copiado');}
-    catch(e2){alert('Copia manualmente:\n\n'+txt);}
-  }
-}
-
-// ===== TAB PERFIL =====
-function filtrarPer(){
-  const q=document.getElementById('busca-per').value.toLowerCase().trim();
-  const dd=document.getElementById('drop-per');
+// PERFIL
+function filtPer(){
+  const q=document.getElementById('bper').value.toLowerCase().trim();
+  const dd=document.getElementById('dper');
   if(!q){dd.style.display='none';return;}
   const r=AL.filter(a=>(a.nom||'').toLowerCase().includes(q)||String(a.cod||'').includes(q));
   if(!r.length){dd.style.display='none';return;}
@@ -599,55 +473,82 @@ function filtrarPer(){
 
 async function verPerfil(cod){
   const alu=AL.find(a=>String(a.cod)===String(cod));
-  document.getElementById('busca-per').value='';
-  document.getElementById('drop-per').style.display='none';
-  const cont=document.getElementById('per-contenido');
+  document.getElementById('bper').value='';
+  document.getElementById('dper').style.display='none';
+  const cont=document.getElementById('per-cont');
   cont.innerHTML=`
     <div class="ac" style="margin-bottom:14px">
       <div><div class="acn">${alu.nom.split(' ').slice(0,3).join(' ')}</div>
       <div class="acd">${alu.categoria||'—'} · Turno ${alu.turno||'—'} · Cod: ${alu.cod}</div></div>
     </div>
-    <div class="empty"><span class="spinner"></span> Buscando avisos...</div>`;
+    <div class="empty"><span class="spinner"></span> Buscando...</div>`;
 
   try{
     const r=await fetch(API_A+'?accion=perfil&cod='+cod);
     const d=await r.json();
     const avisos=d.avisos||[];
+    const aluCard=cont.querySelector('.ac').outerHTML;
+
     if(!avisos.length){
-      cont.innerHTML=cont.innerHTML.replace('<div class="empty"><span class="spinner"></span> Buscando avisos...</div>','<div class="empty">Sin avisos registrados</div>');
+      cont.innerHTML=aluCard+'<div class="empty">Sin avisos registrados</div>';
       return;
     }
-    let html=`<div class="sh">Historial de avisos</div>`;
+
+    // Agrupar por semana
+    const semanas={};
     avisos.forEach(a=>{
-      const badge=a.tipo==='Falta'?'falta':a.tipo==='Recuperación'?'recup':'prueba';
-      const icono=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
-      html+=`<div class="perfil-aviso">
-        <div class="perfil-tipo"><span class="badge ${badge}">${icono} ${a.tipo}</span> <span style="color:#999;font-size:11px">${a.fechaReg||''}</span></div>
-        <div class="perfil-det">
-          ${a.fechaFalta?`📅 Falta: <b>${formatFecha(a.fechaFalta)}</b>${a.subtipo?' ('+a.subtipo+')':''}<br>`:''}
-          ${a.fechaRecup?`🔄 Recupera: <b>${formatFecha(a.fechaRecup)}</b> en ${a.turnoRecup}<br>`:''}
-          ${a.nota?`💬 ${a.nota}`:''}
-        </div>
-      </div>`;
+      const iso=ddmmToISO(a.fechaFalta||a.fechaRecup||'');
+      const lunes=iso?getLunes(new Date(iso)):new Date();
+      const key=fechaISO(lunes);
+      if(!semanas[key])semanas[key]=[];
+      semanas[key].push(a);
     });
-    const aluCard=cont.querySelector('.ac').outerHTML;
-    cont.innerHTML=aluCard+html;
+
+    let html=aluCard+'<div class="sh">Historial por semana</div>';
+    Object.keys(semanas).sort().reverse().forEach(k=>{
+      const sem=semanas[k];
+      const lunes=new Date(k);
+      const sab=new Date(k);sab.setDate(sab.getDate()+6);
+      html+=`<div class="semana-head">Semana ${isoToDisplay(k)} → ${isoToDisplay(fechaISO(sab))}</div>`;
+      sem.forEach(a=>{
+        const ic=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
+        const bc=a.tipo==='Falta'?'bf':a.tipo==='Recuperación'?'br':'bp';
+        html+=`<div class="perfil-aviso">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+            <span class="badge ${bc}">${ic} ${a.tipo}</span>
+            <span style="font-size:11px;color:#999">${a.fechaReg||''}</span>
+          </div>
+          <div style="font-size:13px;color:#333;line-height:1.7">
+            ${a.fechaFalta?`📅 Falta: <b>${a.fechaFalta}</b>${a.subtipo?' ('+a.subtipo+')':''}<br>`:''}
+            ${a.fechaRecup?`🔄 Recupera: <b>${a.fechaRecup}</b> en ${a.turnoRecup}<br>`:''}
+            ${a.nota?`💬 ${a.nota}`:''}
+          </div>
+        </div>`;
+      });
+    });
+    cont.innerHTML=html;
   }catch(e){
-    cont.innerHTML=cont.innerHTML.replace('<div class="empty"><span class="spinner"></span> Buscando avisos...</div>','<div class="empty">Sin avisos registrados aún</div>');
+    cont.innerHTML=cont.querySelector('.ac').outerHTML+'<div class="empty">Sin avisos registrados aún</div>';
   }
 }
 
-document.addEventListener('touchstart',e=>{
-  if(!e.target.closest('#busca-reg')&&!e.target.closest('#drop-reg'))
-    {const d=document.getElementById('drop-reg');if(d)d.style.display='none';}
-  if(!e.target.closest('#busca-per')&&!e.target.closest('#drop-per'))
-    document.getElementById('drop-per').style.display='none';
-});
+async function comp(txt){
+  try{
+    if(navigator.share)await navigator.share({title:'Hero Tacna',text:txt});
+    else{await navigator.clipboard.writeText(txt);alert('✅ Copiado al portapapeles');}
+  }catch(e){
+    try{await navigator.clipboard.writeText(txt);alert('✅ Copiado');}
+    catch(e2){alert('Copia manualmente:\n\n'+txt);}
+  }
+}
+
 document.addEventListener('mousedown',e=>{
-  if(!e.target.closest('#busca-reg')&&!e.target.closest('#drop-reg'))
-    {const d=document.getElementById('drop-reg');if(d)d.style.display='none';}
-  if(!e.target.closest('#busca-per')&&!e.target.closest('#drop-per'))
-    document.getElementById('drop-per').style.display='none';
+  if(!e.target.closest('#breg')&&!e.target.closest('#dreg')){const d=document.getElementById('dreg');if(d)d.style.display='none';}
+  if(!e.target.closest('#bper')&&!e.target.closest('#dper'))document.getElementById('dper').style.display='none';
+});
+document.addEventListener('touchstart',e=>{
+  if(!e.target.closest('#breg')&&!e.target.closest('#dreg')){const d=document.getElementById('dreg');if(d)d.style.display='none';}
+  if(!e.target.closest('#bper')&&!e.target.closest('#dper'))document.getElementById('dper').style.display='none';
 });
 
 init();
