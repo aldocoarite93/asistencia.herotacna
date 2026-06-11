@@ -124,7 +124,46 @@ let AL=[], TIPO=null, ALU=null, SUB='justificada';
 let fechaDia = new Date();
 let DIA_DATA = [];
 
-const TI = {TA1:'LMV 3:30–4:30pm·Camelias',TA2:'LMV 4:30–6pm·Camelias',TB1:'MJS 4–5pm·Coliseo',TB2:'MJS 5–6pm·Coliseo',TC1:'MJS 4–5pm·Camelias',TC2:'MJS 5–6pm·Camelias'};
+// ─────────────────────────────────────────────
+// TURNOS — info base (días de semana)
+// ─────────────────────────────────────────────
+const TI = {
+  TA1: 'LMV 3:30–4:30pm · Camelias',
+  TA2: 'LMV 4:30–6:00pm · Camelias',
+  TB1: 'MJS 4:00–5:00pm · Camelias',
+  TB2: 'MJS 5:00–6:00pm · Camelias',
+  TC1: 'MJS 4:00–5:00pm · Coliseo Zela',
+  TC2: 'MJS 5:00–6:00pm · Coliseo Zela'
+};
+
+// Horario de sábado específico por turno
+const SAB = {
+  TB1: 'Sáb 3:00–4:00pm · Camelias',
+  TB2: 'Sáb 4:00–5:00pm · Camelias',
+  TC1: 'Sáb 10:30am–12:00pm · Coliseo Zela',
+  TC2: 'Sáb 9:00–10:30am · Coliseo Zela'
+};
+
+// Devuelve la etiqueta correcta según fecha y turno
+function labelTurno(turnoId, fechaISO){
+  if(!turnoId) return TI[turnoId] || '—';
+  if(fechaISO){
+    const [y,m,d] = fechaISO.split('-');
+    const diaSem = new Date(parseInt(y), parseInt(m)-1, parseInt(d)).getDay();
+    // 6 = sábado
+    if(diaSem === 6 && SAB[turnoId]) return SAB[turnoId];
+  }
+  return TI[turnoId] || turnoId;
+}
+
+// Genera las opciones del select de turno de recuperación según fecha elegida
+function buildTurnoOpts(fechaRecup, turnoAlumno){
+  return Object.keys(TI).map(t => {
+    const lbl = labelTurno(t, fechaRecup);
+    const sel = t === turnoAlumno ? 'selected' : '';
+    return `<option value="${t}" ${sel}>${t} — ${lbl}</option>`;
+  }).join('');
+}
 
 async function init(){
   try{
@@ -256,6 +295,7 @@ function elegReg(cod){
 function renderFav(){
   const f=document.getElementById('fav');
   f.style.display='block';
+  const hoy=hoyISO();
   let h='';
   if(TIPO==='falta'||TIPO==='ambos'){
     h+=`<div class="fs"><span class="fl">Tipo de falta</span>
@@ -263,14 +303,17 @@ function renderFav(){
         <button class="tipo-btn" id="bjust" onclick="selSub('justificada')">✅ Justificada</button>
         <button class="tipo-btn" id="binjust" onclick="selSub('injustificada')">⚠️ Injustificada</button>
       </div></div>
-      <div class="fs"><span class="fl">Fecha de falta</span><input class="fi" id="ff" type="date" value="${hoyISO()}"></div>`;
+      <div class="fs"><span class="fl">Fecha de falta</span><input class="fi" id="ff" type="date" value="${hoy}"></div>`;
   }
   if(TIPO==='recup'||TIPO==='ambos'){
-    h+=`<div class="fs"><span class="fl">Fecha de recuperación</span><input class="fi" id="fr" type="date" value="${hoyISO()}"></div>
+    h+=`<div class="fs">
+        <span class="fl">Fecha de recuperación</span>
+        <input class="fi" id="fr" type="date" value="${hoy}" onchange="actualizarTurnos()">
+      </div>
       <div class="fs"><span class="fl">Turno donde recupera</span>
         <select class="fi" id="ftr">
           <option value="">Seleccionar...</option>
-          ${Object.keys(TI).map(t=>`<option value="${t}" ${t===(ALU&&ALU.turno)?'selected':''}>${t} — ${TI[t]}</option>`).join('')}
+          ${buildTurnoOpts(hoy, ALU && ALU.turno)}
         </select>
       </div>`;
   }
@@ -278,6 +321,21 @@ function renderFav(){
     <button class="sb" onclick="confAviso()">✅ Confirmar registro</button>`;
   f.innerHTML=h;
   selSub('justificada');
+}
+
+// Actualiza las opciones del turno cuando cambia la fecha de recuperación
+function actualizarTurnos(){
+  const fr = document.getElementById('fr');
+  const ftr = document.getElementById('ftr');
+  if(!fr || !ftr) return;
+  const fechaSel = fr.value;
+  const turnoActual = ftr.value; // mantener selección si ya eligió
+  ftr.innerHTML = `<option value="">Seleccionar...</option>` + 
+    Object.keys(TI).map(t => {
+      const lbl = labelTurno(t, fechaSel);
+      const sel = t === turnoActual ? 'selected' : '';
+      return `<option value="${t}" ${sel}>${t} — ${lbl}</option>`;
+    }).join('');
 }
 
 function selSub(s){
@@ -306,10 +364,10 @@ function confAviso(){
 
   fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
 
-  // Texto para compartir al padre
+  const lbl = fr ? labelTurno(ftr, fr) : '';
   let txt=`🏀 HERO TACNA ACADEMIA\n📋 AVISO REGISTRADO\n\n👦 ${ALU.nom.split(' ').slice(0,3).join(' ')}\n⏰ Turno: ${ALU.turno||'—'}`;
   if(ff) txt+=`\n\n❌ Falta: ${isoToDisplay(ff)} (${SUB})`;
-  if(fr) txt+=`\n🔄 Recupera: ${isoToDisplay(fr)} en turno ${ftr}`;
+  if(fr) txt+=`\n🔄 Recupera: ${isoToDisplay(fr)} en turno ${ftr} (${lbl})`;
   if(nota) txt+=`\n💬 ${nota}`;
   txt+=`\n\n✅ Quedó registrado correctamente.`;
 
@@ -320,7 +378,7 @@ function confAviso(){
       <div style="font-size:18px;font-weight:800;color:#111;margin-bottom:4px">${ALU.nom.split(' ').slice(0,3).join(' ')}</div>
       <div style="font-size:12px;color:#666;margin-bottom:12px">${ALU.categoria||'—'} · ${ALU.turno||'—'}</div>
       ${ff?`<div style="font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0">📅 Falta: <b>${isoToDisplay(ff)}</b> (${SUB})</div>`:''}
-      ${fr?`<div style="font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0">🔄 Recupera: <b>${isoToDisplay(fr)}</b> en ${ftr}</div>`:''}
+      ${fr?`<div style="font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0">🔄 Recupera: <b>${isoToDisplay(fr)}</b> en ${ftr} · ${lbl}</div>`:''}
       ${nota?`<div style="font-size:13px;color:#666;padding:5px 0">💬 ${nota}</div>`:''}
       <div class="res-btns">
         <button class="res-btn" style="background:#25D366;color:#fff" onclick="comp(\`${txt.replace(/`/g,"'")}\`)">📤 Compartir</button>
@@ -417,8 +475,10 @@ function renderDia(){
     grupos[t].push(a);
   });
   let html='';
+  const iso=fechaISO(fechaDia);
   Object.keys(grupos).sort().forEach(t=>{
-    html+=`<div class="turno-card"><div class="turno-head">⏰ ${t} ${TI[t]?'· '+TI[t]:''}</div>`;
+    const lbl=labelTurno(t, iso);
+    html+=`<div class="turno-card"><div class="turno-head">⏰ ${t} ${lbl?'· '+lbl:''}</div>`;
     grupos[t].forEach(a=>{
       const ic=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
       const bc=a.tipo==='Falta'?'bf':a.tipo==='Recuperación'?'br':'bp';
@@ -443,7 +503,8 @@ function compartirDia(){
   const grupos={};
   DIA_DATA.forEach(a=>{const t=a.turnoRecup||a.turno||'—';if(!grupos[t])grupos[t]=[];grupos[t].push(a);});
   Object.keys(grupos).sort().forEach(t=>{
-    txt+=`\n⏰ ${t}\n`;
+    const lbl=labelTurno(t, iso);
+    txt+=`\n⏰ ${t} · ${lbl}\n`;
     grupos[t].forEach(a=>{
       const ic=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
       txt+=`${ic} ${a.alumno||a.nombre||'—'} — ${a.tipo}`;
@@ -494,7 +555,6 @@ async function verPerfil(cod){
       return;
     }
 
-    // Agrupar por semana
     const semanas={};
     avisos.forEach(a=>{
       const iso=ddmmToISO(a.fechaFalta||a.fechaRecup||'');
@@ -506,11 +566,9 @@ async function verPerfil(cod){
 
     let html=aluCard+'<div class="sh">Historial por semana</div>';
     Object.keys(semanas).sort().reverse().forEach(k=>{
-      const sem=semanas[k];
-      const lunes=new Date(k);
       const sab=new Date(k);sab.setDate(sab.getDate()+6);
       html+=`<div class="semana-head">Semana ${isoToDisplay(k)} → ${isoToDisplay(fechaISO(sab))}</div>`;
-      sem.forEach(a=>{
+      semanas[k].forEach(a=>{
         const ic=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
         const bc=a.tipo==='Falta'?'bf':a.tipo==='Recuperación'?'br':'bp';
         html+=`<div class="perfil-aviso">
