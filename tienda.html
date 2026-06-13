@@ -8,23 +8,26 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding:12px}
 .app{max-width:460px;margin:0 auto;background:#fff;border-radius:16px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,0.1)}
-.logo{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #eee}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #eee}
 .logo-icon{width:42px;height:42px;min-width:42px;background:#1D9E75;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
 .logo-text{font-size:16px;font-weight:700;color:#111}
 .logo-sub{font-size:12px;color:#999;margin-top:1px}
 .spinner{display:inline-block;width:11px;height:11px;border:2px solid #ddd;border-top-color:#1D9E75;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:4px}
 @keyframes spin{to{transform:rotate(360deg)}}
+/* Tabs principales */
+.maintabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:16px;background:#f0f0f0;border-radius:12px;padding:4px}
+.mtab{padding:10px 4px;border:none;border-radius:9px;background:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#888;touch-action:manipulation;text-align:center}
+.mtab.on{background:#fff;color:#1D9E75;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.msec{display:none}.msec.on{display:block}
 .pasos{display:flex;gap:4px;margin-bottom:18px}
 .paso{height:4px;border-radius:2px;background:#eee;flex:1;transition:all 0.3s}
 .paso.done{background:#1D9E75}
 .paso.act{background:#1D9E75;opacity:0.45}
 .sh{font-size:11px;font-weight:600;color:#999;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.6px}
-/* Alumno header */
 .ah{display:flex;align-items:center;gap:10px;background:#f0faf6;border:1px solid #c8ead9;border-radius:10px;padding:10px 12px;margin-bottom:14px}
 .ah-av{width:34px;height:34px;background:#1D9E75;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;flex-shrink:0}
 .ah-nom{font-size:14px;font-weight:700;color:#0F6E56}
 .ah-det{font-size:11px;color:#666;margin-top:1px}
-/* Búsqueda */
 .si{width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;color:#111;background:#fff;margin-bottom:6px}
 .si:focus{outline:none;border-color:#1D9E75}
 .dl{background:#fff;border:1.5px solid #ddd;border-radius:10px;max-height:210px;overflow-y:auto;margin-bottom:10px;display:none;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
@@ -34,18 +37,15 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .dn{font-size:14px;color:#111;font-weight:500}
 .di{font-size:11px;color:#aaa;margin-top:1px}
 .tp{font-size:11px;padding:3px 8px;border-radius:6px;border:1px solid #e0e0e0;background:#f7f7f7;color:#444;font-weight:500;white-space:nowrap;margin-left:8px;flex-shrink:0}
-/* Alumno card */
 .ac{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#f0faf6;border:1px solid #c8ead9;border-radius:10px;margin-bottom:14px}
 .acn{font-size:14px;font-weight:600;color:#111}
 .acd{font-size:11px;color:#666;margin-top:1px}
 .xb{background:none;border:none;font-size:18px;cursor:pointer;color:#bbb;padding:4px 6px;touch-action:manipulation}
-/* Productos */
 .pg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .pb{padding:16px 8px;border:1.5px solid #e8e8e8;border-radius:12px;background:#fff;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation}
 .pb.on{border-color:#1D9E75;background:#f0faf6}
 .pi{font-size:28px;display:block;margin-bottom:6px}
 .pn{font-size:13px;font-weight:600;color:#222}
-/* Form */
 .fs{background:#fafafa;border:1px solid #ececec;border-radius:11px;padding:13px;margin-bottom:11px}
 .fl{font-size:12px;font-weight:600;color:#555;margin-bottom:7px;display:block}
 .fi{width:100%;padding:10px 13px;border:1.5px solid #ddd;border-radius:9px;font-size:15px;font-family:inherit;background:#fff;color:#111}
@@ -57,9 +57,7 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .tb{padding:10px 3px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333}
 .tb.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
 .th{font-size:11px;color:#888;margin-top:6px;line-height:1.5}
-/* Badge */
 .cb{display:inline-block;font-size:12px;padding:3px 11px;border-radius:20px;background:#E1F5EE;color:#0F6E56;font-weight:600;margin-bottom:8px}
-/* Número */
 .nw{display:flex;gap:8px;align-items:center;margin-bottom:10px}
 .ni{flex:1;padding:12px;border:1.5px solid #ddd;border-radius:9px;font-size:26px;font-weight:700;text-align:center;font-family:inherit;background:#fff;color:#111}
 .ni:focus{outline:none;border-color:#1D9E75}
@@ -67,29 +65,23 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .ob{background:#fff8f0;border:1px solid #fde8c8;border-radius:9px;padding:11px}
 .ot{font-size:11px;font-weight:600;color:#854F0B;margin-bottom:5px}
 .on2{font-size:13px;color:#993C1D;font-weight:600;line-height:1.7}
-/* Pago */
 .ppg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:10px}
 .ppb{padding:9px 3px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333}
 .ppb.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
-/* Voucher */
 .va{border:2px dashed #ddd;border-radius:11px;padding:14px;text-align:center;cursor:pointer;touch-action:manipulation;background:#fafafa}
 .va.ok{border-color:#1D9E75;background:#f0faf6}
 .vp{width:100%;max-height:180px;object-fit:cover;border-radius:8px;margin-top:8px;display:none}
-/* Botones */
 .bb{width:100%;padding:11px;background:none;color:#999;border:1.5px solid #e0e0e0;border-radius:11px;font-size:14px;cursor:pointer;font-family:inherit;touch-action:manipulation;margin-bottom:9px}
 .sb{width:100%;padding:14px;background:#1D9E75;color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation;min-height:50px}
 .sb:disabled{opacity:0.5;cursor:not-allowed}
 .row2{display:flex;gap:8px;margin-bottom:12px}
 .row2 .bb{margin:0;flex:1}
 .row2 .sb{flex:1;margin:0;padding:11px;font-size:14px}
-/* Resumen */
 .rc{background:#f0faf6;border:1px solid #c8ead9;border-radius:12px;padding:13px;margin-bottom:14px}
 .rr{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid #d5eee2;color:#333}
 .rr:last-child{border-bottom:none;font-weight:700}
-/* OK */
 .ok{text-align:center;padding:22px;background:#e8f8f2;border-radius:12px;color:#0F6E56;font-size:15px;font-weight:600;border:1px solid #c8ead9}
 .ib{background:#f5f5f5;border:1px solid #eee;border-radius:9px;padding:11px;font-size:12px;color:#888;line-height:1.5;margin-top:8px}
-/* Resumen visual paso 5 */
 .rv-head{background:#1D9E75;border-radius:12px;padding:14px;margin-bottom:11px;color:#fff}
 .rv-label{font-size:10px;opacity:0.75;margin-bottom:3px;letter-spacing:0.5px}
 .rv-name{font-size:17px;font-weight:800}
@@ -108,6 +100,37 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .rv-pago-monto{font-size:22px;font-weight:800;color:#1D9E75}
 .rv-coment{margin-top:8px;padding-top:8px;border-top:1px solid #eee;font-size:12px;color:#666}
 .rv-voucher{margin-top:6px;font-size:12px;color:#1D9E75;font-weight:600}
+/* Gestión */
+.gfiltros{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px}
+.gfb{padding:8px 3px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:11px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#444}
+.gfb.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.pedcard{border:1px solid #e8e8e8;border-radius:12px;padding:13px;margin-bottom:10px;background:#fff}
+.pedcard.deuda{border-color:#f3c8c8;background:#fffafa}
+.ped-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.ped-nom{font-size:15px;font-weight:700;color:#111;line-height:1.2}
+.ped-art{font-size:12px;color:#666;margin-top:2px}
+.ped-fecha{font-size:10px;color:#aaa;margin-top:3px}
+.est-badge{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap}
+.est-reg{background:#FFF4E5;color:#B26A00}
+.est-env{background:#E5F0FF;color:#1A5FB4}
+.est-ent{background:#E8F8F2;color:#0F6E56}
+.ped-pago{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:8px 0;padding:8px 0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0}
+.pp-cell{text-align:center}
+.pp-l{font-size:9px;color:#aaa;margin-bottom:2px;letter-spacing:0.3px}
+.pp-v{font-size:14px;font-weight:700;color:#111}
+.pp-v.sal{color:#D14343}
+.pp-v.ok{color:#1D9E75}
+.ped-btn{width:100%;padding:9px;border:1.5px solid #1D9E75;border-radius:9px;background:none;color:#1D9E75;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation;margin-top:4px}
+.gd{font-size:11px;color:#aaa;text-align:center;padding:8px}
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:0}
+.modal-bg.on{display:flex}
+.modal{background:#fff;border-radius:18px 18px 0 0;width:100%;max-width:460px;max-height:92vh;overflow-y:auto;padding:18px;animation:slideup 0.25s}
+@keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-grip{width:40px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 14px}
+.estsel{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px}
+.estopt{padding:10px 4px;border:1.5px solid #ddd;border-radius:9px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#444}
+.estopt.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
 </style>
 </head>
 <body>
@@ -119,82 +142,116 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
       <div class="logo-sub" id="st"><span class="spinner"></span>Cargando...</div>
     </div>
   </div>
-  <div class="pasos" id="pasos">
-    <div class="paso act" id="p1"></div>
-    <div class="paso" id="p2"></div>
-    <div class="paso" id="p3"></div>
-    <div class="paso" id="p4"></div>
-    <div class="paso" id="p5"></div>
+
+  <div class="maintabs">
+    <button class="mtab on" id="mt-nuevo" onclick="showMain('nuevo')">🛒 Nuevo pedido</button>
+    <button class="mtab" id="mt-gestion" onclick="showMain('gestion')">📦 Gestión</button>
   </div>
 
-  <!-- PASO 1 -->
-  <div id="s1">
-    <div class="sh">Paso 1 — Buscar alumno</div>
-    <input class="si" id="busca" type="text" placeholder="🔍 Nombre, código o turno..." oninput="filtrar()" autocomplete="off">
-    <div class="dl" id="drop"></div>
-    <div class="ib">Busca por nombre, código o turno: TA1, TA2, TB1, TB2, TC1, TC2</div>
-  </div>
-
-  <!-- PASO 2 -->
-  <div id="s2" style="display:none">
-    <div id="ac2"></div>
-    <div class="sh">Paso 2 — ¿Qué artículo necesita?</div>
-    <div class="pg">
-      <button class="pb" onclick="selProd('camiseta',this)"><span class="pi">👕</span><span class="pn">Camiseta</span></button>
-      <button class="pb" onclick="selProd('balon',this)"><span class="pi">🏀</span><span class="pn">Balón</span></button>
-      <button class="pb" onclick="selProd('buzo',this)"><span class="pi">🩱</span><span class="pn">Buzo</span></button>
-      <button class="pb" onclick="selProd('calentador',this)"><span class="pi">🧥</span><span class="pn">Calentador</span></button>
+  <!-- ============ SECCIÓN NUEVO PEDIDO ============ -->
+  <div class="msec on" id="main-nuevo">
+    <div class="pasos" id="pasos">
+      <div class="paso act" id="p1"></div>
+      <div class="paso" id="p2"></div>
+      <div class="paso" id="p3"></div>
+      <div class="paso" id="p4"></div>
+      <div class="paso" id="p5"></div>
     </div>
-  </div>
 
-  <!-- PASO 3 -->
-  <div id="s3" style="display:none"></div>
+    <div id="s1">
+      <div class="sh">Paso 1 — Buscar alumno</div>
+      <input class="si" id="busca" type="text" placeholder="🔍 Nombre, código o turno..." oninput="filtrar()" autocomplete="off">
+      <div class="dl" id="drop"></div>
+      <div class="ib">Busca por nombre, código o turno: TA1, TA2, TB1, TB2, TC1, TC2</div>
+    </div>
 
-  <!-- PASO 4 -->
-  <div id="s4" style="display:none">
-    <div id="ah4"></div>
-    <button class="bb" onclick="ip(3)">← Volver</button>
-    <div class="sh">Paso 4 — Pago y voucher</div>
-    <div class="fs">
-      <span class="fl">Forma de pago</span>
-      <div class="ppg">
-        <button class="ppb" onclick="selPago('YAPE',this)">📱 YAPE</button>
-        <button class="ppb" onclick="selPago('EFECTIVO',this)">💵 Efectivo</button>
-        <button class="ppb" onclick="selPago('SALDO',this)">✅ Saldo</button>
+    <div id="s2" style="display:none">
+      <div id="ac2"></div>
+      <div class="sh">Paso 2 — ¿Qué artículo necesita?</div>
+      <div class="pg">
+        <button class="pb" onclick="selProd('camiseta',this)"><span class="pi">👕</span><span class="pn">Camiseta</span></button>
+        <button class="pb" onclick="selProd('balon',this)"><span class="pi">🏀</span><span class="pn">Balón</span></button>
+        <button class="pb" onclick="selProd('buzo',this)"><span class="pi">🩱</span><span class="pn">Buzo</span></button>
+        <button class="pb" onclick="selProd('calentador',this)"><span class="pi">🧥</span><span class="pn">Calentador</span></button>
       </div>
-      <span class="fl">Monto (S/)</span>
-      <input class="fi" type="number" id="monto" placeholder="" oninput="D.monto=this.value" style="font-size:18px;font-weight:600">
     </div>
-    <div class="fs">
-      <span class="fl">Comentarios (opcional)</span>
-      <textarea class="fta" id="coment" placeholder="Saldo a favor, descuento, notas..." oninput="D.comentario=this.value"></textarea>
-    </div>
-    <div class="fs">
-      <span class="fl">📎 Voucher de pago</span>
-      <div id="va" class="va">
-        <div id="vt" style="margin-bottom:10px;font-size:13px;color:#888">Selecciona una opción:</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
-          <button type="button" onclick="document.getElementById('fi-cam').click()" style="padding:10px;border:1.5px solid #1D9E75;border-radius:9px;background:#f0faf6;color:#0F6E56;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">📸 Tomar foto</button>
-          <button type="button" onclick="document.getElementById('fi-gal').click()" style="padding:10px;border:1.5px solid #ddd;border-radius:9px;background:#fff;color:#333;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">🖼️ Adjuntar imagen</button>
+
+    <div id="s3" style="display:none"></div>
+
+    <div id="s4" style="display:none">
+      <div id="ah4"></div>
+      <button class="bb" onclick="ip(3)">← Volver</button>
+      <div class="sh">Paso 4 — Pago y voucher</div>
+      <div class="fs">
+        <span class="fl">Forma de pago</span>
+        <div class="ppg">
+          <button class="ppb" onclick="selPago('YAPE',this)">📱 YAPE</button>
+          <button class="ppb" onclick="selPago('EFECTIVO',this)">💵 Efectivo</button>
+          <button class="ppb" onclick="selPago('SALDO',this)">✅ Saldo</button>
         </div>
-        <img id="vp" class="vp">
+        <span class="fl">Precio total del artículo (S/)</span>
+        <input class="fi" type="number" id="precioTotal" placeholder="" oninput="D.precioTotal=this.value;calcSaldo()" style="font-size:18px;font-weight:600;margin-bottom:10px">
+        <span class="fl">Monto que paga ahora (S/)</span>
+        <input class="fi" type="number" id="monto" placeholder="" oninput="D.monto=this.value;calcSaldo()" style="font-size:18px;font-weight:600">
+        <div id="saldoInfo" style="margin-top:8px;font-size:13px;font-weight:600;color:#888"></div>
       </div>
-      <input type="file" id="fi-cam" accept="image/*" capture="environment" style="display:none" onchange="procFoto(this)">
-      <input type="file" id="fi-gal" accept="image/*" style="display:none" onchange="procFoto(this)">
+      <div class="fs">
+        <span class="fl">Comentarios (opcional)</span>
+        <textarea class="fta" id="coment" placeholder="Saldo a favor, descuento, notas..." oninput="D.comentario=this.value"></textarea>
+      </div>
+      <div class="fs">
+        <span class="fl">📎 Voucher de pago</span>
+        <div id="va" class="va">
+          <div id="vt" style="margin-bottom:10px;font-size:13px;color:#888">Selecciona una opción:</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+            <button type="button" onclick="document.getElementById('fi-cam').click()" style="padding:10px;border:1.5px solid #1D9E75;border-radius:9px;background:#f0faf6;color:#0F6E56;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">📸 Tomar foto</button>
+            <button type="button" onclick="document.getElementById('fi-gal').click()" style="padding:10px;border:1.5px solid #ddd;border-radius:9px;background:#fff;color:#333;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">🖼️ Adjuntar imagen</button>
+          </div>
+          <img id="vp" class="vp">
+        </div>
+        <input type="file" id="fi-cam" accept="image/*" capture="environment" style="display:none" onchange="procFoto(this)">
+        <input type="file" id="fi-gal" accept="image/*" style="display:none" onchange="procFoto(this)">
+      </div>
+      <button class="sb" onclick="vPago()">Continuar →</button>
     </div>
-    <button class="sb" onclick="vPago()">Continuar →</button>
+
+    <div id="s5" style="display:none"></div>
+    <div id="res"></div>
   </div>
 
-  <!-- PASO 5 -->
-  <div id="s5" style="display:none"></div>
-  <div id="res"></div>
+  <!-- ============ SECCIÓN GESTIÓN ============ -->
+  <div class="msec" id="main-gestion">
+    <div class="sh">Buscar pedido</div>
+    <input class="si" id="gbusca" type="text" placeholder="🔍 Nombre o código del alumno..." oninput="renderPedidos()" autocomplete="off">
+    <div class="gfiltros">
+      <button class="gfb on" id="gf-todos" onclick="setFiltro('todos',this)">Todos</button>
+      <button class="gfb" id="gf-reg" onclick="setFiltro('REGISTRADO',this)">Registr.</button>
+      <button class="gfb" id="gf-env" onclick="setFiltro('ENVIADO',this)">Enviados</button>
+      <button class="gfb" id="gf-ent" onclick="setFiltro('ENTREGADO',this)">Entreg.</button>
+    </div>
+    <div style="margin-bottom:10px">
+      <button class="gfb" id="gf-deuda" onclick="toggleDeuda(this)" style="width:100%;padding:9px">💰 Solo con saldo pendiente</button>
+    </div>
+    <div id="ped-cont"><div class="gd"><span class="spinner"></span> Cargando pedidos...</div></div>
+    <button class="bb" onclick="cargarPedidos()" style="margin-top:8px">🔄 Actualizar lista</button>
+  </div>
+</div>
+
+<!-- MODAL ACTUALIZAR -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal" id="modal-content">
+    <div class="modal-grip"></div>
+    <div id="modal-body"></div>
+  </div>
 </div>
 
 <script>
-const API_D = "https://script.google.com/macros/s/AKfycbyQQprlOIrWh7viURwiQwpZT9ruAeg8k3IHcD6V6sVQgoPvHcYnG61AMsXqIgRLvz_a8A/exec";
-const API_P = "https://script.google.com/macros/s/AKfycbzmFfrOnBlzRlHaNWuPEDPy_P5xGIotlInlm5Ds_-zXG51PPJTMJrPpLTo6HsTjZUGT_g/exec";
+const API_D = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDGU9qedhEr_OskfqZtz5JujMhziD8zTrdwFENvSr1sQugw/exec";
+const API_P = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDGU9qedhEr_OskfqZtz5JujMhziD8zTrdwFENvSr1sQugw/exec";
 
 let AL=[], A=null, PROD=null, D={}, FB='', FN='';
+let PEDIDOS=[], FILTRO='todos', SOLO_DEUDA=false;
+let MODAL_PED=null, MODAL_ESTADO='', MFB='', MFN='';
 
 const PRECIOS={camiseta:90,balon:75,buzo:134,calentador:59};
 const NOMBRES={camiseta:'Camiseta',balon:'Balón',buzo:'Buzo',calentador:'Calentador'};
@@ -202,13 +259,22 @@ const ICONOS={camiseta:'👕',balon:'🏀',buzo:'🩱',calentador:'🧥'};
 
 async function init(){
   try{
-    const r=await fetch(API_D);
+    const r=await fetch(API_D+'?app=alumnos');
     const d=await r.json();
     AL=d.filter(a=>a.cod&&a.nom);
     document.getElementById('st').innerHTML='🟢 '+AL.length+' alumnos cargados';
   }catch(e){
     document.getElementById('st').innerHTML='⚠️ Sin conexión';
   }
+}
+
+// ===== Tabs principales =====
+function showMain(id){
+  document.querySelectorAll('.mtab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.msec').forEach(s=>s.classList.remove('on'));
+  document.getElementById('mt-'+id).classList.add('on');
+  document.getElementById('main-'+id).classList.add('on');
+  if(id==='gestion') cargarPedidos();
 }
 
 function catNum(c){
@@ -270,9 +336,25 @@ function ip(n){
   if(n===3)rP3();
   if(n===4){
     document.getElementById('ah4').innerHTML=ahHTML();
-    document.getElementById('monto').placeholder='Sugerido: S/ '+PRECIOS[PROD];
+    const pt=document.getElementById('precioTotal');
+    pt.placeholder='Sugerido: S/ '+PRECIOS[PROD];
+    if(!pt.value) pt.value=PRECIOS[PROD];
+    D.precioTotal=pt.value;
+    document.getElementById('monto').placeholder='Ej: adelanto o pago total';
+    calcSaldo();
   }
   if(n===5)rP5();
+}
+
+function calcSaldo(){
+  const total=parseFloat(document.getElementById('precioTotal').value)||0;
+  const pagado=parseFloat(document.getElementById('monto').value)||0;
+  const saldo=total-pagado;
+  const el=document.getElementById('saldoInfo');
+  if(!el)return;
+  if(total<=0){el.textContent='';return;}
+  if(saldo<=0){el.style.color='#1D9E75';el.textContent='✅ Pago completo (sin saldo)';}
+  else{el.style.color='#D14343';el.textContent='💰 Saldo pendiente: S/ '+saldo.toFixed(2);}
 }
 
 function rP3(){
@@ -373,7 +455,6 @@ function vNum(v){
 }
 
 function vCam(){
-  // Leer campos directamente del DOM
   const nc=document.getElementById('nc');
   const nn=document.getElementById('nn');
   D.nomCamiseta=nc?nc.value.toUpperCase().trim():'';
@@ -413,6 +494,8 @@ function vPago(){
   if(cm)D.comentario=cm.value;
   const mn=document.getElementById('monto');
   if(mn)D.monto=mn.value;
+  const pt=document.getElementById('precioTotal');
+  if(pt)D.precioTotal=pt.value;
   ip(5);
 }
 
@@ -438,11 +521,12 @@ function procFoto(input){
 }
 
 function rP5(){
-  // Leer comentario actualizado
   const cm=document.getElementById('coment');
   if(cm)D.comentario=cm.value;
   const mn=document.getElementById('monto');
   if(mn)D.monto=mn.value;
+  const pt=document.getElementById('precioTotal');
+  if(pt)D.precioTotal=pt.value;
 
   let artDetalle='';
   if(PROD==='camiseta'){
@@ -461,11 +545,13 @@ function rP5(){
     artDetalle=`<div class="rv-grid">
       ${D.talla?`<div class="rv-cell"><div class="rv-cell-l">TALLA</div><div class="rv-cell-v">${D.talla}</div></div>`:''}
       ${D.cantidad?`<div class="rv-cell"><div class="rv-cell-l">CANTIDAD</div><div class="rv-cell-v">${D.cantidad}</div></div>`:''}
-    </div>
-    ${D.obs?`<div class="rv-nom" style="margin-top:7px"><div class="rv-nom-l">OBSERVACIÓN</div><div class="rv-nom-v" style="font-size:13px">${D.obs}</div></div>`:''}`;
+    </div>`;
   }
 
   const comentFinal=(D.comentario||'')+(D.color?' | Color: '+D.color:'');
+  const total=parseFloat(D.precioTotal)||0;
+  const pagado=parseFloat(D.monto)||0;
+  const saldo=total-pagado;
 
   document.getElementById('s5').innerHTML=`
     <button class="bb" onclick="ip(4)">← Modificar</button>
@@ -483,7 +569,11 @@ function rP5(){
       <div class="rv-label" style="color:#888;margin-bottom:6px">PAGO</div>
       <div class="rv-pago-row">
         <div class="rv-pago-tipo">${D.pago||'No especificado'}</div>
-        <div class="rv-pago-monto">${D.monto?'S/ '+D.monto:'—'}</div>
+        <div class="rv-pago-monto">S/ ${pagado||'—'}</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:13px">
+        <span style="color:#888">Precio total: <b style="color:#111">S/ ${total||'—'}</b></span>
+        <span style="color:${saldo>0?'#D14343':'#1D9E75'};font-weight:700">${saldo>0?'Saldo: S/ '+saldo:'✅ Completo'}</span>
       </div>
       ${comentFinal?`<div class="rv-coment">💬 ${comentFinal}</div>`:''}
       ${FB?`<div class="rv-voucher">📎 Voucher adjuntado ✅</div>`:''}
@@ -499,10 +589,17 @@ async function confirmar(){
   if(cm)D.comentario=cm.value;
   const mn=document.getElementById('monto');
   if(mn)D.monto=mn.value;
+  const pt=document.getElementById('precioTotal');
+  if(pt)D.precioTotal=pt.value;
 
   const comentFinal=(D.comentario||'')+(D.color?' | Color: '+D.color:'');
+  const total=parseFloat(D.precioTotal)||0;
+  const pagado=parseFloat(D.monto)||0;
+  const saldo=total-pagado;
 
   const payload={
+    app:'pedidos',
+    accion:'registrar',
     cod:       String(A.cod||''),
     alumno:    String(A.nom||''),
     categoria: String(A.categoria||''),
@@ -512,25 +609,15 @@ async function confirmar(){
     nomCamiseta: String(D.nomCamiseta||''),
     numCamiseta: String(D.numCamiseta||''),
     pago:      String(D.pago||''),
-    monto:     String(D.monto||''),
+    monto:     String(pagado),
+    precioTotal: String(total),
     comentario:String(comentFinal),
-    obs:       String(D.obs||''),
     foto:      FB||'',
     nombreFoto:FN||''
   };
 
-  console.log('PAYLOAD:', JSON.stringify({...payload, foto: payload.foto?'[foto]':''}));
+  fetch(API_P, {method:'POST',mode:'no-cors',body: JSON.stringify(payload)});
 
-  // Mismo método que app de asistencia - no-cors con JSON
-  const payloadFinal = {...payload};
-  
-  fetch(API_P, {
-    method:'POST',
-    mode:'no-cors',
-    body: JSON.stringify(payloadFinal)
-  });
-
-  // Mostrar éxito inmediatamente (no-cors no devuelve respuesta)
   setTimeout(()=>{
     document.getElementById('s5').style.display='none';
     document.getElementById('pasos').style.display='none';
@@ -551,7 +638,10 @@ async function confirmar(){
         </div>
         <div style="background:#f5f5f5;border-radius:10px;padding:12px;margin-bottom:14px">
           <div style="font-size:14px;color:#444;margin-bottom:4px">💳 Pago: <b>${D.pago||'—'}</b></div>
-          ${D.monto?`<div style="font-size:16px;font-weight:800;color:#1D9E75">S/ ${D.monto}</div>`:''}
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+            <span style="font-size:14px;color:#444">Pagó: <b style="color:#1D9E75">S/ ${pagado}</b> de S/ ${total}</span>
+            <span style="font-size:14px;font-weight:700;color:${saldo>0?'#D14343':'#1D9E75'}">${saldo>0?'Debe S/ '+saldo:'✅ Completo'}</span>
+          </div>
           ${D.comentario?`<div style="font-size:13px;color:#666;margin-top:6px">💬 ${D.comentario}</div>`:''}
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
@@ -567,26 +657,15 @@ async function compartir(){
   const card = document.getElementById('res-card');
   if(!card) return;
   try {
-    // Usar html2canvas si está disponible, sino Web Share API con texto
     if(navigator.share){
-      const texto = card.innerText;
-      await navigator.share({
-        title: 'Pedido Hero Tacna',
-        text: texto
-      });
+      await navigator.share({title:'Pedido Hero Tacna',text:card.innerText});
     } else {
-      // Copiar al portapapeles
       navigator.clipboard.writeText(card.innerText);
       alert('✅ Información copiada al portapapeles');
     }
   } catch(e) {
-    // Fallback: copiar texto
-    try {
-      navigator.clipboard.writeText(card.innerText);
-      alert('✅ Información copiada');
-    } catch(e2) {
-      alert('Usa el botón de compartir de tu navegador');
-    }
+    try { navigator.clipboard.writeText(card.innerText); alert('✅ Información copiada'); }
+    catch(e2) { alert('Usa el botón de compartir de tu navegador'); }
   }
 }
 
@@ -596,16 +675,238 @@ function nuevo(){
   document.getElementById('pasos').style.display='flex';
   document.getElementById('busca').value='';
   document.getElementById('monto').value='';
+  document.getElementById('precioTotal').value='';
   document.getElementById('coment').value='';
   if(document.getElementById('fi-cam'))document.getElementById('fi-cam').value='';
   if(document.getElementById('fi-gal'))document.getElementById('fi-gal').value='';
   document.getElementById('vp').style.display='none';
   document.getElementById('vp').src='';
-  document.getElementById('vt').textContent='📸 Toca para tomar foto o adjuntar imagen';
+  document.getElementById('vt').textContent='Selecciona una opción:';
   document.getElementById('va').classList.remove('ok');
   document.querySelectorAll('.pb,.ppb').forEach(b=>b.classList.remove('on'));
   ip(1);
 }
+
+// ================= GESTIÓN DE PEDIDOS =================
+async function cargarPedidos(){
+  const cont=document.getElementById('ped-cont');
+  cont.innerHTML='<div class="gd"><span class="spinner"></span> Cargando pedidos...</div>';
+  try{
+    const r=await fetch(API_P+'?app=pedidos&accion=pedidos');
+    const d=await r.json();
+    PEDIDOS=d.pedidos||[];
+    renderPedidos();
+  }catch(e){
+    cont.innerHTML='<div class="gd">⚠️ No se pudieron cargar los pedidos. Toca "Actualizar lista".</div>';
+  }
+}
+
+function setFiltro(f,btn){
+  FILTRO=f;
+  document.querySelectorAll('.gfiltros .gfb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderPedidos();
+}
+
+function toggleDeuda(btn){
+  SOLO_DEUDA=!SOLO_DEUDA;
+  btn.classList.toggle('on',SOLO_DEUDA);
+  renderPedidos();
+}
+
+function estClass(e){
+  const x=(e||'').toUpperCase();
+  if(x==='ENVIADO')return'est-env';
+  if(x==='ENTREGADO')return'est-ent';
+  return'est-reg';
+}
+
+function renderPedidos(){
+  const cont=document.getElementById('ped-cont');
+  const q=document.getElementById('gbusca').value.toLowerCase().trim();
+  let lista=PEDIDOS.slice();
+
+  if(FILTRO!=='todos') lista=lista.filter(p=>(p.estado||'REGISTRADO').toUpperCase()===FILTRO);
+  if(SOLO_DEUDA) lista=lista.filter(p=>(parseFloat(p.saldo)||0)>0);
+  if(q) lista=lista.filter(p=>(p.alumno||'').toLowerCase().includes(q)||String(p.cod||'').includes(q));
+
+  if(!lista.length){cont.innerHTML='<div class="gd">No hay pedidos que coincidan.</div>';return;}
+
+  cont.innerHTML=lista.map(p=>{
+    const saldo=parseFloat(p.saldo)||0;
+    const total=parseFloat(p.precioTotal)||0;
+    const pagado=parseFloat(p.pagado)||0;
+    const est=(p.estado||'REGISTRADO').toUpperCase();
+    return`
+      <div class="pedcard ${saldo>0?'deuda':''}">
+        <div class="ped-top">
+          <div>
+            <div class="ped-nom">${(p.alumno||'—').split(' ').slice(0,3).join(' ')}</div>
+            <div class="ped-art">${p.articulo||'—'}${p.talla?' · Talla '+p.talla:''}${p.numCamiseta?' · #'+p.numCamiseta:''}</div>
+            <div class="ped-fecha">${p.fecha||''} · Cod ${p.cod||'—'} · ${p.id||''}</div>
+          </div>
+          <span class="est-badge ${estClass(est)}">${est}</span>
+        </div>
+        <div class="ped-pago">
+          <div class="pp-cell"><div class="pp-l">TOTAL</div><div class="pp-v">S/ ${total||0}</div></div>
+          <div class="pp-cell"><div class="pp-l">PAGADO</div><div class="pp-v ok">S/ ${pagado||0}</div></div>
+          <div class="pp-cell"><div class="pp-l">SALDO</div><div class="pp-v ${saldo>0?'sal':'ok'}">S/ ${saldo||0}</div></div>
+        </div>
+        <button class="ped-btn" onclick='abrirModal(${JSON.stringify(JSON.stringify(p))})'>✏️ Actualizar pedido</button>
+      </div>`;
+  }).join('');
+}
+
+// ================= MODAL ACTUALIZAR =================
+function abrirModal(pStr){
+  MODAL_PED=JSON.parse(typeof pStr==='string'?pStr:JSON.stringify(pStr));
+  MODAL_ESTADO=(MODAL_PED.estado||'REGISTRADO').toUpperCase();
+  MFB='';MFN='';
+  const p=MODAL_PED;
+  const saldo=parseFloat(p.saldo)||0;
+  const total=parseFloat(p.precioTotal)||0;
+  const pagado=parseFloat(p.pagado)||0;
+
+  document.getElementById('modal-body').innerHTML=`
+    <div style="text-align:center;margin-bottom:14px">
+      <div style="font-size:18px;font-weight:800;color:#111">${(p.alumno||'—').split(' ').slice(0,3).join(' ')}</div>
+      <div style="font-size:12px;color:#888;margin-top:2px">${p.articulo||'—'}${p.talla?' · Talla '+p.talla:''}${p.numCamiseta?' · #'+p.numCamiseta:''}</div>
+      <div style="font-size:11px;color:#bbb;margin-top:2px">${p.id||''} · ${p.fecha||''}</div>
+    </div>
+
+    <div class="rc">
+      <div class="rr"><span>Precio total</span><span>S/ ${total}</span></div>
+      <div class="rr"><span>Pagado</span><span style="color:#1D9E75">S/ ${pagado}</span></div>
+      <div class="rr"><span>Saldo pendiente</span><span style="color:${saldo>0?'#D14343':'#1D9E75'}">S/ ${saldo}</span></div>
+    </div>
+
+    ${saldo>0?`
+    <div class="fs">
+      <span class="fl">💰 Registrar pago adicional (S/)</span>
+      <input class="fi" type="number" id="m-abono" placeholder="Máximo S/ ${saldo}" style="font-size:18px;font-weight:600" oninput="previewAbono(${saldo})">
+      <div id="m-abono-info" style="margin-top:6px;font-size:12px;font-weight:600;color:#888"></div>
+      <div style="margin-top:10px">
+        <span class="fl">📎 Voucher del pago (opcional)</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button type="button" onclick="document.getElementById('m-cam').click()" style="padding:10px;border:1.5px solid #1D9E75;border-radius:9px;background:#f0faf6;color:#0F6E56;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">📸 Tomar foto</button>
+          <button type="button" onclick="document.getElementById('m-gal').click()" style="padding:10px;border:1.5px solid #ddd;border-radius:9px;background:#fff;color:#333;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">🖼️ Adjuntar</button>
+        </div>
+        <div id="m-vt" style="margin-top:6px;font-size:12px;color:#888"></div>
+        <input type="file" id="m-cam" accept="image/*" capture="environment" style="display:none" onchange="mProcFoto(this)">
+        <input type="file" id="m-gal" accept="image/*" style="display:none" onchange="mProcFoto(this)">
+      </div>
+    </div>`:`<div class="ok" style="margin-bottom:12px">✅ Este pedido ya está pagado por completo</div>`}
+
+    <div class="fs">
+      <span class="fl">📦 Cambiar estado del pedido</span>
+      <div class="estsel">
+        <button class="estopt ${MODAL_ESTADO==='REGISTRADO'?'on':''}" id="es-REGISTRADO" onclick="selEstado('REGISTRADO')">Registrado</button>
+        <button class="estopt ${MODAL_ESTADO==='ENVIADO'?'on':''}" id="es-ENVIADO" onclick="selEstado('ENVIADO')">Enviado</button>
+        <button class="estopt ${MODAL_ESTADO==='ENTREGADO'?'on':''}" id="es-ENTREGADO" onclick="selEstado('ENTREGADO')">Entregado</button>
+      </div>
+    </div>
+
+    <div class="fs">
+      <span class="fl">📝 Nota adicional (opcional)</span>
+      <textarea class="fta" id="m-nota" placeholder="Observación de esta actualización..."></textarea>
+    </div>
+
+    <button class="sb" id="m-guardar" onclick="guardarActualizacion(${saldo})">💾 Guardar cambios</button>
+    <button class="bb" style="margin-top:8px" onclick="cerrarModal()">Cancelar</button>`;
+
+  document.getElementById('modal-bg').classList.add('on');
+}
+
+function previewAbono(saldo){
+  const v=parseFloat(document.getElementById('m-abono').value)||0;
+  const info=document.getElementById('m-abono-info');
+  if(v<=0){info.textContent='';return;}
+  const nuevoSaldo=saldo-v;
+  if(v>saldo){info.style.color='#D14343';info.textContent='⚠️ El abono supera el saldo. Quedará en S/ 0.';}
+  else if(nuevoSaldo<=0){info.style.color='#1D9E75';info.textContent='✅ Con esto queda pagado completo.';}
+  else{info.style.color='#B26A00';info.textContent='Nuevo saldo: S/ '+nuevoSaldo.toFixed(2);}
+}
+
+function selEstado(e){
+  MODAL_ESTADO=e;
+  ['REGISTRADO','ENVIADO','ENTREGADO'].forEach(x=>{
+    const b=document.getElementById('es-'+x);
+    if(b)b.classList.toggle('on',x===e);
+  });
+}
+
+function mProcFoto(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      const c=document.createElement('canvas');
+      const M=800;let w=img.width,h=img.height;
+      if(w>h){if(w>M){h=h*(M/w);w=M;}}else{if(h>M){w=w*(M/h);h=M;}}
+      c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      MFB=c.toDataURL('image/jpeg',0.7).split(',')[1];
+      MFN='saldo_'+(MODAL_PED.cod||'x')+'_'+Date.now()+'.jpg';
+      document.getElementById('m-vt').textContent='✅ Voucher del saldo listo';
+    };img.src=e.target.result;
+  };reader.readAsDataURL(file);
+}
+
+async function guardarActualizacion(saldo){
+  const btn=document.getElementById('m-guardar');
+  const abonoEl=document.getElementById('m-abono');
+  const abono=abonoEl?(parseFloat(abonoEl.value)||0):0;
+  const nota=document.getElementById('m-nota')?document.getElementById('m-nota').value.trim():'';
+
+  if(abono<=0 && MODAL_ESTADO===(MODAL_PED.estado||'REGISTRADO').toUpperCase() && !nota){
+    alert('No hay cambios para guardar. Registra un pago, cambia el estado o agrega una nota.');
+    return;
+  }
+
+  btn.disabled=true;btn.textContent='⏳ Guardando...';
+
+  const payload={
+    app:'pedidos',
+    accion:'actualizar',
+    id: MODAL_PED.id,
+    abono: abono>0?String(abono):'',
+    estado: MODAL_ESTADO,
+    notaExtra: nota,
+    foto: MFB||'',
+    nombreFoto: MFN||''
+  };
+
+  fetch(API_P,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
+
+  // Actualización optimista local (no-cors no devuelve respuesta)
+  setTimeout(()=>{
+    const idx=PEDIDOS.findIndex(p=>p.id===MODAL_PED.id);
+    if(idx>=0){
+      if(abono>0){
+        const total=parseFloat(PEDIDOS[idx].precioTotal)||0;
+        const pagado=(parseFloat(PEDIDOS[idx].pagado)||0)+abono;
+        PEDIDOS[idx].pagado=String(pagado);
+        PEDIDOS[idx].saldo=String(Math.max(0,total-pagado));
+      }
+      PEDIDOS[idx].estado=MODAL_ESTADO;
+    }
+    cerrarModal();
+    renderPedidos();
+    const aviso=document.getElementById('ped-cont');
+    aviso.insertAdjacentHTML('beforebegin','<div id="okmsg" class="ok" style="margin-bottom:10px">✅ Pedido actualizado</div>');
+    setTimeout(()=>{const m=document.getElementById('okmsg');if(m)m.remove();},2500);
+  },1400);
+}
+
+function cerrarModal(){
+  document.getElementById('modal-bg').classList.remove('on');
+  MODAL_PED=null;MFB='';MFN='';
+}
+
+document.getElementById('modal-bg').addEventListener('click',e=>{
+  if(e.target.id==='modal-bg')cerrarModal();
+});
 
 document.addEventListener('touchstart',e=>{if(!e.target.closest('#busca')&&!e.target.closest('#drop'))document.getElementById('drop').style.display='none';});
 document.addEventListener('mousedown',e=>{if(!e.target.closest('#busca')&&!e.target.closest('#drop'))document.getElementById('drop').style.display='none';});
