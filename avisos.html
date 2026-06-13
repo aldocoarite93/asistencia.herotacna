@@ -117,7 +117,7 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 </div>
 
 <script>
-const API_D = "https://script.google.com/macros/s/AKfycbyQQprlOIrWh7viURwiQwpZT9ruAeg8k3IHcD6V6sVQgoPvHcYnG61AMsXqIgRLvz_a8A/exec";
+const API_D = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDGU9qedhEr_OskfqZtz5JujMhziD8zTrdwFENvSr1sQugw/exec";
 const API_A = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDGU9qedhEr_OskfqZtz5JujMhziD8zTrdwFENvSr1sQugw/exec";
 
 let AL=[], TIPO=null, ALU=null, SUB='justificada';
@@ -167,7 +167,7 @@ function buildTurnoOpts(fechaRecup, turnoAlumno){
 
 async function init(){
   try{
-    const r=await fetch(API_D);
+    const r=await fetch(API_D+'?app=alumnos');
     const d=await r.json();
     AL=d.filter(a=>a.cod&&a.nom);
     document.getElementById('st').innerHTML='🟢 '+AL.length+' alumnos';
@@ -358,7 +358,7 @@ function confAviso(){
   if((TIPO==='recup'||TIPO==='ambos')&&!ftr){alert('Selecciona el turno de recuperación.');return;}
 
   const tipos={falta:'Falta',recup:'Recuperación',ambos:'Falta + Recuperación'};
-  const payload={accion:'aviso',tipo:tipos[TIPO],subtipo:TIPO!=='recup'?SUB:'',
+  const payload={app:'avisos',accion:'aviso',tipo:tipos[TIPO],subtipo:TIPO!=='recup'?SUB:'',
     cod:ALU.cod,alumno:ALU.nom,turno:ALU.turno||'',categoria:ALU.categoria||'',
     fechaFalta:ff,fechaRecup:fr,turnoRecup:ftr,nota};
 
@@ -401,7 +401,7 @@ function confPrueba(){
   if(!turno){alert('Selecciona el turno.');return;}
   if(!fecha){alert('Selecciona la fecha.');return;}
 
-  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({accion:'prueba',nombre:nom,edad,apoderado:apod,telefono:tel,turno,hora,fecha1:fecha,comentario:coment})});
+  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'avisos',accion:'prueba',nombre:nom,edad,apoderado:apod,telefono:tel,turno,hora,fecha1:fecha,comentario:coment})});
 
   let txt=`🏀 HERO TACNA ACADEMIA\n📋 CLASE DE PRUEBA REGISTRADA\n\n👦 ${nom}${edad?' ('+edad+' años)':''}`;
   if(apod) txt+=`\n👨 Apoderado: ${apod}`;
@@ -455,7 +455,7 @@ async function cargarDia(){
   cont.innerHTML='<div class="empty"><span class="spinner"></span> Cargando...</div>';
   const iso=fechaISO(fechaDia);
   try{
-    const r=await fetch(API_A+'?accion=avisos&fecha='+iso);
+    const r=await fetch(API_A+'?app=avisos&accion=avisos&fecha='+iso);
     const d=await r.json();
     DIA_DATA=d.avisos||[];
     renderDia();
@@ -545,7 +545,7 @@ async function verPerfil(cod){
     <div class="empty"><span class="spinner"></span> Buscando...</div>`;
 
   try{
-    const r=await fetch(API_A+'?accion=perfil&cod='+cod);
+    const r=await fetch(API_A+'?app=avisos&accion=perfil&cod='+cod);
     const d=await r.json();
     const avisos=d.avisos||[];
     const aluCard=cont.querySelector('.ac').outerHTML;
