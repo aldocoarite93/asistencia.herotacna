@@ -108,7 +108,8 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .pedcard.deuda{border-color:#f3c8c8;background:#fffafa}
 .ped-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
 .ped-nom{font-size:15px;font-weight:700;color:#111;line-height:1.2}
-.ped-art{font-size:12px;color:#666;margin-top:2px}
+.ped-art{font-size:13px;color:#1D9E75;font-weight:600;margin-top:3px}
+.ped-nombre-cam{font-size:12px;color:#854F0B;font-weight:600;background:#FFF8F0;border:1px solid #fde8c8;border-radius:6px;padding:2px 8px;display:inline-block;margin-top:4px}
 .ped-fecha{font-size:10px;color:#aaa;margin-top:3px}
 .est-badge{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap}
 .est-reg{background:#FFF4E5;color:#B26A00}
@@ -253,7 +254,7 @@ let AL=[], A=null, PROD=null, D={}, FB='', FN='';
 let PEDIDOS=[], FILTRO='todos', SOLO_DEUDA=false;
 let MODAL_PED=null, MODAL_ESTADO='', MFB='', MFN='';
 
-const PRECIOS={camiseta:90,balon:75,buzo:134,calentador:59};
+const PRECIOS={camiseta:90,balon:75,buzo:109,calentador:59};
 const NOMBRES={camiseta:'Camiseta',balon:'Balón',buzo:'Buzo',calentador:'Calentador'};
 const ICONOS={camiseta:'👕',balon:'🏀',buzo:'🩱',calentador:'🧥'};
 
@@ -743,7 +744,8 @@ function renderPedidos(){
           <div>
             <div class="ped-nom">${(p.alumno||'—').split(' ').slice(0,3).join(' ')}</div>
             <div class="ped-art">${p.articulo||'—'}${p.talla?' · Talla '+p.talla:''}${p.numCamiseta?' · #'+p.numCamiseta:''}</div>
-            <div class="ped-fecha">${p.fecha||''} · Cod ${p.cod||'—'} · ${p.id||''}</div>
+            ${p.nomCamiseta?`<div class="ped-nombre-cam">✍️ ${p.nomCamiseta}</div>`:''}
+            <div class="ped-fecha">📅 Pedido: ${p.fecha||'—'}${p.fechaEstado?` · ${est==='ENVIADO'?'Enviado':est==='ENTREGADO'?'Entregado':'Estado'}: ${p.fechaEstado}`:''} · Cod ${p.cod||'—'}</div>
           </div>
           <span class="est-badge ${estClass(est)}">${est}</span>
         </div>
@@ -775,7 +777,13 @@ function abrirModal(pStr){
     </div>
 
     <div class="rc">
-      <div class="rr"><span>Precio total</span><span>S/ ${total}</span></div>
+      <div class="rr">
+        <span>Precio total <span onclick="editarTotal()" style="cursor:pointer;color:#1D9E75;font-size:13px" id="lapiz-total">✏️</span></span>
+        <span id="total-display">S/ ${total}</span>
+        <span id="total-edit" style="display:none">
+          <input type="number" id="m-total" value="${total}" style="width:80px;padding:4px 8px;border:1.5px solid #1D9E75;border-radius:6px;font-size:14px;font-weight:700;text-align:right;font-family:inherit">
+        </span>
+      </div>
       <div class="rr"><span>Pagado</span><span style="color:#1D9E75">S/ ${pagado}</span></div>
       <div class="rr"><span>Saldo pendiente</span><span style="color:${saldo>0?'#D14343':'#1D9E75'}">S/ ${saldo}</span></div>
     </div>
@@ -853,13 +861,31 @@ function mProcFoto(input){
   };reader.readAsDataURL(file);
 }
 
+function editarTotal(){
+  const disp=document.getElementById('total-display');
+  const edit=document.getElementById('total-edit');
+  if(!disp||!edit)return;
+  if(edit.style.display==='none'){
+    disp.style.display='none';
+    edit.style.display='inline';
+    document.getElementById('m-total').focus();
+  } else {
+    edit.style.display='none';
+    disp.style.display='inline';
+  }
+}
+
 async function guardarActualizacion(saldo){
   const btn=document.getElementById('m-guardar');
   const abonoEl=document.getElementById('m-abono');
   const abono=abonoEl?(parseFloat(abonoEl.value)||0):0;
   const nota=document.getElementById('m-nota')?document.getElementById('m-nota').value.trim():'';
+  const totalEl=document.getElementById('m-total');
+  const nuevoTotal=totalEl?(parseFloat(totalEl.value)||0):0;
+  const totalOriginal=parseFloat(MODAL_PED.precioTotal)||0;
+  const totalCambio=(nuevoTotal>0 && nuevoTotal!==totalOriginal);
 
-  if(abono<=0 && MODAL_ESTADO===(MODAL_PED.estado||'REGISTRADO').toUpperCase() && !nota){
+  if(abono<=0 && MODAL_ESTADO===(MODAL_PED.estado||'REGISTRADO').toUpperCase() && !nota && !totalCambio){
     alert('No hay cambios para guardar. Registra un pago, cambia el estado o agrega una nota.');
     return;
   }
@@ -871,6 +897,7 @@ async function guardarActualizacion(saldo){
     accion:'actualizar',
     id: MODAL_PED.id,
     abono: abono>0?String(abono):'',
+    nuevoTotal: totalCambio?String(nuevoTotal):'',
     estado: MODAL_ESTADO,
     notaExtra: nota,
     foto: MFB||'',
@@ -888,6 +915,11 @@ async function guardarActualizacion(saldo){
         const pagado=(parseFloat(PEDIDOS[idx].pagado)||0)+abono;
         PEDIDOS[idx].pagado=String(pagado);
         PEDIDOS[idx].saldo=String(Math.max(0,total-pagado));
+      }
+      if(totalCambio){
+        PEDIDOS[idx].precioTotal=String(nuevoTotal);
+        const pg=parseFloat(PEDIDOS[idx].pagado)||0;
+        PEDIDOS[idx].saldo=String(Math.max(0,nuevoTotal-pg));
       }
       PEDIDOS[idx].estado=MODAL_ESTADO;
     }
