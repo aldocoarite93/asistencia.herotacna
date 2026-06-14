@@ -165,6 +165,36 @@ function buildTurnoOpts(fechaRecup, turnoAlumno){
   }).join('');
 }
 
+// Hora de inicio (en minutos desde medianoche) de cada turno según el día de la semana
+// dia: 0=Dom 1=Lun 2=Mar 3=Mié 4=Jue 5=Vie 6=Sáb
+function turnoMinutos(turnoId, dia){
+  // Sábado (6): TC2 9:00, TC1 10:30, TB1 15:00, TB2 16:00
+  if(dia === 6){
+    const sab = {TC2:540, TC1:630, TB1:900, TB2:960};
+    return sab[turnoId] !== undefined ? sab[turnoId] : 9999;
+  }
+  // Lunes/Mié/Vie (turnos A): TA1 15:30, TA2 16:30
+  // Martes/Jueves (turnos B y C): TB1 16:00, TC1 16:00, TB2 17:00, TC2 17:00
+  const sem = {TA1:930, TA2:990, TB1:960, TC1:960, TB2:1020, TC2:1020};
+  return sem[turnoId] !== undefined ? sem[turnoId] : 9999;
+}
+
+// Ordena una lista de IDs de turno por hora de inicio; desempate: TB antes que TC, y por número
+function ordenarTurnos(turnos, fechaISOStr){
+  let dia = 0;
+  if(fechaISOStr){
+    const [y,m,d] = fechaISOStr.split('-');
+    dia = new Date(parseInt(y), parseInt(m)-1, parseInt(d)).getDay();
+  }
+  return turnos.slice().sort((a,b)=>{
+    const ma = turnoMinutos(a, dia), mb = turnoMinutos(b, dia);
+    if(ma !== mb) return ma - mb;
+    // Desempate: TB antes que TC, luego por nombre
+    if(a[1] !== b[1]) return a[1] < b[1] ? -1 : 1; // letra B/C
+    return a < b ? -1 : 1;
+  });
+}
+
 async function init(){
   try{
     const r=await fetch(API_D+'?app=alumnos');
@@ -239,6 +269,7 @@ function renderR2(){
   if(TIPO==='prueba'){
     r2.innerHTML=`
       <div class="sh" style="margin-top:12px">Datos de clase de prueba</div>
+      <div class="fs"><span class="fl">Fecha *</span><input class="fi" id="pf" type="date" value="${hoyISO()}"></div>
       <div class="fs"><span class="fl">Nombre completo *</span><input class="fi" id="pn" type="text" placeholder="Nombre y apellido"></div>
       <div class="fs"><span class="fl">Edad</span><input class="fi" id="pe" type="number" placeholder="Ej: 10" min="4" max="20"></div>
       <div class="fs"><span class="fl">Apoderado (opcional)</span><input class="fi" id="pa" type="text" placeholder="Nombre del apoderado"></div>
@@ -249,8 +280,6 @@ function renderR2(){
           ${Object.keys(TI).map(t=>`<option value="${t}">${t} — ${TI[t]}</option>`).join('')}
         </select>
       </div>
-      <div class="fs"><span class="fl">Hora</span><input class="fi" id="ph" type="time" value="04:00"></div>
-      <div class="fs"><span class="fl">Fecha *</span><input class="fi" id="pf" type="date" value="${hoyISO()}"></div>
       <div class="fs"><span class="fl">Comentario / Seguimiento</span><textarea class="fta" id="pc" placeholder="Notas, quién lo recomendó..."></textarea></div>
       <button class="sb" style="background:#F59E0B" onclick="confPrueba()">✅ Registrar clase de prueba</button>`;
     return;
@@ -394,19 +423,18 @@ function confPrueba(){
   const apod=document.getElementById('pa').value.trim();
   const tel=document.getElementById('pt').value.trim();
   const turno=document.getElementById('ptu').value;
-  const hora=document.getElementById('ph').value;
   const fecha=document.getElementById('pf').value;
   const coment=document.getElementById('pc').value.trim();
   if(!nom){alert('Ingresa el nombre.');return;}
   if(!turno){alert('Selecciona el turno.');return;}
   if(!fecha){alert('Selecciona la fecha.');return;}
 
-  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'avisos',accion:'prueba',nombre:nom,edad,apoderado:apod,telefono:tel,turno,hora,fecha1:fecha,comentario:coment})});
+  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'avisos',accion:'prueba',nombre:nom,edad,apoderado:apod,telefono:tel,turno,hora:'',fecha1:fecha,comentario:coment})});
 
   let txt=`🏀 HERO TACNA ACADEMIA\n📋 CLASE DE PRUEBA REGISTRADA\n\n👦 ${nom}${edad?' ('+edad+' años)':''}`;
   if(apod) txt+=`\n👨 Apoderado: ${apod}`;
   if(tel) txt+=`\n📱 ${tel}`;
-  txt+=`\n📅 Fecha: ${isoToDisplay(fecha)}\n⏰ Turno: ${turno} · ${hora}`;
+  txt+=`\n📅 Fecha: ${isoToDisplay(fecha)}\n⏰ Turno: ${turno}`;
   if(coment) txt+=`\n📝 ${coment}`;
   txt+=`\n\n✅ Quedó registrado correctamente.\nPor favor confirma que los datos son correctos.`;
 
@@ -414,7 +442,7 @@ function confPrueba(){
     <div class="res-card" style="border-color:#F59E0B">
       <div style="margin-bottom:8px"><span class="badge bp">🆕 Clase de Prueba</span></div>
       <div style="font-size:18px;font-weight:800;color:#111;margin-bottom:4px">${nom}</div>
-      <div style="font-size:12px;color:#666;margin-bottom:12px">${edad?edad+' años · ':''}${turno} · ${hora}</div>
+      <div style="font-size:12px;color:#666;margin-bottom:12px">${edad?edad+' años · ':''}${turno}</div>
       <div style="font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0">📅 <b>${isoToDisplay(fecha)}</b></div>
       ${apod?`<div style="font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0">👨 ${apod}${tel?' · 📱'+tel:''}</div>`:''}
       ${coment?`<div style="font-size:13px;color:#666;padding:5px 0">📝 ${coment}</div>`:''}
@@ -476,7 +504,7 @@ function renderDia(){
   });
   let html='';
   const iso=fechaISO(fechaDia);
-  Object.keys(grupos).sort().forEach(t=>{
+  ordenarTurnos(Object.keys(grupos), iso).forEach(t=>{
     const lbl=labelTurno(t, iso);
     html+=`<div class="turno-card"><div class="turno-head">⏰ ${t} ${lbl?'· '+lbl:''}</div>`;
     grupos[t].forEach(a=>{
@@ -502,14 +530,13 @@ function compartirDia(){
   if(!DIA_DATA.length){comp('Sin avisos para este día.');return;}
   const grupos={};
   DIA_DATA.forEach(a=>{const t=a.turnoRecup||a.turno||'—';if(!grupos[t])grupos[t]=[];grupos[t].push(a);});
-  Object.keys(grupos).sort().forEach(t=>{
+  ordenarTurnos(Object.keys(grupos), iso).forEach(t=>{
     const lbl=labelTurno(t, iso);
     txt+=`\n⏰ ${t} · ${lbl}\n`;
     grupos[t].forEach(a=>{
       const ic=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
       txt+=`${ic} ${a.alumno||a.nombre||'—'} — ${a.tipo}`;
       if(a.tipo==='Recuperación'&&a.turno) txt+=` (viene de ${a.turno})`;
-      if(a.nota) txt+=`\n   💬 ${a.nota}`;
       txt+='\n';
     });
   });
