@@ -3,655 +3,987 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Hero Tacna — Avisos</title>
+<title>Hero Tacna — Tienda</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding:12px}
 .app{max-width:460px;margin:0 auto;background:#fff;border-radius:16px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,0.1)}
-.logo{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid #eee}
-.logo-icon{width:42px;height:42px;min-width:42px;background:#2563EB;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #eee}
+.logo-icon{width:42px;height:42px;min-width:42px;background:#1D9E75;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
 .logo-text{font-size:16px;font-weight:700;color:#111}
 .logo-sub{font-size:12px;color:#999;margin-top:1px}
-.spinner{display:inline-block;width:11px;height:11px;border:2px solid #ddd;border-top-color:#2563EB;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:4px}
+.spinner{display:inline-block;width:11px;height:11px;border:2px solid #ddd;border-top-color:#1D9E75;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:4px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:18px;background:#f0f0f0;border-radius:12px;padding:4px}
-.tab{padding:9px 4px;border:none;border-radius:9px;background:none;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:#888;touch-action:manipulation;text-align:center}
-.tab.on{background:#fff;color:#2563EB;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
-.sec{display:none}.sec.on{display:block}
+/* Tabs principales */
+.maintabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:16px;background:#f0f0f0;border-radius:12px;padding:4px}
+.mtab{padding:10px 4px;border:none;border-radius:9px;background:none;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#888;touch-action:manipulation;text-align:center}
+.mtab.on{background:#fff;color:#1D9E75;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.msec{display:none}.msec.on{display:block}
+.pasos{display:flex;gap:4px;margin-bottom:18px}
+.paso{height:4px;border-radius:2px;background:#eee;flex:1;transition:all 0.3s}
+.paso.done{background:#1D9E75}
+.paso.act{background:#1D9E75;opacity:0.45}
 .sh{font-size:11px;font-weight:600;color:#999;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.6px}
-.fs{background:#fafafa;border:1px solid #ececec;border-radius:11px;padding:13px;margin-bottom:11px}
-.fl{font-size:12px;font-weight:600;color:#555;margin-bottom:7px;display:block}
-.fi{width:100%;padding:10px 13px;border:1.5px solid #ddd;border-radius:9px;font-size:15px;font-family:inherit;background:#fff;color:#111}
-.fi:focus{outline:none;border-color:#2563EB}
-.fta{width:100%;padding:10px 13px;border:1.5px solid #ddd;border-radius:9px;font-size:14px;font-family:inherit;background:#fff;color:#111;resize:none;height:65px}
-.fta:focus{outline:none;border-color:#2563EB}
+.ah{display:flex;align-items:center;gap:10px;background:#f0faf6;border:1px solid #c8ead9;border-radius:10px;padding:10px 12px;margin-bottom:14px}
+.ah-av{width:34px;height:34px;background:#1D9E75;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;flex-shrink:0}
+.ah-nom{font-size:14px;font-weight:700;color:#0F6E56}
+.ah-det{font-size:11px;color:#666;margin-top:1px}
 .si{width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;color:#111;background:#fff;margin-bottom:6px}
-.si:focus{outline:none;border-color:#2563EB}
+.si:focus{outline:none;border-color:#1D9E75}
 .dl{background:#fff;border:1.5px solid #ddd;border-radius:10px;max-height:210px;overflow-y:auto;margin-bottom:10px;display:none;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
 .dr{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;touch-action:manipulation}
 .dr:last-child{border-bottom:none}
-.dr:active{background:#f0f4ff}
+.dr:active{background:#f5faf8}
 .dn{font-size:14px;color:#111;font-weight:500}
 .di{font-size:11px;color:#aaa;margin-top:1px}
 .tp{font-size:11px;padding:3px 8px;border-radius:6px;border:1px solid #e0e0e0;background:#f7f7f7;color:#444;font-weight:500;white-space:nowrap;margin-left:8px;flex-shrink:0}
-.tipo-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
-.tipo-btn{padding:12px 8px;border:1.5px solid #ddd;border-radius:10px;background:#fff;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;font-size:13px;font-weight:600;color:#444}
-.tipo-btn.on{border-color:#2563EB;background:#EFF6FF;color:#2563EB}
-.tipo-btn.fon{border-color:#EF4444;background:#FEF2F2;color:#EF4444}
-.tipo-btn.ron{border-color:#10B981;background:#ECFDF5;color:#10B981}
-.tipo-btn.pon{border-color:#F59E0B;background:#FFFBEB;color:#F59E0B}
-.ac{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;margin-bottom:14px}
+.ac{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#f0faf6;border:1px solid #c8ead9;border-radius:10px;margin-bottom:14px}
 .acn{font-size:14px;font-weight:600;color:#111}
 .acd{font-size:11px;color:#666;margin-top:1px}
-.xb{background:none;border:none;font-size:18px;cursor:pointer;color:#bbb;padding:4px 6px}
-.sb{width:100%;padding:14px;background:#2563EB;color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation;min-height:50px;margin-top:4px}
+.xb{background:none;border:none;font-size:18px;cursor:pointer;color:#bbb;padding:4px 6px;touch-action:manipulation}
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pb{padding:16px 8px;border:1.5px solid #e8e8e8;border-radius:12px;background:#fff;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation}
+.pb.on{border-color:#1D9E75;background:#f0faf6}
+.pi{font-size:28px;display:block;margin-bottom:6px}
+.pn{font-size:13px;font-weight:600;color:#222}
+.fs{background:#fafafa;border:1px solid #ececec;border-radius:11px;padding:13px;margin-bottom:11px}
+.fl{font-size:12px;font-weight:600;color:#555;margin-bottom:7px;display:block}
+.fi{width:100%;padding:10px 13px;border:1.5px solid #ddd;border-radius:9px;font-size:15px;font-family:inherit;background:#fff;color:#111}
+.fi:focus{outline:none;border-color:#1D9E75}
+.fta{width:100%;padding:10px 13px;border:1.5px solid #ddd;border-radius:9px;font-size:14px;font-family:inherit;background:#fff;color:#111;resize:none;height:65px}
+.fta:focus{outline:none;border-color:#1D9E75}
+.tg{display:grid;grid-template-columns:repeat(4,1fr);gap:5px}
+.tg3{display:grid;grid-template-columns:repeat(3,1fr);gap:5px}
+.tb{padding:10px 3px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333}
+.tb.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.th{font-size:11px;color:#888;margin-top:6px;line-height:1.5}
+.cb{display:inline-block;font-size:12px;padding:3px 11px;border-radius:20px;background:#E1F5EE;color:#0F6E56;font-weight:600;margin-bottom:8px}
+.nw{display:flex;gap:8px;align-items:center;margin-bottom:10px}
+.ni{flex:1;padding:12px;border:1.5px solid #ddd;border-radius:9px;font-size:26px;font-weight:700;text-align:center;font-family:inherit;background:#fff;color:#111}
+.ni:focus{outline:none;border-color:#1D9E75}
+.ne{font-size:12px;font-weight:600;width:100px;min-width:100px;text-align:center;padding:12px 6px;border-radius:9px;background:#f5f5f5;color:#999;line-height:1.3}
+.ob{background:#fff8f0;border:1px solid #fde8c8;border-radius:9px;padding:11px}
+.ot{font-size:11px;font-weight:600;color:#854F0B;margin-bottom:5px}
+.on2{font-size:13px;color:#993C1D;font-weight:600;line-height:1.7}
+.ppg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:10px}
+.ppb{padding:9px 3px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333}
+.ppb.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.va{border:2px dashed #ddd;border-radius:11px;padding:14px;text-align:center;cursor:pointer;touch-action:manipulation;background:#fafafa}
+.va.ok{border-color:#1D9E75;background:#f0faf6}
+.vp{width:100%;max-height:180px;object-fit:cover;border-radius:8px;margin-top:8px;display:none}
 .bb{width:100%;padding:11px;background:none;color:#999;border:1.5px solid #e0e0e0;border-radius:11px;font-size:14px;cursor:pointer;font-family:inherit;touch-action:manipulation;margin-bottom:9px}
-.res-card{background:#fff;border-radius:14px;padding:18px;border:2px solid #2563EB;margin-top:4px}
-.badge{font-size:11px;padding:2px 8px;border-radius:10px;font-weight:600;white-space:nowrap;display:inline-block}
-.bf{background:#FEF2F2;color:#EF4444}
-.br{background:#ECFDF5;color:#10B981}
-.bp{background:#FFFBEB;color:#F59E0B}
-.fecha-sel{display:flex;align-items:center;gap:8px;margin-bottom:14px}
-.fnav{padding:8px 14px;border:1.5px solid #ddd;border-radius:9px;background:#fff;font-size:18px;cursor:pointer;touch-action:manipulation}
-.flbl{flex:1;text-align:center;font-size:15px;font-weight:700;color:#111}
-.turno-card{border:1px solid #eee;border-radius:11px;margin-bottom:10px;overflow:hidden}
-.turno-head{padding:10px 14px;background:#f5f5f5;font-size:12px;font-weight:700;color:#555}
-.aviso-row{padding:10px 14px;border-bottom:1px solid #f5f5f5;font-size:13px;color:#333}
-.aviso-row:last-child{border-bottom:none}
-.semana-head{font-size:12px;font-weight:700;color:#2563EB;padding:8px 0 4px;border-bottom:1px solid #BFDBFE;margin-bottom:6px}
-.perfil-aviso{border:1px solid #eee;border-radius:10px;padding:12px;margin-bottom:8px}
-.empty{text-align:center;padding:30px;color:#bbb;font-size:14px}
-.res-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px}
-.res-btn{padding:11px;border-radius:10px;border:none;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation}
+.sb{width:100%;padding:14px;background:#1D9E75;color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation;min-height:50px}
+.sb:disabled{opacity:0.5;cursor:not-allowed}
+.row2{display:flex;gap:8px;margin-bottom:12px}
+.row2 .bb{margin:0;flex:1}
+.row2 .sb{flex:1;margin:0;padding:11px;font-size:14px}
+.rc{background:#f0faf6;border:1px solid #c8ead9;border-radius:12px;padding:13px;margin-bottom:14px}
+.rr{display:flex;justify-content:space-between;font-size:13px;padding:5px 0;border-bottom:1px solid #d5eee2;color:#333}
+.rr:last-child{border-bottom:none;font-weight:700}
+.ok{text-align:center;padding:22px;background:#e8f8f2;border-radius:12px;color:#0F6E56;font-size:15px;font-weight:600;border:1px solid #c8ead9}
+.ib{background:#f5f5f5;border:1px solid #eee;border-radius:9px;padding:11px;font-size:12px;color:#888;line-height:1.5;margin-top:8px}
+.rv-head{background:#1D9E75;border-radius:12px;padding:14px;margin-bottom:11px;color:#fff}
+.rv-label{font-size:10px;opacity:0.75;margin-bottom:3px;letter-spacing:0.5px}
+.rv-name{font-size:17px;font-weight:800}
+.rv-sub{font-size:12px;opacity:0.8;margin-top:2px}
+.rv-art{background:#fafafa;border:1px solid #ececec;border-radius:12px;padding:13px;margin-bottom:11px}
+.rv-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:9px}
+.rv-cell{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:9px;text-align:center}
+.rv-cell-l{font-size:10px;color:#aaa;margin-bottom:2px}
+.rv-cell-v{font-size:17px;font-weight:800;color:#111}
+.rv-nom{background:#fff;border:1px solid #e0e0e0;border-radius:8px;padding:9px;margin-top:7px;text-align:center}
+.rv-nom-l{font-size:10px;color:#aaa;margin-bottom:2px}
+.rv-nom-v{font-size:15px;font-weight:800;color:#111;letter-spacing:1px}
+.rv-pago{background:#fafafa;border:1px solid #ececec;border-radius:12px;padding:13px;margin-bottom:14px}
+.rv-pago-row{display:flex;justify-content:space-between;align-items:center}
+.rv-pago-tipo{font-size:15px;font-weight:600;color:#333}
+.rv-pago-monto{font-size:22px;font-weight:800;color:#1D9E75}
+.rv-coment{margin-top:8px;padding-top:8px;border-top:1px solid #eee;font-size:12px;color:#666}
+.rv-voucher{margin-top:6px;font-size:12px;color:#1D9E75;font-weight:600}
+/* Gestión */
+.gfiltros{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:12px}
+.gfb{padding:8px 3px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:11px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#444}
+.gfb.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
+.pedcard{border:1px solid #e8e8e8;border-radius:12px;padding:13px;margin-bottom:10px;background:#fff}
+.pedcard.deuda{border-color:#f3c8c8;background:#fffafa}
+.ped-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.ped-nom{font-size:15px;font-weight:700;color:#111;line-height:1.2}
+.ped-art{font-size:13px;color:#1D9E75;font-weight:600;margin-top:3px}
+.ped-nombre-cam{font-size:12px;color:#854F0B;font-weight:600;background:#FFF8F0;border:1px solid #fde8c8;border-radius:6px;padding:2px 8px;display:inline-block;margin-top:4px}
+.ped-fecha{font-size:10px;color:#aaa;margin-top:3px}
+.est-badge{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap}
+.est-reg{background:#FFF4E5;color:#B26A00}
+.est-env{background:#E5F0FF;color:#1A5FB4}
+.est-ent{background:#E8F8F2;color:#0F6E56}
+.ped-pago{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin:8px 0;padding:8px 0;border-top:1px solid #f0f0f0;border-bottom:1px solid #f0f0f0}
+.pp-cell{text-align:center}
+.pp-l{font-size:9px;color:#aaa;margin-bottom:2px;letter-spacing:0.3px}
+.pp-v{font-size:14px;font-weight:700;color:#111}
+.pp-v.sal{color:#D14343}
+.pp-v.ok{color:#1D9E75}
+.ped-btn{width:100%;padding:9px;border:1.5px solid #1D9E75;border-radius:9px;background:none;color:#1D9E75;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation;margin-top:4px}
+.gd{font-size:11px;color:#aaa;text-align:center;padding:8px}
+/* Modal */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:0}
+.modal-bg.on{display:flex}
+.modal{background:#fff;border-radius:18px 18px 0 0;width:100%;max-width:460px;max-height:92vh;overflow-y:auto;padding:18px;animation:slideup 0.25s}
+@keyframes slideup{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.modal-grip{width:40px;height:4px;background:#ddd;border-radius:2px;margin:0 auto 14px}
+.estsel{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:6px}
+.estopt{padding:10px 4px;border:1.5px solid #ddd;border-radius:9px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#444}
+.estopt.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
 </style>
 </head>
 <body>
 <div class="app">
   <div class="logo">
-    <div class="logo-icon">📋</div>
+    <div class="logo-icon">🏀</div>
     <div>
-      <div class="logo-text">Hero Tacna — Avisos</div>
+      <div class="logo-text">Hero Tacna — Tienda</div>
       <div class="logo-sub" id="st"><span class="spinner"></span>Cargando...</div>
     </div>
   </div>
-  <div class="tabs">
-    <button class="tab on" onclick="showTab('reg',this)">➕ Registrar</button>
-    <button class="tab" onclick="showTab('dia',this)">📅 Día</button>
-    <button class="tab" onclick="showTab('per',this)">🔍 Alumno</button>
+
+  <div class="maintabs">
+    <button class="mtab on" id="mt-nuevo" onclick="showMain('nuevo')">🛒 Nuevo pedido</button>
+    <button class="mtab" id="mt-gestion" onclick="showMain('gestion')">📦 Gestión</button>
   </div>
 
-  <!-- TAB REGISTRAR -->
-  <div class="sec on" id="tab-reg">
-    <div id="r1">
-      <div class="sh">¿Qué vas a registrar?</div>
-      <div class="tipo-grid">
-        <button class="tipo-btn" id="tb-falta" onclick="selTipo('falta')">❌ Falta</button>
-        <button class="tipo-btn" id="tb-recup" onclick="selTipo('recup')">🔄 Recuperación</button>
-        <button class="tipo-btn" id="tb-ambos" onclick="selTipo('ambos')" style="grid-column:span 2">❌🔄 Falta + Recuperación</button>
-        <button class="tipo-btn" id="tb-prueba" onclick="selTipo('prueba')" style="grid-column:span 2">🆕 Clase de Prueba</button>
+  <!-- ============ SECCIÓN NUEVO PEDIDO ============ -->
+  <div class="msec on" id="main-nuevo">
+    <div class="pasos" id="pasos">
+      <div class="paso act" id="p1"></div>
+      <div class="paso" id="p2"></div>
+      <div class="paso" id="p3"></div>
+      <div class="paso" id="p4"></div>
+      <div class="paso" id="p5"></div>
+    </div>
+
+    <div id="s1">
+      <div class="sh">Paso 1 — Buscar alumno</div>
+      <input class="si" id="busca" type="text" placeholder="🔍 Nombre, código o turno..." oninput="filtrar()" autocomplete="off">
+      <div class="dl" id="drop"></div>
+      <div class="ib">Busca por nombre, código o turno: TA1, TA2, TB1, TB2, TC1, TC2</div>
+    </div>
+
+    <div id="s2" style="display:none">
+      <div id="ac2"></div>
+      <div class="sh">Paso 2 — ¿Qué artículo necesita?</div>
+      <div class="pg">
+        <button class="pb" onclick="selProd('camiseta',this)"><span class="pi">👕</span><span class="pn">Camiseta</span></button>
+        <button class="pb" onclick="selProd('balon',this)"><span class="pi">🏀</span><span class="pn">Balón</span></button>
+        <button class="pb" onclick="selProd('buzo',this)"><span class="pi">🩱</span><span class="pn">Buzo</span></button>
+        <button class="pb" onclick="selProd('calentador',this)"><span class="pi">🧥</span><span class="pn">Calentador</span></button>
       </div>
     </div>
-    <div id="r2" style="display:none"></div>
-    <div id="r3"></div>
-  </div>
 
-  <!-- TAB DÍA -->
-  <div class="sec" id="tab-dia">
-    <div class="sh">Resumen de avisos</div>
-    <div class="fecha-sel">
-      <button class="fnav" onclick="cambF(-1)">◀</button>
-      <div class="flbl" id="flbl"></div>
-      <button class="fnav" onclick="cambF(1)">▶</button>
+    <div id="s3" style="display:none"></div>
+
+    <div id="s4" style="display:none">
+      <div id="ah4"></div>
+      <button class="bb" onclick="ip(3)">← Volver</button>
+      <div class="sh">Paso 4 — Pago y voucher</div>
+      <div class="fs">
+        <span class="fl">Forma de pago</span>
+        <div class="ppg">
+          <button class="ppb" onclick="selPago('YAPE',this)">📱 YAPE</button>
+          <button class="ppb" onclick="selPago('EFECTIVO',this)">💵 Efectivo</button>
+          <button class="ppb" onclick="selPago('SALDO',this)">✅ Saldo</button>
+        </div>
+        <span class="fl">Precio total del artículo (S/)</span>
+        <input class="fi" type="number" id="precioTotal" placeholder="" oninput="D.precioTotal=this.value;calcSaldo()" style="font-size:18px;font-weight:600;margin-bottom:10px">
+        <span class="fl">Monto que paga ahora (S/)</span>
+        <input class="fi" type="number" id="monto" placeholder="" oninput="D.monto=this.value;calcSaldo()" style="font-size:18px;font-weight:600">
+        <div id="saldoInfo" style="margin-top:8px;font-size:13px;font-weight:600;color:#888"></div>
+      </div>
+      <div class="fs">
+        <span class="fl">Comentarios (opcional)</span>
+        <textarea class="fta" id="coment" placeholder="Saldo a favor, descuento, notas..." oninput="D.comentario=this.value"></textarea>
+      </div>
+      <div class="fs">
+        <span class="fl">📎 Voucher de pago</span>
+        <div id="va" class="va">
+          <div id="vt" style="margin-bottom:10px;font-size:13px;color:#888">Selecciona una opción o pega con Ctrl+V 📋:</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px">
+            <button type="button" onclick="document.getElementById('fi-cam').click()" style="padding:10px;border:1.5px solid #1D9E75;border-radius:9px;background:#f0faf6;color:#0F6E56;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">📸 Tomar foto</button>
+            <button type="button" onclick="document.getElementById('fi-gal').click()" style="padding:10px;border:1.5px solid #ddd;border-radius:9px;background:#fff;color:#333;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit">🖼️ Adjuntar imagen</button>
+          </div>
+          <img id="vp" class="vp">
+        </div>
+        <input type="file" id="fi-cam" accept="image/*" capture="environment" style="display:none" onchange="procFoto(this)">
+        <input type="file" id="fi-gal" accept="image/*" style="display:none" onchange="procFoto(this)">
+      </div>
+      <button class="sb" onclick="vPago()">Continuar →</button>
     </div>
-    <div id="dia-cont"><div class="empty">Selecciona una fecha</div></div>
-    <button style="width:100%;padding:14px;background:#25D366;color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px" onclick="compartirDia()">📤 Compartir al grupo</button>
+
+    <div id="s5" style="display:none"></div>
+    <div id="res"></div>
   </div>
 
-  <!-- TAB ALUMNO -->
-  <div class="sec" id="tab-per">
-    <div class="sh">Buscar alumno</div>
-    <input class="si" id="bper" type="text" placeholder="🔍 Nombre o código..." oninput="filtPer()" autocomplete="off">
-    <div class="dl" id="dper"></div>
-    <div id="per-cont"></div>
+  <!-- ============ SECCIÓN GESTIÓN ============ -->
+  <div class="msec" id="main-gestion">
+    <div class="sh">Buscar pedido</div>
+    <input class="si" id="gbusca" type="text" placeholder="🔍 Nombre o código del alumno..." oninput="renderPedidos()" autocomplete="off">
+    <div class="gfiltros">
+      <button class="gfb on" id="gf-todos" onclick="setFiltro('todos',this)">Todos</button>
+      <button class="gfb" id="gf-reg" onclick="setFiltro('REGISTRADO',this)">Registr.</button>
+      <button class="gfb" id="gf-env" onclick="setFiltro('ENVIADO',this)">Enviados</button>
+      <button class="gfb" id="gf-ent" onclick="setFiltro('ENTREGADO',this)">Entreg.</button>
+    </div>
+    <div style="margin-bottom:10px">
+      <button class="gfb" id="gf-deuda" onclick="toggleDeuda(this)" style="width:100%;padding:9px">💰 Solo con saldo pendiente</button>
+    </div>
+    <div id="ped-cont"><div class="gd"><span class="spinner"></span> Cargando pedidos...</div></div>
+    <button class="bb" onclick="cargarPedidos()" style="margin-top:8px">🔄 Actualizar lista</button>
+  </div>
+</div>
+
+<!-- MODAL ACTUALIZAR -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal" id="modal-content">
+    <div class="modal-grip"></div>
+    <div id="modal-body"></div>
   </div>
 </div>
 
 <script>
 const API_D = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDGU9qedhEr_OskfqZtz5JujMhziD8zTrdwFENvSr1sQugw/exec";
-const API_A = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDGU9qedhEr_OskfqZtz5JujMhziD8zTrdwFENvSr1sQugw/exec";
+const API_P = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDGU9qedhEr_OskfqZtz5JujMhziD8zTrdwFENvSr1sQugw/exec";
 
-let AL=[], TIPO=null, ALU=null, SUB='justificada';
-let fechaDia = new Date();
-let DIA_DATA = [];
+let AL=[], A=null, PROD=null, D={}, FB='', FN='';
+let PEDIDOS=[], FILTRO='todos', SOLO_DEUDA=false;
+let MODAL_PED=null, MODAL_ESTADO='', MFB='', MFN='';
 
-// ─────────────────────────────────────────────
-// TURNOS — info base (días de semana)
-// ─────────────────────────────────────────────
-const TI = {
-  TA1: 'LMV 3:30–4:30pm · Camelias',
-  TA2: 'LMV 4:30–6:00pm · Camelias',
-  TB1: 'MJS 4:00–5:00pm · Camelias',
-  TB2: 'MJS 5:00–6:00pm · Camelias',
-  TC1: 'MJS 4:00–5:00pm · Coliseo Zela',
-  TC2: 'MJS 5:00–6:00pm · Coliseo Zela'
-};
-
-// Horario de sábado específico por turno
-const SAB = {
-  TB1: 'Sáb 3:00–4:00pm · Camelias',
-  TB2: 'Sáb 4:00–5:00pm · Camelias',
-  TC1: 'Sáb 10:30am–12:00pm · Coliseo Zela',
-  TC2: 'Sáb 9:00–10:30am · Coliseo Zela'
-};
-
-// Devuelve la etiqueta correcta según fecha y turno
-function labelTurno(turnoId, fechaISO){
-  if(!turnoId) return TI[turnoId] || '—';
-  if(fechaISO){
-    const [y,m,d] = fechaISO.split('-');
-    const diaSem = new Date(parseInt(y), parseInt(m)-1, parseInt(d)).getDay();
-    // 6 = sábado
-    if(diaSem === 6 && SAB[turnoId]) return SAB[turnoId];
-  }
-  return TI[turnoId] || turnoId;
-}
-
-// Genera las opciones del select de turno de recuperación según fecha elegida
-function buildTurnoOpts(fechaRecup, turnoAlumno){
-  return Object.keys(TI).map(t => {
-    const lbl = labelTurno(t, fechaRecup);
-    const sel = t === turnoAlumno ? 'selected' : '';
-    return `<option value="${t}" ${sel}>${t} — ${lbl}</option>`;
-  }).join('');
-}
-
-// Hora de inicio (en minutos desde medianoche) de cada turno según el día de la semana
-// dia: 0=Dom 1=Lun 2=Mar 3=Mié 4=Jue 5=Vie 6=Sáb
-function turnoMinutos(turnoId, dia){
-  // Sábado (6): TC2 9:00, TC1 10:30, TB1 15:00, TB2 16:00
-  if(dia === 6){
-    const sab = {TC2:540, TC1:630, TB1:900, TB2:960};
-    return sab[turnoId] !== undefined ? sab[turnoId] : 9999;
-  }
-  // Lunes/Mié/Vie (turnos A): TA1 15:30, TA2 16:30
-  // Martes/Jueves (turnos B y C): TB1 16:00, TC1 16:00, TB2 17:00, TC2 17:00
-  const sem = {TA1:930, TA2:990, TB1:960, TC1:960, TB2:1020, TC2:1020};
-  return sem[turnoId] !== undefined ? sem[turnoId] : 9999;
-}
-
-// Ordena una lista de IDs de turno por hora de inicio; desempate: TB antes que TC, y por número
-function ordenarTurnos(turnos, fechaISOStr){
-  let dia = 0;
-  if(fechaISOStr){
-    const [y,m,d] = fechaISOStr.split('-');
-    dia = new Date(parseInt(y), parseInt(m)-1, parseInt(d)).getDay();
-  }
-  return turnos.slice().sort((a,b)=>{
-    const ma = turnoMinutos(a, dia), mb = turnoMinutos(b, dia);
-    if(ma !== mb) return ma - mb;
-    // Desempate: TB antes que TC, luego por nombre
-    if(a[1] !== b[1]) return a[1] < b[1] ? -1 : 1; // letra B/C
-    return a < b ? -1 : 1;
-  });
-}
+const PRECIOS={camiseta:90,balon:75,buzo:109,calentador:59};
+const NOMBRES={camiseta:'Camiseta',balon:'Balón',buzo:'Buzo',calentador:'Calentador'};
+const ICONOS={camiseta:'👕',balon:'🏀',buzo:'🩱',calentador:'🧥'};
 
 async function init(){
   try{
     const r=await fetch(API_D+'?app=alumnos');
     const d=await r.json();
     AL=d.filter(a=>a.cod&&a.nom);
-    document.getElementById('st').innerHTML='🟢 '+AL.length+' alumnos';
-  }catch(e){document.getElementById('st').innerHTML='⚠️ Sin conexión';}
-  fechaDia=new Date();
-  updFecha();
+    document.getElementById('st').innerHTML='🟢 '+AL.length+' alumnos cargados';
+  }catch(e){
+    document.getElementById('st').innerHTML='⚠️ Sin conexión';
+  }
 }
 
-// FECHAS
-function hoyISO(){return new Date().toISOString().split('T')[0];}
-function isoToDisplay(iso){
-  if(!iso||iso==='undefined'||iso==='')return'—';
-  try{
-    const [y,m,d]=iso.split('-');
-    const dias=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-    const f=new Date(parseInt(y),parseInt(m)-1,parseInt(d));
-    return dias[f.getDay()]+' '+d+'/'+m+'/'+y;
-  }catch(e){return iso;}
-}
-function ddmmToISO(dd){
-  if(!dd)return'';
-  const p=dd.split('/');
-  if(p.length<3)return dd;
-  return p[2]+'-'+p[1].padStart(2,'0')+'-'+p[0].padStart(2,'0');
-}
-function fechaISO(d){
-  const m=String(d.getMonth()+1).padStart(2,'0');
-  const dd=String(d.getDate()).padStart(2,'0');
-  return d.getFullYear()+'-'+m+'-'+dd;
-}
-function getLunes(d){
-  const c=new Date(d);
-  const dia=c.getDay();
-  const diff=dia===0?-6:1-dia;
-  c.setDate(c.getDate()+diff);
-  return c;
-}
-function semanaLabel(d){
-  const l=getLunes(d);
-  const s=new Date(l);s.setDate(s.getDate()+6);
-  return isoToDisplay(fechaISO(l))+' → '+isoToDisplay(fechaISO(s));
+// ===== Tabs principales =====
+function showMain(id){
+  document.querySelectorAll('.mtab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.msec').forEach(s=>s.classList.remove('on'));
+  document.getElementById('mt-'+id).classList.add('on');
+  document.getElementById('main-'+id).classList.add('on');
+  if(id==='gestion') cargarPedidos();
 }
 
-// TABS
-function showTab(id,btn){
-  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
-  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('on'));
+function catNum(c){
+  const n=parseInt(String(c||'').replace('U',''));
+  if(isNaN(n))return null;
+  return n%2===0?n+1:n;
+}
+
+function numsOcup(cn){
+  const u1='U'+(cn-1), u2='U'+cn;
+  return AL.filter(a=>{
+    const c=String(a.categoria||'').toUpperCase().trim();
+    return (c===u1||c===u2)&&a.numCamiseta&&String(a.numCamiseta).trim()!=='';
+  }).map(a=>parseInt(a.numCamiseta)).filter(n=>!isNaN(n)&&n>0).sort((a,b)=>a-b);
+}
+
+function filtrar(){
+  const q=document.getElementById('busca').value.toLowerCase().trim();
+  const dd=document.getElementById('drop');
+  if(!q){dd.style.display='none';return;}
+  const r=AL.filter(a=>(a.nom||'').toLowerCase().includes(q)||String(a.cod||'').includes(q)||(a.turno||'').toLowerCase().includes(q));
+  if(!r.length){dd.style.display='none';return;}
+  dd.innerHTML=r.slice(0,20).map(a=>`
+    <div class="dr" onmousedown="elegir('${a.cod}')">
+      <div><div class="dn">${a.nom.split(' ').slice(0,3).join(' ')}</div>
+      <div class="di">Cod: ${a.cod} · ${a.categoria||'—'}</div></div>
+      <div class="tp">${a.turno||'—'}</div>
+    </div>`).join('');
+  dd.style.display='block';
+}
+
+function elegir(cod){
+  A=AL.find(a=>String(a.cod)===String(cod));
+  document.getElementById('busca').value='';
+  document.getElementById('drop').style.display='none';
+  ip(2);
+}
+
+function ahHTML(){
+  if(!A)return'';
+  return`<div class="ah"><div class="ah-av">👤</div><div><div class="ah-nom">${A.nom.split(' ').slice(0,3).join(' ')}</div><div class="ah-det">${A.categoria||'—'} · Turno ${A.turno||'—'} · Cod: ${A.cod}</div></div></div>`;
+}
+
+function selProd(p,btn){
+  PROD=p;D={};
+  document.querySelectorAll('.pb').forEach(b=>b.classList.remove('on'));
   btn.classList.add('on');
-  document.getElementById('tab-'+id).classList.add('on');
-  if(id==='dia')cargarDia();
+  setTimeout(()=>ip(3),150);
 }
 
-// REGISTRAR
-function selTipo(t){
-  TIPO=t;ALU=null;
-  document.getElementById('r3').innerHTML='';
-  const clases={falta:'fon',recup:'ron',ambos:'on',prueba:'pon'};
-  ['falta','recup','ambos','prueba'].forEach(x=>{
-    const b=document.getElementById('tb-'+x);
-    b.className='tipo-btn'+(t===x?' '+clases[x]:'');
+function ip(n){
+  [1,2,3,4,5].forEach(i=>{
+    const s=document.getElementById('s'+i);
+    if(s)s.style.display=i===n?'block':'none';
+    const p=document.getElementById('p'+i);
+    if(p)p.className='paso'+(i<n?' done':i===n?' act':'');
   });
-  renderR2();
+  if(n===2){document.getElementById('ac2').innerHTML=`<div class="ac"><div><div class="acn">${A.nom.split(' ').slice(0,3).join(' ')}</div><div class="acd">Cod: ${A.cod} · ${A.categoria||'—'} · ${A.turno||'—'}</div></div><button class="xb" onclick="A=null;ip(1)">✕</button></div>`;}
+  if(n===3)rP3();
+  if(n===4){
+    document.getElementById('ah4').innerHTML=ahHTML();
+    const pt=document.getElementById('precioTotal');
+    pt.placeholder='Sugerido: S/ '+PRECIOS[PROD];
+    if(!pt.value) pt.value=PRECIOS[PROD];
+    D.precioTotal=pt.value;
+    document.getElementById('monto').placeholder='Ej: adelanto o pago total';
+    calcSaldo();
+  }
+  if(n===5)rP5();
 }
 
-function renderR2(){
-  const r2=document.getElementById('r2');
-  r2.style.display='block';
+function calcSaldo(){
+  const total=parseFloat(document.getElementById('precioTotal').value)||0;
+  const pagado=parseFloat(document.getElementById('monto').value)||0;
+  const saldo=total-pagado;
+  const el=document.getElementById('saldoInfo');
+  if(!el)return;
+  if(total<=0){el.textContent='';return;}
+  if(saldo<=0){el.style.color='#1D9E75';el.textContent='✅ Pago completo (sin saldo)';}
+  else{el.style.color='#D14343';el.textContent='💰 Saldo pendiente: S/ '+saldo.toFixed(2);}
+}
 
-  if(TIPO==='prueba'){
-    r2.innerHTML=`
-      <div class="sh" style="margin-top:12px">Datos de clase de prueba</div>
-      <div class="fs"><span class="fl">Fecha *</span><input class="fi" id="pf" type="date" value="${hoyISO()}"></div>
-      <div class="fs"><span class="fl">Nombre completo *</span><input class="fi" id="pn" type="text" placeholder="Nombre y apellido"></div>
-      <div class="fs"><span class="fl">Edad</span><input class="fi" id="pe" type="number" placeholder="Ej: 10" min="4" max="20"></div>
-      <div class="fs"><span class="fl">Apoderado (opcional)</span><input class="fi" id="pa" type="text" placeholder="Nombre del apoderado"></div>
-      <div class="fs"><span class="fl">Teléfono (opcional)</span><input class="fi" id="pt" type="tel" placeholder="Ej: 987654321"></div>
-      <div class="fs"><span class="fl">Turno *</span>
-        <select class="fi" id="ptu">
-          <option value="">Seleccionar...</option>
-          ${Object.keys(TI).map(t=>`<option value="${t}">${t} — ${TI[t]}</option>`).join('')}
-        </select>
+function rP3(){
+  const s=document.getElementById('s3');
+  if(PROD==='camiseta'){
+    const cn=catNum(A.categoria);
+    const oc=numsOcup(cn);
+    s.innerHTML=`
+      ${ahHTML()}
+      <div class="row2">
+        <button class="bb" onclick="ip(2)">← Volver</button>
+        <button class="sb" onclick="vCam()">Continuar →</button>
       </div>
-      <div class="fs"><span class="fl">Comentario / Seguimiento</span><textarea class="fta" id="pc" placeholder="Notas, quién lo recomendó..."></textarea></div>
-      <button class="sb" style="background:#F59E0B" onclick="confPrueba()">✅ Registrar clase de prueba</button>`;
+      <div class="sh">Paso 3 — Detalles de la camiseta</div>
+      <div class="fs">
+        <div class="cb">Categoría ${cn} (${A.categoria||'—'})</div>
+        <span class="fl">Talla</span>
+        <div class="tg" id="tg-c">
+          ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="tb" onclick="sTalla(this,'${t}')">${t}</button>`).join('')}
+        </div>
+      </div>
+      <div class="fs">
+        <span class="fl">Nombre en la camiseta</span>
+        <input class="fi" id="nc" type="text" placeholder="Ej: GIANFRANCO" style="text-transform:uppercase">
+      </div>
+      <div class="fs">
+        <span class="fl">Número de camiseta (1–99)</span>
+        <div class="nw">
+          <input class="ni" id="nn" type="number" min="1" max="99" placeholder="Ej: 10" oninput="vNum(this.value)">
+          <div class="ne" id="ne">—</div>
+        </div>
+        <div class="ob">
+          <div class="ot">🚫 Ocupados en Categoría ${cn}:</div>
+          <div class="on2">${oc.length?oc.join('   '):'Todos disponibles ✅'}</div>
+        </div>
+      </div>
+      <div class="row2">
+        <button class="bb" onclick="ip(2)">← Volver</button>
+        <button class="sb" onclick="vCam()">Continuar →</button>
+      </div>`;
+
+  } else if(PROD==='balon'){
+    s.innerHTML=`
+      ${ahHTML()}
+      <button class="bb" onclick="ip(2)">← Volver</button>
+      <div class="sh">Paso 3 — Detalles del balón</div>
+      <div class="fs">
+        <span class="fl">Talla del balón</span>
+        <div class="tg3" id="tg-b">
+          <button class="tb" onclick="sTalla(this,'5')">Talla 5</button>
+          <button class="tb" onclick="sTalla(this,'6')">Talla 6</button>
+          <button class="tb" onclick="sTalla(this,'7')">Talla 7</button>
+        </div>
+        <div class="th">🔵 <b>Talla 5</b> — Niños 5–11 años &nbsp;|&nbsp; 🔴 <b>Talla 6</b> — Mujeres 12+ &nbsp;|&nbsp; 🟢 <b>Talla 7</b> — Varones 12+</div>
+      </div>
+      <div class="fs">
+        <span class="fl">Cantidad</span>
+        <input class="fi" id="cb-c" type="number" min="1" value="1" style="font-size:18px;font-weight:600">
+      </div>
+      <div class="fs">
+        <span class="fl">Color del balón</span>
+        <input class="fi" id="cb-col" type="text" placeholder="Ej: Naranja con negro">
+      </div>
+      <button class="sb" onclick="vBal()" style="margin-top:4px">Continuar →</button>`;
+
+  } else {
+    const nom=NOMBRES[PROD].toLowerCase();
+    s.innerHTML=`
+      ${ahHTML()}
+      <button class="bb" onclick="ip(2)">← Volver</button>
+      <div class="sh">Paso 3 — Detalles del ${nom}</div>
+      <div class="fs">
+        <span class="fl">Talla</span>
+        <div class="tg" id="tg-r">
+          ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="tb" onclick="sTalla(this,'${t}')">${t}</button>`).join('')}
+        </div>
+      </div>
+      <div class="fs">
+        <span class="fl">Cantidad</span>
+        <input class="fi" id="rp-c" type="number" min="1" value="1" style="font-size:18px;font-weight:600">
+      </div>
+      <button class="sb" onclick="vRop()" style="margin-top:4px">Continuar →</button>`;
+  }
+}
+
+function sTalla(btn,t){
+  btn.closest('.fs').querySelectorAll('.tb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  D.talla=t;
+}
+
+function vNum(v){
+  const n=parseInt(v),e=document.getElementById('ne');
+  if(!v||isNaN(n)||n<1||n>99){e.style.background='#f5f5f5';e.style.color='#999';e.textContent='—';D.numCamiseta='';return;}
+  const cn=catNum(A.categoria),oc=numsOcup(cn);
+  if(oc.includes(n)){e.style.background='#fff0f0';e.style.color='#c0392b';e.textContent='❌ Ocupado';D.numCamiseta='';}
+  else{e.style.background='#e8f8f2';e.style.color='#0F6E56';e.textContent='✅ Libre';D.numCamiseta=String(n);}
+}
+
+function vCam(){
+  const nc=document.getElementById('nc');
+  const nn=document.getElementById('nn');
+  D.nomCamiseta=nc?nc.value.toUpperCase().trim():'';
+  if(nn&&nn.value)vNum(nn.value);
+  if(!D.talla){alert('Selecciona una talla.');return;}
+  if(!D.numCamiseta){alert('Ingresa un número de camiseta disponible.');return;}
+  ip(4);
+}
+
+function vBal(){
+  const c=document.getElementById('cb-c');
+  const col=document.getElementById('cb-col');
+  D.cantidad=c?c.value||1:1;
+  D.color=col?col.value.trim():'';
+  if(!D.talla){alert('Selecciona una talla de balón.');return;}
+  ip(4);
+}
+
+function vRop(){
+  const c=document.getElementById('rp-c');
+  D.cantidad=c?c.value||1:1;
+  D.obs='';
+  if(!D.talla){alert('Selecciona una talla.');return;}
+  ip(4);
+}
+
+function selPago(p,btn){
+  document.querySelectorAll('.ppb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  D.pago=p;
+}
+
+function vPago(){
+  if(!D.pago){alert('Selecciona una forma de pago.');return;}
+  if(!FB && D.pago!=='SALDO'){alert('Adjunta una foto del voucher de pago.');return;}
+  const cm=document.getElementById('coment');
+  if(cm)D.comentario=cm.value;
+  const mn=document.getElementById('monto');
+  if(mn)D.monto=mn.value;
+  const pt=document.getElementById('precioTotal');
+  if(pt)D.precioTotal=pt.value;
+  ip(5);
+}
+
+function procFoto(input){
+  const file=input.files[0];if(!file)return;
+  procesarImagen(file);
+}
+
+// Procesa cualquier imagen (de archivo o pegada con Ctrl+V)
+function procesarImagen(file){
+  if(!A){alert('Primero selecciona un alumno y completa el pedido.');return;}
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      const c=document.createElement('canvas');
+      const M=800;let w=img.width,h=img.height;
+      if(w>h){if(w>M){h=h*(M/w);w=M;}}else{if(h>M){w=w*(M/h);h=M;}}
+      c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      FB=c.toDataURL('image/jpeg',0.7).split(',')[1];
+      FN='v_'+A.cod+'_'+Date.now()+'.jpg';
+      const vp=document.getElementById('vp');
+      if(vp){vp.src=c.toDataURL('image/jpeg',0.7);vp.style.display='block';}
+      const vt=document.getElementById('vt');
+      if(vt) vt.textContent='✅ Voucher listo';
+      const va=document.getElementById('va');
+      if(va) va.classList.add('ok');
+    };img.src=e.target.result;
+  };reader.readAsDataURL(file);
+}
+
+// Pegar imagen con Ctrl+V (captura de pantalla) cuando estás en el paso de pago
+document.addEventListener('paste',function(e){
+  // Solo si el paso 4 (pago/voucher) está visible
+  const s4=document.getElementById('s4');
+  if(!s4 || s4.style.display==='none') return;
+  const items=(e.clipboardData||window.clipboardData).items;
+  for(let i=0;i<items.length;i++){
+    if(items[i].type.indexOf('image')!==-1){
+      const blob=items[i].getAsFile();
+      if(blob){
+        procesarImagen(blob);
+        e.preventDefault();
+      }
+      break;
+    }
+  }
+});
+
+function rP5(){
+  const cm=document.getElementById('coment');
+  if(cm)D.comentario=cm.value;
+  const mn=document.getElementById('monto');
+  if(mn)D.monto=mn.value;
+  const pt=document.getElementById('precioTotal');
+  if(pt)D.precioTotal=pt.value;
+
+  let artDetalle='';
+  if(PROD==='camiseta'){
+    artDetalle=`<div class="rv-grid">
+      ${D.talla?`<div class="rv-cell"><div class="rv-cell-l">TALLA</div><div class="rv-cell-v">${D.talla}</div></div>`:''}
+      ${D.numCamiseta?`<div class="rv-cell"><div class="rv-cell-l">NÚMERO</div><div class="rv-cell-v" style="color:#1D9E75">#${D.numCamiseta}</div></div>`:''}
+    </div>
+    ${D.nomCamiseta?`<div class="rv-nom"><div class="rv-nom-l">NOMBRE EN CAMISETA</div><div class="rv-nom-v">${D.nomCamiseta}</div></div>`:''}`;
+  } else if(PROD==='balon'){
+    artDetalle=`<div class="rv-grid">
+      ${D.talla?`<div class="rv-cell"><div class="rv-cell-l">TALLA</div><div class="rv-cell-v">${D.talla}</div></div>`:''}
+      ${D.cantidad?`<div class="rv-cell"><div class="rv-cell-l">CANTIDAD</div><div class="rv-cell-v">${D.cantidad}</div></div>`:''}
+    </div>
+    ${D.color?`<div class="rv-nom" style="margin-top:7px"><div class="rv-nom-l">COLOR</div><div class="rv-nom-v" style="font-size:13px">${D.color}</div></div>`:''}`;
+  } else {
+    artDetalle=`<div class="rv-grid">
+      ${D.talla?`<div class="rv-cell"><div class="rv-cell-l">TALLA</div><div class="rv-cell-v">${D.talla}</div></div>`:''}
+      ${D.cantidad?`<div class="rv-cell"><div class="rv-cell-l">CANTIDAD</div><div class="rv-cell-v">${D.cantidad}</div></div>`:''}
+    </div>`;
+  }
+
+  const comentFinal=(D.comentario||'')+(D.color?' | Color: '+D.color:'');
+  const total=parseFloat(D.precioTotal)||0;
+  const pagado=parseFloat(D.monto)||0;
+  const saldo=total-pagado;
+
+  document.getElementById('s5').innerHTML=`
+    <button class="bb" onclick="ip(4)">← Modificar</button>
+    <div class="rv-head">
+      <div class="rv-label">PEDIDO PARA</div>
+      <div class="rv-name">${A.nom.split(' ').slice(0,3).join(' ')}</div>
+      <div class="rv-sub">${A.categoria||'—'} · Turno ${A.turno||'—'} · Cod: ${A.cod}</div>
+    </div>
+    <div class="rv-art">
+      <div class="rv-label" style="color:#888">ARTÍCULO</div>
+      <div style="font-size:19px;font-weight:800;color:#111;margin-bottom:4px">${ICONOS[PROD]} ${NOMBRES[PROD]}</div>
+      ${artDetalle}
+    </div>
+    <div class="rv-pago">
+      <div class="rv-label" style="color:#888;margin-bottom:6px">PAGO</div>
+      <div class="rv-pago-row">
+        <div class="rv-pago-tipo">${D.pago||'No especificado'}</div>
+        <div class="rv-pago-monto">S/ ${pagado||'—'}</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:13px">
+        <span style="color:#888">Precio total: <b style="color:#111">S/ ${total||'—'}</b></span>
+        <span style="color:${saldo>0?'#D14343':'#1D9E75'};font-weight:700">${saldo>0?'Saldo: S/ '+saldo:'✅ Completo'}</span>
+      </div>
+      ${comentFinal?`<div class="rv-coment">💬 ${comentFinal}</div>`:''}
+      ${FB?`<div class="rv-voucher">📎 Voucher adjuntado ✅</div>`:''}
+    </div>
+    <button class="sb" id="bcf" onclick="confirmar()">✅ Confirmar pedido</button>`;
+}
+
+async function confirmar(){
+  const btn=document.getElementById('bcf');
+  btn.disabled=true;btn.textContent='⏳ Guardando...';
+
+  const cm=document.getElementById('coment');
+  if(cm)D.comentario=cm.value;
+  const mn=document.getElementById('monto');
+  if(mn)D.monto=mn.value;
+  const pt=document.getElementById('precioTotal');
+  if(pt)D.precioTotal=pt.value;
+
+  const comentFinal=(D.comentario||'')+(D.color?' | Color: '+D.color:'');
+  const total=parseFloat(D.precioTotal)||0;
+  const pagado=parseFloat(D.monto)||0;
+  const saldo=total-pagado;
+
+  const payload={
+    app:'pedidos',
+    accion:'registrar',
+    cod:       String(A.cod||''),
+    alumno:    String(A.nom||''),
+    categoria: String(A.categoria||''),
+    articulo:  NOMBRES[PROD],
+    talla:     String(D.talla||''),
+    cantidad:  PROD==='camiseta'?'1':String(D.cantidad||1),
+    nomCamiseta: String(D.nomCamiseta||''),
+    numCamiseta: String(D.numCamiseta||''),
+    pago:      String(D.pago||''),
+    monto:     String(pagado),
+    precioTotal: String(total),
+    comentario:String(comentFinal),
+    foto:      FB||'',
+    nombreFoto:FN||''
+  };
+
+  fetch(API_P, {method:'POST',mode:'no-cors',body: JSON.stringify(payload)});
+
+  setTimeout(()=>{
+    document.getElementById('s5').style.display='none';
+    document.getElementById('pasos').style.display='none';
+    const resHTML = `
+      <div id="res-card" style="background:#fff;border-radius:14px;padding:20px;border:2px solid #1D9E75">
+        <div style="text-align:center;margin-bottom:14px">
+          <div style="font-size:13px;color:#1D9E75;font-weight:600;margin-bottom:4px">✅ PEDIDO REGISTRADO</div>
+          <div style="font-size:20px;font-weight:800;color:#111;line-height:1.2">${A.nom.split(' ').slice(0,3).join(' ')}</div>
+          <div style="font-size:13px;color:#666;margin-top:4px">${A.categoria||'—'} · Turno ${A.turno||'—'} · Cod: ${A.cod}</div>
+        </div>
+        <div style="background:#f5f5f5;border-radius:10px;padding:12px;margin-bottom:12px">
+          <div style="font-size:16px;font-weight:700;color:#111;margin-bottom:8px">${ICONOS[PROD]} ${NOMBRES[PROD]}</div>
+          ${D.talla?`<div style="font-size:14px;color:#444;margin-bottom:4px">📏 Talla: <b>${D.talla}</b></div>`:''}
+          ${D.numCamiseta?`<div style="font-size:14px;color:#1D9E75;margin-bottom:4px;font-weight:700">🔢 Número: #${D.numCamiseta}</div>`:''}
+          ${D.nomCamiseta?`<div style="font-size:14px;color:#444;margin-bottom:4px">✍️ Nombre: <b>${D.nomCamiseta}</b></div>`:''}
+          ${D.cantidad&&PROD!=='camiseta'?`<div style="font-size:14px;color:#444;margin-bottom:4px">📦 Cantidad: <b>${D.cantidad}</b></div>`:''}
+          ${D.color?`<div style="font-size:14px;color:#444;margin-bottom:4px">🎨 Color: <b>${D.color}</b></div>`:''}
+        </div>
+        <div style="background:#f5f5f5;border-radius:10px;padding:12px;margin-bottom:14px">
+          <div style="font-size:14px;color:#444;margin-bottom:4px">💳 Pago: <b>${D.pago||'—'}</b></div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+            <span style="font-size:14px;color:#444">Pagó: <b style="color:#1D9E75">S/ ${pagado}</b> de S/ ${total}</span>
+            <span style="font-size:14px;font-weight:700;color:${saldo>0?'#D14343':'#1D9E75'}">${saldo>0?'Debe S/ '+saldo:'✅ Completo'}</span>
+          </div>
+          ${D.comentario?`<div style="font-size:13px;color:#666;margin-top:6px">💬 ${D.comentario}</div>`:''}
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button onclick="compartir()" style="padding:11px;border:1.5px solid #25D366;border-radius:10px;background:#25D366;color:#fff;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">📤 Compartir</button>
+          <button onclick="nuevo()" style="padding:11px;border:1.5px solid #1D9E75;border-radius:10px;background:none;color:#1D9E75;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">+ Nuevo pedido</button>
+        </div>
+      </div>`;
+    document.getElementById('res').innerHTML = resHTML;
+  }, 1500);
+}
+
+async function compartir(){
+  if(!A||!PROD){return;}
+  const total=parseFloat(D.precioTotal)||0;
+  const pagado=parseFloat(D.monto)||0;
+  const saldo=total-pagado;
+
+  let txt=`✅ PEDIDO REGISTRADO\n${A.nom.split(' ').slice(0,3).join(' ')}\n`;
+  txt+=`\n${ICONOS[PROD]} *${NOMBRES[PROD].toUpperCase()}*\n`;
+  if(D.talla) txt+=`📏 Talla: ${D.talla}\n`;
+  if(PROD==='camiseta'){
+    if(D.numCamiseta) txt+=`🔢 Número: #${D.numCamiseta}\n`;
+    if(D.nomCamiseta) txt+=`✍️ Nombre: ${D.nomCamiseta}\n`;
+  }
+  if(D.cantidad && PROD!=='camiseta') txt+=`📦 Cantidad: ${D.cantidad}\n`;
+  if(D.color) txt+=`🎨 Color: ${D.color}\n`;
+  txt+=`\n💳 Pago: ${D.pago||'—'}\n`;
+  txt+=`Pagó: S/ ${pagado} de S/ ${total}\n`;
+  txt+=saldo>0?`Debe: S/ ${saldo}`:`✅ Pagado completo`;
+
+  try {
+    if(navigator.share){
+      await navigator.share({title:'Pedido Hero Tacna',text:txt});
+    } else {
+      navigator.clipboard.writeText(txt);
+      alert('✅ Información copiada al portapapeles');
+    }
+  } catch(e) {
+    try { navigator.clipboard.writeText(txt); alert('✅ Información copiada'); }
+    catch(e2) { alert('Usa el botón de compartir de tu navegador'); }
+  }
+}
+
+function nuevo(){
+  A=null;PROD=null;D={};FB='';FN='';
+  document.getElementById('res').innerHTML='';
+  document.getElementById('pasos').style.display='flex';
+  document.getElementById('busca').value='';
+  document.getElementById('monto').value='';
+  document.getElementById('precioTotal').value='';
+  document.getElementById('coment').value='';
+  if(document.getElementById('fi-cam'))document.getElementById('fi-cam').value='';
+  if(document.getElementById('fi-gal'))document.getElementById('fi-gal').value='';
+  document.getElementById('vp').style.display='none';
+  document.getElementById('vp').src='';
+  document.getElementById('vt').textContent='Selecciona una opción o pega con Ctrl+V 📋:';
+  document.getElementById('va').classList.remove('ok');
+  document.querySelectorAll('.pb,.ppb').forEach(b=>b.classList.remove('on'));
+  ip(1);
+}
+
+// ================= GESTIÓN DE PEDIDOS =================
+async function cargarPedidos(){
+  const cont=document.getElementById('ped-cont');
+  cont.innerHTML='<div class="gd"><span class="spinner"></span> Cargando pedidos...</div>';
+  try{
+    const r=await fetch(API_P+'?app=pedidos&accion=pedidos');
+    const d=await r.json();
+    PEDIDOS=d.pedidos||[];
+    renderPedidos();
+  }catch(e){
+    cont.innerHTML='<div class="gd">⚠️ No se pudieron cargar los pedidos. Toca "Actualizar lista".</div>';
+  }
+}
+
+function setFiltro(f,btn){
+  FILTRO=f;
+  document.querySelectorAll('.gfiltros .gfb').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  renderPedidos();
+}
+
+function toggleDeuda(btn){
+  SOLO_DEUDA=!SOLO_DEUDA;
+  btn.classList.toggle('on',SOLO_DEUDA);
+  renderPedidos();
+}
+
+function estClass(e){
+  const x=(e||'').toUpperCase();
+  if(x==='ENVIADO')return'est-env';
+  if(x==='ENTREGADO')return'est-ent';
+  return'est-reg';
+}
+
+function renderPedidos(){
+  const cont=document.getElementById('ped-cont');
+  const q=document.getElementById('gbusca').value.toLowerCase().trim();
+  let lista=PEDIDOS.slice();
+
+  if(FILTRO!=='todos') lista=lista.filter(p=>(p.estado||'REGISTRADO').toUpperCase()===FILTRO);
+  if(SOLO_DEUDA) lista=lista.filter(p=>(parseFloat(p.saldo)||0)>0);
+  if(q) lista=lista.filter(p=>(p.alumno||'').toLowerCase().includes(q)||String(p.cod||'').includes(q));
+
+  if(!lista.length){cont.innerHTML='<div class="gd">No hay pedidos que coincidan.</div>';return;}
+
+  cont.innerHTML=lista.map(p=>{
+    const saldo=parseFloat(p.saldo)||0;
+    const total=parseFloat(p.precioTotal)||0;
+    const pagado=parseFloat(p.pagado)||0;
+    const est=(p.estado||'REGISTRADO').toUpperCase();
+    return`
+      <div class="pedcard ${saldo>0?'deuda':''}">
+        <div class="ped-top">
+          <div>
+            <div class="ped-nom">${(p.alumno||'—').split(' ').slice(0,3).join(' ')}</div>
+            <div class="ped-art">${p.articulo||'—'}${p.talla?' · Talla '+p.talla:''}${p.numCamiseta?' · #'+p.numCamiseta:''}</div>
+            ${p.nomCamiseta?`<div class="ped-nombre-cam">✍️ ${p.nomCamiseta}</div>`:''}
+            <div class="ped-fecha">📅 Pedido: ${p.fecha||'—'}${p.fechaEstado?` · ${est==='ENVIADO'?'Enviado':est==='ENTREGADO'?'Entregado':'Estado'}: ${p.fechaEstado}`:''} · Cod ${p.cod||'—'}</div>
+          </div>
+          <span class="est-badge ${estClass(est)}">${est}</span>
+        </div>
+        <div class="ped-pago">
+          <div class="pp-cell"><div class="pp-l">TOTAL</div><div class="pp-v">S/ ${total||0}</div></div>
+          <div class="pp-cell"><div class="pp-l">PAGADO</div><div class="pp-v ok">S/ ${pagado||0}</div></div>
+          <div class="pp-cell"><div class="pp-l">SALDO</div><div class="pp-v ${saldo>0?'sal':'ok'}">S/ ${saldo||0}</div></div>
+        </div>
+        <button class="ped-btn" onclick='abrirModal(${JSON.stringify(JSON.stringify(p))})'>✏️ Actualizar pedido</button>
+      </div>`;
+  }).join('');
+}
+
+// ================= MODAL ACTUALIZAR =================
+function abrirModal(pStr){
+  MODAL_PED=JSON.parse(typeof pStr==='string'?pStr:JSON.stringify(pStr));
+  MODAL_ESTADO=(MODAL_PED.estado||'REGISTRADO').toUpperCase();
+  MFB='';MFN='';
+  const p=MODAL_PED;
+  const saldo=parseFloat(p.saldo)||0;
+  const total=parseFloat(p.precioTotal)||0;
+  const pagado=parseFloat(p.pagado)||0;
+
+  document.getElementById('modal-body').innerHTML=`
+    <div style="text-align:center;margin-bottom:14px">
+      <div style="font-size:18px;font-weight:800;color:#111">${(p.alumno||'—').split(' ').slice(0,3).join(' ')}</div>
+      <div style="font-size:12px;color:#888;margin-top:2px">${p.articulo||'—'}${p.talla?' · Talla '+p.talla:''}${p.numCamiseta?' · #'+p.numCamiseta:''}</div>
+      <div style="font-size:11px;color:#bbb;margin-top:2px">${p.id||''} · ${p.fecha||''}</div>
+    </div>
+
+    <div class="rc">
+      <div class="rr">
+        <span>Precio total <span onclick="editarTotal()" style="cursor:pointer;color:#1D9E75;font-size:13px" id="lapiz-total">✏️</span></span>
+        <span id="total-display">S/ ${total}</span>
+        <span id="total-edit" style="display:none">
+          <input type="number" id="m-total" value="${total}" style="width:80px;padding:4px 8px;border:1.5px solid #1D9E75;border-radius:6px;font-size:14px;font-weight:700;text-align:right;font-family:inherit">
+        </span>
+      </div>
+      <div class="rr"><span>Pagado</span><span style="color:#1D9E75">S/ ${pagado}</span></div>
+      <div class="rr"><span>Saldo pendiente</span><span style="color:${saldo>0?'#D14343':'#1D9E75'}">S/ ${saldo}</span></div>
+    </div>
+
+    ${saldo>0?`
+    <div class="fs">
+      <span class="fl">💰 Registrar pago adicional (S/)</span>
+      <input class="fi" type="number" id="m-abono" placeholder="Máximo S/ ${saldo}" style="font-size:18px;font-weight:600" oninput="previewAbono(${saldo})">
+      <div id="m-abono-info" style="margin-top:6px;font-size:12px;font-weight:600;color:#888"></div>
+      <div style="margin-top:10px">
+        <span class="fl">📎 Voucher del pago (opcional)</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button type="button" onclick="document.getElementById('m-cam').click()" style="padding:10px;border:1.5px solid #1D9E75;border-radius:9px;background:#f0faf6;color:#0F6E56;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">📸 Tomar foto</button>
+          <button type="button" onclick="document.getElementById('m-gal').click()" style="padding:10px;border:1.5px solid #ddd;border-radius:9px;background:#fff;color:#333;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit">🖼️ Adjuntar</button>
+        </div>
+        <div id="m-vt" style="margin-top:6px;font-size:12px;color:#888"></div>
+        <input type="file" id="m-cam" accept="image/*" capture="environment" style="display:none" onchange="mProcFoto(this)">
+        <input type="file" id="m-gal" accept="image/*" style="display:none" onchange="mProcFoto(this)">
+      </div>
+    </div>`:`<div class="ok" style="margin-bottom:12px">✅ Este pedido ya está pagado por completo</div>`}
+
+    <div class="fs">
+      <span class="fl">📦 Cambiar estado del pedido</span>
+      <div class="estsel">
+        <button class="estopt ${MODAL_ESTADO==='REGISTRADO'?'on':''}" id="es-REGISTRADO" onclick="selEstado('REGISTRADO')">Registrado</button>
+        <button class="estopt ${MODAL_ESTADO==='ENVIADO'?'on':''}" id="es-ENVIADO" onclick="selEstado('ENVIADO')">Enviado</button>
+        <button class="estopt ${MODAL_ESTADO==='ENTREGADO'?'on':''}" id="es-ENTREGADO" onclick="selEstado('ENTREGADO')">Entregado</button>
+      </div>
+    </div>
+
+    <div class="fs">
+      <span class="fl">📝 Nota adicional (opcional)</span>
+      <textarea class="fta" id="m-nota" placeholder="Observación de esta actualización..."></textarea>
+    </div>
+
+    <button class="sb" id="m-guardar" onclick="guardarActualizacion(${saldo})">💾 Guardar cambios</button>
+    <button class="bb" style="margin-top:8px" onclick="cerrarModal()">Cancelar</button>`;
+
+  document.getElementById('modal-bg').classList.add('on');
+}
+
+function previewAbono(saldo){
+  const v=parseFloat(document.getElementById('m-abono').value)||0;
+  const info=document.getElementById('m-abono-info');
+  if(v<=0){info.textContent='';return;}
+  const nuevoSaldo=saldo-v;
+  if(v>saldo){info.style.color='#D14343';info.textContent='⚠️ El abono supera el saldo. Quedará en S/ 0.';}
+  else if(nuevoSaldo<=0){info.style.color='#1D9E75';info.textContent='✅ Con esto queda pagado completo.';}
+  else{info.style.color='#B26A00';info.textContent='Nuevo saldo: S/ '+nuevoSaldo.toFixed(2);}
+}
+
+function selEstado(e){
+  MODAL_ESTADO=e;
+  ['REGISTRADO','ENVIADO','ENTREGADO'].forEach(x=>{
+    const b=document.getElementById('es-'+x);
+    if(b)b.classList.toggle('on',x===e);
+  });
+}
+
+function mProcFoto(input){
+  const file=input.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      const c=document.createElement('canvas');
+      const M=800;let w=img.width,h=img.height;
+      if(w>h){if(w>M){h=h*(M/w);w=M;}}else{if(h>M){w=w*(M/h);h=M;}}
+      c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      MFB=c.toDataURL('image/jpeg',0.7).split(',')[1];
+      MFN='saldo_'+(MODAL_PED.cod||'x')+'_'+Date.now()+'.jpg';
+      document.getElementById('m-vt').textContent='✅ Voucher del saldo listo';
+    };img.src=e.target.result;
+  };reader.readAsDataURL(file);
+}
+
+function editarTotal(){
+  const disp=document.getElementById('total-display');
+  const edit=document.getElementById('total-edit');
+  if(!disp||!edit)return;
+  if(edit.style.display==='none'){
+    disp.style.display='none';
+    edit.style.display='inline';
+    document.getElementById('m-total').focus();
+  } else {
+    edit.style.display='none';
+    disp.style.display='inline';
+  }
+}
+
+async function guardarActualizacion(saldo){
+  const btn=document.getElementById('m-guardar');
+  const abonoEl=document.getElementById('m-abono');
+  const abono=abonoEl?(parseFloat(abonoEl.value)||0):0;
+  const nota=document.getElementById('m-nota')?document.getElementById('m-nota').value.trim():'';
+  const totalEl=document.getElementById('m-total');
+  const nuevoTotal=totalEl?(parseFloat(totalEl.value)||0):0;
+  const totalOriginal=parseFloat(MODAL_PED.precioTotal)||0;
+  const totalCambio=(nuevoTotal>0 && nuevoTotal!==totalOriginal);
+
+  if(abono<=0 && MODAL_ESTADO===(MODAL_PED.estado||'REGISTRADO').toUpperCase() && !nota && !totalCambio){
+    alert('No hay cambios para guardar. Registra un pago, cambia el estado o agrega una nota.');
     return;
   }
 
-  r2.innerHTML=`
-    <div class="sh" style="margin-top:12px">Buscar alumno</div>
-    <input class="si" id="breg" type="text" placeholder="🔍 Nombre o código..." oninput="filtReg()" autocomplete="off">
-    <div class="dl" id="dreg"></div>
-    <div id="asel"></div>
-    <div id="fav" style="display:none"></div>`;
-}
+  btn.disabled=true;btn.textContent='⏳ Guardando...';
 
-function filtReg(){
-  const q=document.getElementById('breg').value.toLowerCase().trim();
-  const dd=document.getElementById('dreg');
-  if(!q){dd.style.display='none';return;}
-  const r=AL.filter(a=>(a.nom||'').toLowerCase().includes(q)||String(a.cod||'').includes(q));
-  if(!r.length){dd.style.display='none';return;}
-  dd.innerHTML=r.slice(0,15).map(a=>`
-    <div class="dr" onmousedown="elegReg('${a.cod}')">
-      <div><div class="dn">${a.nom.split(' ').slice(0,3).join(' ')}</div>
-      <div class="di">Cod: ${a.cod} · ${a.categoria||'—'}</div></div>
-      <div class="tp">${a.turno||'—'}</div>
-    </div>`).join('');
-  dd.style.display='block';
-}
+  const payload={
+    app:'pedidos',
+    accion:'actualizar',
+    id: MODAL_PED.id,
+    abono: abono>0?String(abono):'',
+    nuevoTotal: totalCambio?String(nuevoTotal):'',
+    estado: MODAL_ESTADO,
+    notaExtra: nota,
+    foto: MFB||'',
+    nombreFoto: MFN||''
+  };
 
-function elegReg(cod){
-  ALU=AL.find(a=>String(a.cod)===String(cod));
-  document.getElementById('breg').value='';
-  document.getElementById('dreg').style.display='none';
-  document.getElementById('asel').innerHTML=`
-    <div class="ac">
-      <div><div class="acn">${ALU.nom.split(' ').slice(0,3).join(' ')}</div>
-      <div class="acd">${ALU.categoria||'—'} · Turno ${ALU.turno||'—'}</div></div>
-      <button class="xb" onclick="ALU=null;document.getElementById('asel').innerHTML='';document.getElementById('fav').style.display='none'">✕</button>
-    </div>`;
-  renderFav();
-}
+  fetch(API_P,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
 
-function renderFav(){
-  const f=document.getElementById('fav');
-  f.style.display='block';
-  const hoy=hoyISO();
-  let h='';
-  if(TIPO==='falta'||TIPO==='ambos'){
-    h+=`<div class="fs"><span class="fl">Tipo de falta</span>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
-        <button class="tipo-btn" id="bjust" onclick="selSub('justificada')">✅ Justificada</button>
-        <button class="tipo-btn" id="binjust" onclick="selSub('injustificada')">⚠️ Injustificada</button>
-      </div></div>
-      <div class="fs"><span class="fl">Fecha de falta</span><input class="fi" id="ff" type="date" value="${hoy}"></div>`;
-  }
-  if(TIPO==='recup'||TIPO==='ambos'){
-    h+=`<div class="fs">
-        <span class="fl">Fecha de recuperación</span>
-        <input class="fi" id="fr" type="date" value="${hoy}" onchange="actualizarTurnos()">
-      </div>
-      <div class="fs"><span class="fl">Turno donde recupera</span>
-        <select class="fi" id="ftr">
-          <option value="">Seleccionar...</option>
-          ${buildTurnoOpts(hoy, ALU && ALU.turno)}
-        </select>
-      </div>`;
-  }
-  h+=`<div class="fs"><span class="fl">Nota (opcional)</span><textarea class="fta" id="fnota" placeholder="Motivo, observaciones..."></textarea></div>
-    <button class="sb" onclick="confAviso()">✅ Confirmar registro</button>`;
-  f.innerHTML=h;
-  selSub('justificada');
-}
-
-// Actualiza las opciones del turno cuando cambia la fecha de recuperación
-function actualizarTurnos(){
-  const fr = document.getElementById('fr');
-  const ftr = document.getElementById('ftr');
-  if(!fr || !ftr) return;
-  const fechaSel = fr.value;
-  const turnoActual = ftr.value; // mantener selección si ya eligió
-  ftr.innerHTML = `<option value="">Seleccionar...</option>` + 
-    Object.keys(TI).map(t => {
-      const lbl = labelTurno(t, fechaSel);
-      const sel = t === turnoActual ? 'selected' : '';
-      return `<option value="${t}" ${sel}>${t} — ${lbl}</option>`;
-    }).join('');
-}
-
-function selSub(s){
-  SUB=s;
-  const bj=document.getElementById('bjust');
-  const bi=document.getElementById('binjust');
-  if(!bj||!bi)return;
-  bj.className='tipo-btn'+(s==='justificada'?' fon':'');
-  bi.className='tipo-btn'+(s==='injustificada'?' fon':'');
-}
-
-function confAviso(){
-  if(!ALU){alert('Selecciona un alumno.');return;}
-  const ff=TIPO!=='recup'?document.getElementById('ff')?.value:'';
-  const fr=TIPO!=='falta'?document.getElementById('fr')?.value:'';
-  const ftr=TIPO!=='falta'?document.getElementById('ftr')?.value:'';
-  const nota=document.getElementById('fnota')?.value||'';
-  if((TIPO==='falta'||TIPO==='ambos')&&!ff){alert('Selecciona fecha de falta.');return;}
-  if((TIPO==='recup'||TIPO==='ambos')&&!fr){alert('Selecciona fecha de recuperación.');return;}
-  if((TIPO==='recup'||TIPO==='ambos')&&!ftr){alert('Selecciona el turno de recuperación.');return;}
-
-  const tipos={falta:'Falta',recup:'Recuperación',ambos:'Falta + Recuperación'};
-  const payload={app:'avisos',accion:'aviso',tipo:tipos[TIPO],subtipo:TIPO!=='recup'?SUB:'',
-    cod:ALU.cod,alumno:ALU.nom,turno:ALU.turno||'',categoria:ALU.categoria||'',
-    fechaFalta:ff,fechaRecup:fr,turnoRecup:ftr,nota};
-
-  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
-
-  const lbl = fr ? labelTurno(ftr, fr) : '';
-  let txt=`🏀 HERO TACNA ACADEMIA\n📋 AVISO REGISTRADO\n\n👦 ${ALU.nom.split(' ').slice(0,3).join(' ')}\n⏰ Turno: ${ALU.turno||'—'}`;
-  if(ff) txt+=`\n\n❌ Falta: ${isoToDisplay(ff)} (${SUB})`;
-  if(fr) txt+=`\n🔄 Recupera: ${isoToDisplay(fr)} en turno ${ftr} (${lbl})`;
-  if(nota) txt+=`\n💬 ${nota}`;
-  txt+=`\n\n✅ Quedó registrado correctamente.`;
-
-  const cols={falta:'#EF4444',recup:'#10B981',ambos:'#2563EB'};
-  document.getElementById('r3').innerHTML=`
-    <div class="res-card" style="border-color:${cols[TIPO]}">
-      <div style="margin-bottom:8px"><span class="badge ${TIPO==='falta'?'bf':TIPO==='recup'?'br':'on'}">${tipos[TIPO]}</span></div>
-      <div style="font-size:18px;font-weight:800;color:#111;margin-bottom:4px">${ALU.nom.split(' ').slice(0,3).join(' ')}</div>
-      <div style="font-size:12px;color:#666;margin-bottom:12px">${ALU.categoria||'—'} · ${ALU.turno||'—'}</div>
-      ${ff?`<div style="font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0">📅 Falta: <b>${isoToDisplay(ff)}</b> (${SUB})</div>`:''}
-      ${fr?`<div style="font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0">🔄 Recupera: <b>${isoToDisplay(fr)}</b> en ${ftr} · ${lbl}</div>`:''}
-      ${nota?`<div style="font-size:13px;color:#666;padding:5px 0">💬 ${nota}</div>`:''}
-      <div class="res-btns">
-        <button class="res-btn" style="background:#25D366;color:#fff" onclick="comp(\`${txt.replace(/`/g,"'")}\`)">📤 Compartir</button>
-        <button class="res-btn" style="background:#f0f0f0;color:#333" onclick="resetReg()">+ Nuevo</button>
-      </div>
-    </div>`;
-  document.getElementById('r2').style.display='none';
-}
-
-function confPrueba(){
-  const nom=document.getElementById('pn').value.trim();
-  const edad=document.getElementById('pe').value;
-  const apod=document.getElementById('pa').value.trim();
-  const tel=document.getElementById('pt').value.trim();
-  const turno=document.getElementById('ptu').value;
-  const fecha=document.getElementById('pf').value;
-  const coment=document.getElementById('pc').value.trim();
-  if(!nom){alert('Ingresa el nombre.');return;}
-  if(!turno){alert('Selecciona el turno.');return;}
-  if(!fecha){alert('Selecciona la fecha.');return;}
-
-  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'avisos',accion:'prueba',nombre:nom,edad,apoderado:apod,telefono:tel,turno,hora:'',fecha1:fecha,comentario:coment})});
-
-  let txt=`🏀 HERO TACNA ACADEMIA\n📋 CLASE DE PRUEBA REGISTRADA\n\n👦 ${nom}${edad?' ('+edad+' años)':''}`;
-  if(apod) txt+=`\n👨 Apoderado: ${apod}`;
-  if(tel) txt+=`\n📱 ${tel}`;
-  txt+=`\n📅 Fecha: ${isoToDisplay(fecha)}\n⏰ Turno: ${turno}`;
-  if(coment) txt+=`\n📝 ${coment}`;
-  txt+=`\n\n✅ Quedó registrado correctamente.\nPor favor confirma que los datos son correctos.`;
-
-  document.getElementById('r3').innerHTML=`
-    <div class="res-card" style="border-color:#F59E0B">
-      <div style="margin-bottom:8px"><span class="badge bp">🆕 Clase de Prueba</span></div>
-      <div style="font-size:18px;font-weight:800;color:#111;margin-bottom:4px">${nom}</div>
-      <div style="font-size:12px;color:#666;margin-bottom:12px">${edad?edad+' años · ':''}${turno}</div>
-      <div style="font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0">📅 <b>${isoToDisplay(fecha)}</b></div>
-      ${apod?`<div style="font-size:14px;color:#333;padding:5px 0;border-bottom:1px solid #f0f0f0">👨 ${apod}${tel?' · 📱'+tel:''}</div>`:''}
-      ${coment?`<div style="font-size:13px;color:#666;padding:5px 0">📝 ${coment}</div>`:''}
-      <div class="res-btns">
-        <button class="res-btn" style="background:#25D366;color:#fff" onclick="comp(\`${txt.replace(/`/g,"'")}\`)">📤 Compartir</button>
-        <button class="res-btn" style="background:#f0f0f0;color:#333" onclick="resetReg()">+ Nuevo</button>
-      </div>
-    </div>`;
-  document.getElementById('r2').style.display='none';
-}
-
-function resetReg(){
-  document.getElementById('r3').innerHTML='';
-  document.getElementById('r2').style.display='none';
-  document.getElementById('r2').innerHTML='';
-  ['falta','recup','ambos','prueba'].forEach(x=>document.getElementById('tb-'+x).className='tipo-btn');
-  TIPO=null;ALU=null;
-}
-
-// DÍA
-function updFecha(){
-  const lbl=document.getElementById('flbl');
-  if(!lbl)return;
-  const iso=fechaISO(fechaDia);
-  const hoy=fechaISO(new Date());
-  lbl.textContent=(iso===hoy?'Hoy — ':'')+isoToDisplay(iso);
-}
-
-function cambF(d){
-  fechaDia.setDate(fechaDia.getDate()+d);
-  updFecha();
-  cargarDia();
-}
-
-async function cargarDia(){
-  const cont=document.getElementById('dia-cont');
-  if(!cont)return;
-  cont.innerHTML='<div class="empty"><span class="spinner"></span> Cargando...</div>';
-  const iso=fechaISO(fechaDia);
-  try{
-    const r=await fetch(API_A+'?app=avisos&accion=avisos&fecha='+iso);
-    const d=await r.json();
-    DIA_DATA=d.avisos||[];
-    renderDia();
-  }catch(e){
-    DIA_DATA=[];
-    renderDia();
-  }
-}
-
-function renderDia(){
-  const cont=document.getElementById('dia-cont');
-  if(!DIA_DATA.length){cont.innerHTML='<div class="empty">Sin avisos para este día</div>';return;}
-  const grupos={};
-  DIA_DATA.forEach(a=>{
-    const t=a.turnoRecup||a.turno||'—';
-    if(!grupos[t])grupos[t]=[];
-    grupos[t].push(a);
-  });
-  let html='';
-  const iso=fechaISO(fechaDia);
-  ordenarTurnos(Object.keys(grupos), iso).forEach(t=>{
-    const lbl=labelTurno(t, iso);
-    html+=`<div class="turno-card"><div class="turno-head">⏰ ${t} ${lbl?'· '+lbl:''}</div>`;
-    grupos[t].forEach(a=>{
-      const idx=DIA_DATA.indexOf(a);
-      const ic=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
-      const bc=a.tipo==='Falta'?'bf':a.tipo==='Recuperación'?'br':'bp';
-      html+=`<div class="aviso-row">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
-          <button onclick="compartirUno(${idx})" title="Compartir este aviso" style="flex-shrink:0;width:30px;height:30px;border:none;border-radius:8px;background:#25D366;color:#fff;font-size:14px;cursor:pointer;font-family:inherit;touch-action:manipulation">📤</button>
-          <span style="font-weight:600;flex:1">${ic} ${a.alumno||a.nombre||'—'}</span>
-          <span class="badge ${bc}">${a.tipo}</span>
-        </div>`;
-      if(a.tipo==='Recuperación'&&a.turno) html+=`<div style="font-size:12px;color:#888;margin-left:38px">viene de turno ${a.turno}</div>`;
-      if(a.nota) html+=`<div style="font-size:12px;color:#888;margin-top:2px;margin-left:38px">💬 ${a.nota}</div>`;
-      html+='</div>';
-    });
-    html+='</div>';
-  });
-  cont.innerHTML=html;
-}
-
-// Comparte un solo aviso del día (sin comentarios, igual que el grupal)
-function compartirUno(idx){
-  const a=DIA_DATA[idx];
-  if(!a){return;}
-  const iso=fechaISO(fechaDia);
-  const t=a.turnoRecup||a.turno||'—';
-  const lbl=labelTurno(t, iso);
-  const ic=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
-  let txt=`📋 AVISO HERO TACNA — ${isoToDisplay(iso)}\n`;
-  txt+=`\n⏰ ${t} · ${lbl}\n`;
-  txt+=`${ic} ${a.alumno||a.nombre||'—'} — ${a.tipo}`;
-  if(a.tipo==='Recuperación'&&a.turno) txt+=` (viene de ${a.turno})`;
-  comp(txt);
-}
-
-function compartirDia(){
-  const iso=fechaISO(fechaDia);
-  let txt=`📋 AVISOS HERO TACNA — ${isoToDisplay(iso)}\n`;
-  if(!DIA_DATA.length){comp('Sin avisos para este día.');return;}
-  const grupos={};
-  DIA_DATA.forEach(a=>{const t=a.turnoRecup||a.turno||'—';if(!grupos[t])grupos[t]=[];grupos[t].push(a);});
-  ordenarTurnos(Object.keys(grupos), iso).forEach(t=>{
-    const lbl=labelTurno(t, iso);
-    txt+=`\n⏰ ${t} · ${lbl}\n`;
-    grupos[t].forEach(a=>{
-      const ic=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
-      txt+=`${ic} ${a.alumno||a.nombre||'—'} — ${a.tipo}`;
-      if(a.tipo==='Recuperación'&&a.turno) txt+=` (viene de ${a.turno})`;
-      txt+='\n';
-    });
-  });
-  comp(txt);
-}
-
-// PERFIL
-function filtPer(){
-  const q=document.getElementById('bper').value.toLowerCase().trim();
-  const dd=document.getElementById('dper');
-  if(!q){dd.style.display='none';return;}
-  const r=AL.filter(a=>(a.nom||'').toLowerCase().includes(q)||String(a.cod||'').includes(q));
-  if(!r.length){dd.style.display='none';return;}
-  dd.innerHTML=r.slice(0,15).map(a=>`
-    <div class="dr" onmousedown="verPerfil('${a.cod}')">
-      <div><div class="dn">${a.nom.split(' ').slice(0,3).join(' ')}</div>
-      <div class="di">Cod: ${a.cod} · ${a.categoria||'—'}</div></div>
-      <div class="tp">${a.turno||'—'}</div>
-    </div>`).join('');
-  dd.style.display='block';
-}
-
-async function verPerfil(cod){
-  const alu=AL.find(a=>String(a.cod)===String(cod));
-  document.getElementById('bper').value='';
-  document.getElementById('dper').style.display='none';
-  const cont=document.getElementById('per-cont');
-  cont.innerHTML=`
-    <div class="ac" style="margin-bottom:14px">
-      <div><div class="acn">${alu.nom.split(' ').slice(0,3).join(' ')}</div>
-      <div class="acd">${alu.categoria||'—'} · Turno ${alu.turno||'—'} · Cod: ${alu.cod}</div></div>
-    </div>
-    <div class="empty"><span class="spinner"></span> Buscando...</div>`;
-
-  try{
-    const r=await fetch(API_A+'?app=avisos&accion=perfil&cod='+cod);
-    const d=await r.json();
-    const avisos=d.avisos||[];
-    const aluCard=cont.querySelector('.ac').outerHTML;
-
-    if(!avisos.length){
-      cont.innerHTML=aluCard+'<div class="empty">Sin avisos registrados</div>';
-      return;
+  // Actualización optimista local (no-cors no devuelve respuesta)
+  setTimeout(()=>{
+    const idx=PEDIDOS.findIndex(p=>p.id===MODAL_PED.id);
+    if(idx>=0){
+      if(abono>0){
+        const total=parseFloat(PEDIDOS[idx].precioTotal)||0;
+        const pagado=(parseFloat(PEDIDOS[idx].pagado)||0)+abono;
+        PEDIDOS[idx].pagado=String(pagado);
+        PEDIDOS[idx].saldo=String(Math.max(0,total-pagado));
+      }
+      if(totalCambio){
+        PEDIDOS[idx].precioTotal=String(nuevoTotal);
+        const pg=parseFloat(PEDIDOS[idx].pagado)||0;
+        PEDIDOS[idx].saldo=String(Math.max(0,nuevoTotal-pg));
+      }
+      PEDIDOS[idx].estado=MODAL_ESTADO;
     }
-
-    const semanas={};
-    avisos.forEach(a=>{
-      const iso=ddmmToISO(a.fechaFalta||a.fechaRecup||'');
-      const lunes=iso?getLunes(new Date(iso)):new Date();
-      const key=fechaISO(lunes);
-      if(!semanas[key])semanas[key]=[];
-      semanas[key].push(a);
-    });
-
-    let html=aluCard+'<div class="sh">Historial por semana</div>';
-    Object.keys(semanas).sort().reverse().forEach(k=>{
-      const sab=new Date(k);sab.setDate(sab.getDate()+6);
-      html+=`<div class="semana-head">Semana ${isoToDisplay(k)} → ${isoToDisplay(fechaISO(sab))}</div>`;
-      semanas[k].forEach(a=>{
-        const ic=a.tipo==='Falta'?'❌':a.tipo==='Recuperación'?'🔄':'🆕';
-        const bc=a.tipo==='Falta'?'bf':a.tipo==='Recuperación'?'br':'bp';
-        html+=`<div class="perfil-aviso">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
-            <span class="badge ${bc}">${ic} ${a.tipo}</span>
-            <span style="font-size:11px;color:#999">${a.fechaReg||''}</span>
-          </div>
-          <div style="font-size:13px;color:#333;line-height:1.7">
-            ${a.fechaFalta?`📅 Falta: <b>${a.fechaFalta}</b>${a.subtipo?' ('+a.subtipo+')':''}<br>`:''}
-            ${a.fechaRecup?`🔄 Recupera: <b>${a.fechaRecup}</b> en ${a.turnoRecup}<br>`:''}
-            ${a.nota?`💬 ${a.nota}`:''}
-          </div>
-        </div>`;
-      });
-    });
-    cont.innerHTML=html;
-  }catch(e){
-    cont.innerHTML=cont.querySelector('.ac').outerHTML+'<div class="empty">Sin avisos registrados aún</div>';
-  }
+    cerrarModal();
+    renderPedidos();
+    const aviso=document.getElementById('ped-cont');
+    aviso.insertAdjacentHTML('beforebegin','<div id="okmsg" class="ok" style="margin-bottom:10px">✅ Pedido actualizado</div>');
+    setTimeout(()=>{const m=document.getElementById('okmsg');if(m)m.remove();},2500);
+  },1400);
 }
 
-async function comp(txt){
-  try{
-    if(navigator.share)await navigator.share({title:'Hero Tacna',text:txt});
-    else{await navigator.clipboard.writeText(txt);alert('✅ Copiado al portapapeles');}
-  }catch(e){
-    try{await navigator.clipboard.writeText(txt);alert('✅ Copiado');}
-    catch(e2){alert('Copia manualmente:\n\n'+txt);}
-  }
+function cerrarModal(){
+  document.getElementById('modal-bg').classList.remove('on');
+  MODAL_PED=null;MFB='';MFN='';
 }
 
-document.addEventListener('mousedown',e=>{
-  if(!e.target.closest('#breg')&&!e.target.closest('#dreg')){const d=document.getElementById('dreg');if(d)d.style.display='none';}
-  if(!e.target.closest('#bper')&&!e.target.closest('#dper'))document.getElementById('dper').style.display='none';
+document.getElementById('modal-bg').addEventListener('click',e=>{
+  if(e.target.id==='modal-bg')cerrarModal();
 });
-document.addEventListener('touchstart',e=>{
-  if(!e.target.closest('#breg')&&!e.target.closest('#dreg')){const d=document.getElementById('dreg');if(d)d.style.display='none';}
-  if(!e.target.closest('#bper')&&!e.target.closest('#dper'))document.getElementById('dper').style.display='none';
-});
+
+document.addEventListener('touchstart',e=>{if(!e.target.closest('#busca')&&!e.target.closest('#drop'))document.getElementById('drop').style.display='none';});
+document.addEventListener('mousedown',e=>{if(!e.target.closest('#busca')&&!e.target.closest('#drop'))document.getElementById('drop').style.display='none';});
 
 init();
 </script>
