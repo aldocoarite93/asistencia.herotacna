@@ -230,6 +230,13 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
       <button class="gfb" id="gf-env" onclick="setFiltro('ENVIADO',this)">Enviados</button>
       <button class="gfb" id="gf-ent" onclick="setFiltro('ENTREGADO',this)">Entreg.</button>
     </div>
+    <div class="gfiltros" style="grid-template-columns:repeat(5,1fr)">
+      <button class="gfb on" id="ga-todos" onclick="setArticulo('todos',this)">Todo</button>
+      <button class="gfb" id="ga-cam" onclick="setArticulo('camiseta',this)">👕</button>
+      <button class="gfb" id="ga-buz" onclick="setArticulo('buzo',this)">🩱</button>
+      <button class="gfb" id="ga-bal" onclick="setArticulo('balón',this)">🏀</button>
+      <button class="gfb" id="ga-cal" onclick="setArticulo('calentador',this)">🧥</button>
+    </div>
     <div style="margin-bottom:10px">
       <button class="gfb" id="gf-deuda" onclick="toggleDeuda(this)" style="width:100%;padding:9px">💰 Solo con saldo pendiente</button>
     </div>
@@ -251,7 +258,7 @@ const API_D = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDG
 const API_P = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDGU9qedhEr_OskfqZtz5JujMhziD8zTrdwFENvSr1sQugw/exec";
 
 let AL=[], A=null, PROD=null, D={}, FB='', FN='';
-let PEDIDOS=[], FILTRO='todos', SOLO_DEUDA=false;
+let PEDIDOS=[], FILTRO='todos', SOLO_DEUDA=false, FILTRO_ART='todos';
 let MODAL_PED=null, MODAL_ESTADO='', MFB='', MFN='';
 
 const PRECIOS={camiseta:90,balon:75,buzo:109,calentador:59};
@@ -746,7 +753,15 @@ async function cargarPedidos(){
 
 function setFiltro(f,btn){
   FILTRO=f;
-  document.querySelectorAll('.gfiltros .gfb').forEach(b=>b.classList.remove('on'));
+  // quitar 'on' solo de los botones de estado (gf-)
+  ['gf-todos','gf-reg','gf-env','gf-ent'].forEach(id=>{const b=document.getElementById(id);if(b)b.classList.remove('on');});
+  btn.classList.add('on');
+  renderPedidos();
+}
+
+function setArticulo(a,btn){
+  FILTRO_ART=a;
+  ['ga-todos','ga-cam','ga-buz','ga-bal','ga-cal'].forEach(id=>{const b=document.getElementById(id);if(b)b.classList.remove('on');});
   btn.classList.add('on');
   renderPedidos();
 }
@@ -770,6 +785,7 @@ function renderPedidos(){
   let lista=PEDIDOS.slice();
 
   if(FILTRO!=='todos') lista=lista.filter(p=>(p.estado||'REGISTRADO').toUpperCase()===FILTRO);
+  if(FILTRO_ART!=='todos') lista=lista.filter(p=>(p.articulo||'').toLowerCase().indexOf(FILTRO_ART)>-1);
   if(SOLO_DEUDA) lista=lista.filter(p=>(parseFloat(p.saldo)||0)>0);
   if(q) lista=lista.filter(p=>(p.alumno||'').toLowerCase().includes(q)||String(p.cod||'').includes(q));
 
