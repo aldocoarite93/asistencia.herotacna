@@ -89,6 +89,8 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .vbtn{padding:9px;border:1.5px solid #ddd;border-radius:9px;background:#fff;color:#333;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;touch-action:manipulation}
 .vbtn.prim{border-color:#0F6E56;background:#F0FAF6;color:#0F6E56}
 .vprev{width:100%;max-height:140px;object-fit:cover;border-radius:8px;margin-top:8px;display:none}
+.apo-box{background:#fafafa;border:1px solid #ececec;border-radius:11px;padding:13px;margin-bottom:11px}
+.apo-tag{font-size:11px;font-weight:700;color:#0F6E56;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px}
 </style>
 </head>
 <body>
@@ -102,8 +104,9 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
   </div>
 
   <div class="maintabs">
-    <button class="mtab on" id="mt-mens" onclick="showMain('mens')">🎫 Mensualidades</button>
+    <button class="mtab on" id="mt-mens" onclick="showMain('mens')">🎫 Mensual.</button>
     <button class="mtab" id="mt-caja" onclick="showMain('caja')">💰 Caja</button>
+    <button class="mtab" id="mt-insc" onclick="showMain('insc')">📝 Inscribir</button>
     <button class="mtab" id="mt-res" onclick="showMain('res')">📊 Resumen</button>
   </div>
 
@@ -180,6 +183,27 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
       <button class="sb" id="btnGuardar" onclick="guardarCaja()">✅ Registrar movimiento</button>
     </div>
     <div id="caja-res"></div>
+  </div>
+
+  <!-- ============ INSCRIBIR (generar link) ============ -->
+  <div class="msec" id="main-insc">
+    <div class="sh">Generar link de inscripción</div>
+    <div style="font-size:12px;color:#888;margin-bottom:12px;line-height:1.5">Define el turno y precio de cada niño, y genera el link para enviarle al padre por WhatsApp.</div>
+
+    <div class="fs">
+      <span class="fl">¿Cuántos niños va a inscribir?</span>
+      <div class="cajas" style="grid-template-columns:repeat(4,1fr)">
+        <button class="cajab on" id="nn-1" onclick="setNinos(1)">1</button>
+        <button class="cajab" id="nn-2" onclick="setNinos(2)">2</button>
+        <button class="cajab" id="nn-3" onclick="setNinos(3)">3</button>
+        <button class="cajab" id="nn-4" onclick="setNinos(4)">4</button>
+      </div>
+    </div>
+
+    <div id="ninos-config"></div>
+
+    <button class="sb" onclick="generarLink()">🔗 Generar link</button>
+    <div id="link-result"></div>
   </div>
 
   <!-- ============ RESUMEN ============ -->
@@ -267,6 +291,7 @@ function showMain(id){
   document.getElementById('mt-'+id).classList.add('on');
   document.getElementById('main-'+id).classList.add('on');
   if(id==='res')cargarResumen();
+  if(id==='insc'&&!document.getElementById('ninos-config').innerHTML)renderNinosConfig();
 }
 function showSub(id){
   document.querySelectorAll('.subsec').forEach(s=>s.classList.remove('on'));
@@ -618,6 +643,113 @@ function renderResumen(){
     const caja=m.tipo==='MOVIMIENTO'?`${m.cajaOrigen}→${m.cajaDestino}`:(m.cajaDestino||m.cajaOrigen);
     return `<div class="mov-row"><div style="min-width:0"><div class="mov-cat">${m.categoria}</div><div class="mov-meta">${m.fecha} · ${caja}${m.descripcion?' · '+m.descripcion:''}</div></div><div class="mov-monto ${cls}">${signo} S/ ${v.toFixed(0)}</div></div>`;
   }).join('');
+}
+
+// ===== INSCRIBIR (generar link) =====
+let NUM_NINOS=1;
+const TURNOS_INSC={
+  TA1:{lbl:'TA1 · L-M-V 3:30-4:30pm · Camelias',precio:129},
+  TA2:{lbl:'TA2 · L-M-V 4:30-6:00pm · Camelias',precio:129},
+  TB1:{lbl:'TB1 · M-J-S 4:00-5:00pm · Camelias',precio:115},
+  TB2:{lbl:'TB2 · M-J-S 5:00-6:00pm · Camelias',precio:115},
+  TC1:{lbl:'TC1 · M-J-S 4:00-5:00pm · Coliseo Zela',precio:115},
+  TC2:{lbl:'TC2 · M-J-S 5:00-6:00pm · Coliseo Zela',precio:115}
+};
+const BASE_INSC="https://aldocoarite93.github.io/asistencia.herotacna/inscripcion.html";
+
+function setNinos(n){
+  NUM_NINOS=n;
+  ['nn-1','nn-2','nn-3','nn-4'].forEach((id,i)=>document.getElementById(id).className='cajab'+(i+1===n?' on':''));
+  renderNinosConfig();
+}
+
+function renderNinosConfig(){
+  const cont=document.getElementById('ninos-config');
+  let html='';
+  for(let i=1;i<=NUM_NINOS;i++){
+    const turnoOpts=Object.keys(TURNOS_INSC).map(t=>`<option value="${t}">${TURNOS_INSC[t].lbl}</option>`).join('');
+    html+=`
+    <div class="apo-box">
+      <div class="apo-tag">Niño ${i}</div>
+      <span class="fl">Turno</span>
+      <select class="fi" id="ni-turno-${i}" onchange="sugerirPrecio(${i})">${turnoOpts}</select>
+      <span class="fl">Precio inscripción (S/)</span>
+      <input class="fi" type="number" id="ni-precio-${i}" placeholder="Precio" style="font-weight:700">
+      <div class="combinado-tog" style="margin-bottom:8px">
+        <span class="ct-label">📐 Precio proporcional</span>
+        <div class="switch" id="ni-prop-sw-${i}" onclick="toggleProp(${i})"></div>
+      </div>
+      <div id="ni-prop-${i}" style="display:none;font-size:12px;color:#888;margin-bottom:8px">
+        Pon directamente el monto proporcional que calculaste en el campo de precio de arriba.
+      </div>
+      <div class="combinado-tog">
+        <span class="ct-label">🔄 Día cambiado (caso especial)</span>
+        <div class="switch" id="ni-dia-sw-${i}" onclick="toggleDia(${i})"></div>
+      </div>
+      <div id="ni-dia-${i}" style="display:none;margin-top:8px">
+        <span class="fl">Detalle del cambio</span>
+        <input class="fi" type="text" id="ni-diatxt-${i}" placeholder="Ej: TC1 pero sábado va en la tarde">
+      </div>
+    </div>`;
+  }
+  cont.innerHTML=html;
+  for(let i=1;i<=NUM_NINOS;i++)sugerirPrecio(i);
+}
+
+function sugerirPrecio(i){
+  const t=document.getElementById('ni-turno-'+i).value;
+  const inp=document.getElementById('ni-precio-'+i);
+  if(inp&&!inp.dataset.touched)inp.value=TURNOS_INSC[t].precio;
+}
+function toggleProp(i){
+  const sw=document.getElementById('ni-prop-sw-'+i);
+  const box=document.getElementById('ni-prop-'+i);
+  const on=sw.className.indexOf('on')===-1;
+  sw.className='switch'+(on?' on':'');
+  box.style.display=on?'block':'none';
+}
+function toggleDia(i){
+  const sw=document.getElementById('ni-dia-sw-'+i);
+  const box=document.getElementById('ni-dia-'+i);
+  const on=sw.className.indexOf('on')===-1;
+  sw.className='switch'+(on?' on':'');
+  box.style.display=on?'block':'none';
+}
+
+function generarLink(){
+  let ninos=[];
+  for(let i=1;i<=NUM_NINOS;i++){
+    const turno=document.getElementById('ni-turno-'+i).value;
+    const precio=parseFloat(document.getElementById('ni-precio-'+i).value)||0;
+    if(precio<=0){alert('Pon el precio del niño '+i);return;}
+    const diaSw=document.getElementById('ni-dia-sw-'+i).className.indexOf('on')>-1;
+    const diatxt=diaSw?document.getElementById('ni-diatxt-'+i).value.trim():'';
+    ninos.push({t:turno,p:precio,d:diatxt});
+  }
+  // Codificar config en el link (compacto)
+  const cfg=encodeURIComponent(JSON.stringify(ninos));
+  const link=BASE_INSC+'?c='+cfg;
+
+  const txt=`🏀 *HERO TACNA ACADEMIA*\n\n¡Hola! Para completar la inscripción, por favor llena este formulario:\n\n${link}\n\nAhí registras los datos, firmas y subes tu comprobante de pago. ¡Bienvenido a la familia Hero! 🟢`;
+
+  document.getElementById('link-result').innerHTML=`
+    <div class="ok-card" style="text-align:left">
+      <div style="font-size:13px;color:#0F6E56;font-weight:700;margin-bottom:8px">✅ LINK GENERADO (${NUM_NINOS} niño${NUM_NINOS>1?'s':''})</div>
+      <div style="font-size:11px;color:#666;word-break:break-all;background:#fff;padding:8px;border-radius:8px;border:1px solid #ddd;margin-bottom:10px">${link}</div>
+      <button class="wa-btn" style="background:#25D366;color:#fff;width:100%;padding:13px;border:none;border-radius:10px;font-weight:700;font-family:inherit;cursor:pointer" onclick='compartirLink(${JSON.stringify(JSON.stringify(txt))})'>📤 Enviar por WhatsApp</button>
+      <button class="new-btn" style="width:100%;padding:10px;background:#f0f0f0;color:#666;border:none;border-radius:10px;font-weight:600;font-family:inherit;cursor:pointer;margin-top:8px" onclick="copiarLink('${link}')">📋 Copiar link</button>
+    </div>`;
+}
+
+async function compartirLink(txtStr){
+  const txt=JSON.parse(txtStr);
+  try{
+    if(navigator.share)await navigator.share({text:txt});
+    else{await navigator.clipboard.writeText(txt);alert('✅ Copiado, pégalo en WhatsApp');}
+  }catch(e){try{await navigator.clipboard.writeText(txt);alert('✅ Copiado');}catch(e2){alert(txt);}}
+}
+async function copiarLink(link){
+  try{await navigator.clipboard.writeText(link);alert('✅ Link copiado');}catch(e){alert(link);}
 }
 
 document.addEventListener('mousedown',e=>{if(!e.target.closest('#bmens')&&!e.target.closest('#dmens')){const d=document.getElementById('dmens');if(d)d.style.display='none';}});
