@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Hero Tacna — Inscripción</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding:12px}
+.app{max-width:480px;margin:0 auto;background:#fff;border-radius:16px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,0.1)}
+.head{text-align:center;padding-bottom:16px;margin-bottom:6px;border-bottom:2px solid #0F6E56}
+.head img{max-width:180px;max-height:90px;object-fit:contain;margin-bottom:6px}
+.head-title{font-size:18px;font-weight:800;color:#0F6E56;letter-spacing:0.5px}
+.head-sub{font-size:12px;color:#999;margin-top:3px}
+.sec-title{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#fff;background:#0F6E56;padding:9px 14px;border-radius:9px;margin:18px 0 12px}
+.fl{font-size:12px;font-weight:600;color:#555;margin-bottom:6px;display:block}
+.fl .req{color:#D14343}
+.fi{width:100%;padding:11px 13px;border:1.5px solid #ddd;border-radius:9px;font-size:15px;font-family:inherit;background:#fff;color:#111;margin-bottom:12px}
+.fi:focus{outline:none;border-color:#0F6E56}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.nino-box{background:#F0FAF6;border:1.5px solid #c8ead9;border-radius:12px;padding:14px;margin-bottom:14px}
+.nino-tag{font-size:12px;font-weight:700;color:#0F6E56;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.nino-info{font-size:11px;color:#0F6E56;background:#fff;padding:3px 10px;border-radius:20px;border:1px solid #c8ead9}
+.apo-box{background:#fafafa;border:1px solid #ececec;border-radius:11px;padding:13px;margin-bottom:11px}
+.apo-tag{font-size:11px;font-weight:700;color:#0F6E56;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.5px}
+.addbtn{width:100%;padding:11px;background:#fff;color:#0F6E56;border:1.5px dashed #0F6E56;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:11px}
+.terminos{background:#fafafa;border:1px solid #ececec;border-radius:11px;padding:14px;font-size:12px;color:#444;line-height:1.7;margin-bottom:12px;max-height:220px;overflow-y:auto}
+.terminos b{color:#0F6E56}
+.terminos h4{font-size:13px;color:#0F6E56;margin:10px 0 4px}
+.check-row{display:flex;align-items:flex-start;gap:10px;padding:12px;background:#fff;border:1.5px solid #ddd;border-radius:9px;margin-bottom:9px;cursor:pointer}
+.check-row.on{border-color:#0F6E56;background:#F0FAF6}
+.check-box{width:24px;height:24px;border:2px solid #bbb;border-radius:6px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:15px;color:#fff;margin-top:1px}
+.check-row.on .check-box{background:#0F6E56;border-color:#0F6E56}
+.check-txt{font-size:13px;color:#333;line-height:1.5}
+.firma-wrap{border:2px solid #ddd;border-radius:11px;overflow:hidden;background:#fff;margin-bottom:8px;position:relative}
+.firma-canvas{width:100%;height:180px;display:block;touch-action:none;background:#fff}
+.firma-hint{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#ccc;font-size:14px;pointer-events:none}
+.firma-clear{width:100%;padding:9px;background:#f0f0f0;color:#666;border:none;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;margin-bottom:14px}
+.pago-box{background:#FFFBEB;border:1.5px solid #fde8c8;border-radius:12px;padding:14px;margin-bottom:14px}
+.pago-total{font-size:13px;color:#666;text-align:center;margin-bottom:4px}
+.pago-monto{font-size:30px;font-weight:800;color:#0F6E56;text-align:center;margin-bottom:12px}
+.vbtn{width:100%;padding:12px;border:1.5px solid #0F6E56;border-radius:10px;background:#F0FAF6;color:#0F6E56;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:8px}
+.vprev{width:100%;max-height:200px;object-fit:contain;border-radius:8px;margin-top:8px;display:none;border:1px solid #ddd}
+.sb{width:100%;padding:16px;background:#0F6E56;color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation;min-height:54px}
+.sb:disabled{opacity:0.5}
+.ok-screen{text-align:center;padding:30px 16px}
+.ok-icon{width:70px;height:70px;background:#ECFDF5;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 16px}
+.ok-title{font-size:20px;font-weight:800;color:#0F6E56;margin-bottom:8px}
+.ok-txt{font-size:14px;color:#666;line-height:1.6;margin-bottom:20px}
+.wa-btn{width:100%;padding:14px;background:#25D366;color:#fff;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-bottom:9px}
+.new-btn{width:100%;padding:12px;background:#f0f0f0;color:#666;border:none;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
+.foot{text-align:center;font-size:11px;color:#bbb;margin-top:18px;padding-top:14px;border-top:1px solid #eee}
+.err-msg{background:#FEF2F2;color:#D14343;font-size:13px;padding:10px 14px;border-radius:9px;margin-bottom:12px;display:none}
+</style>
+</head>
+<body>
+<div class="app" id="app">
+  <div class="head">
+    <img id="logo" src="https://aldocoarite93.github.io/asistencia.herotacna/logo.png" alt="Hero Tacna" onerror="this.style.display='none';document.getElementById('logo-fallback').style.display='block'">
+    <div id="logo-fallback" style="display:none">
+      <div style="width:54px;height:54px;background:#0F6E56;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;margin:0 auto 10px">🏀</div>
+    </div>
+    <div class="head-title">FORMULARIO DE INSCRIPCIÓN</div>
+    <div class="head-sub">Hero Tacna Academia · 944 319 632</div>
+  </div>
+
+  <div id="form">
+    <div class="err-msg" id="err"></div>
+    <div id="ninos-cont"></div>
+
+    <!-- APODERADO -->
+    <div class="sec-title">👨‍👩‍👧 Datos del Apoderado</div>
+    <div class="apo-box">
+      <div class="apo-tag">Apoderado 1 (principal)</div>
+      <span class="fl">Nombre y apellidos <span class="req">*</span></span>
+      <input class="fi" id="apo1Nombre" type="text" placeholder="Nombre del apoderado">
+      <div class="row2">
+        <div><span class="fl">Teléfono <span class="req">*</span></span><input class="fi" id="apo1Tel" type="tel" placeholder="987654321"></div>
+        <div><span class="fl">Parentesco <span class="req">*</span></span><input class="fi" id="apo1Parentesco" type="text" placeholder="Padre, madre..."></div>
+      </div>
+      <span class="fl">DNI</span>
+      <input class="fi" id="apo1Dni" type="number" placeholder="DNI del apoderado">
+    </div>
+    <button class="addbtn" id="addApo" onclick="toggleApo2()">+ Agregar segundo apoderado</button>
+    <div class="apo-box" id="apo2box" style="display:none">
+      <div class="apo-tag">Apoderado 2 (opcional)</div>
+      <span class="fl">Nombre y apellidos</span>
+      <input class="fi" id="apo2Nombre" type="text" placeholder="Nombre del apoderado">
+      <div class="row2">
+        <div><span class="fl">Teléfono</span><input class="fi" id="apo2Tel" type="tel" placeholder="987654321"></div>
+        <div><span class="fl">Parentesco</span><input class="fi" id="apo2Parentesco" type="text" placeholder="Padre, madre..."></div>
+      </div>
+      <span class="fl">DNI</span>
+      <input class="fi" id="apo2Dni" type="number" placeholder="DNI del apoderado">
+    </div>
+
+    <!-- TÉRMINOS -->
+    <div class="sec-title">📋 Términos y Condiciones</div>
+    <div class="terminos">
+      Declaro que los datos consignados corresponden al menor identificado, y que soy su padre, madre o apoderado legal, autorizando en su representación.
+      <h4>Tratamiento de datos</h4>
+      Autorizo a <b>HERO TACNA ACADEMIA</b> a recopilar y tratar los datos personales del menor, únicamente para fines administrativos, formativos y organizativos vinculados a las actividades de la academia.
+      <h4>Uso de imagen</h4>
+      Autorizo el registro y uso de imágenes, fotografías y/o videos del menor obtenidos durante clases, entrenamientos, actividades internas o eventos deportivos, los cuales podrán ser utilizados exclusivamente con fines formativos y promocionales de HERO TACNA ACADEMIA (redes sociales, material gráfico o medios digitales institucionales). El uso de imagen no genera pago ni compensación económica, y no será cedido ni utilizado por terceros ajenos a la academia.
+      <h4>Compromiso</h4>
+      La academia se compromete a manejar responsablemente los datos personales y el material audiovisual del menor. Esta autorización puede ser revocada por escrito en cualquier momento.
+    </div>
+
+    <div class="check-row" id="acepta" onclick="toggleAcepta()">
+      <div class="check-box" id="acepta-box"></div>
+      <div class="check-txt">He leído y <b>acepto los términos y condiciones</b>, incluyendo la autorización de datos personales y uso de imagen del menor. <span class="req">*</span></div>
+    </div>
+
+    <!-- FIRMA -->
+    <div class="sec-title">✍️ Firma del Apoderado</div>
+    <span class="fl">Firme con su dedo en el recuadro <span class="req">*</span></span>
+    <div class="firma-wrap">
+      <canvas class="firma-canvas" id="firma"></canvas>
+      <div class="firma-hint" id="firma-hint">✍️ Firme aquí</div>
+    </div>
+    <button class="firma-clear" onclick="limpiarFirma()">🗑️ Borrar firma</button>
+    <div class="row2">
+      <div><span class="fl">Nombre y apellidos <span class="req">*</span></span><input class="fi" id="firmanteNombre" type="text" placeholder="Quien firma"></div>
+      <div><span class="fl">DNI <span class="req">*</span></span><input class="fi" id="firmanteDni" type="number" placeholder="DNI"></div>
+    </div>
+
+    <!-- PAGO -->
+    <div class="sec-title">💳 Pago de Inscripción</div>
+    <div class="pago-box">
+      <div class="pago-total">Total a pagar por inscripción:</div>
+      <div class="pago-monto" id="pago-monto">S/ 0</div>
+      <div style="font-size:12px;color:#666;text-align:center;margin-bottom:12px">Yapea al <b>944 319 632</b> (Hero Tacna) y sube tu comprobante 👇</div>
+      <button class="vbtn" onclick="document.getElementById('voucher-input').click()">📤 Subir comprobante de Yape</button>
+      <input type="file" id="voucher-input" accept="image/*" style="display:none" onchange="cargarVoucher(this)">
+      <div id="voucher-txt" style="font-size:12px;color:#888;text-align:center"></div>
+      <img id="voucher-prev" class="vprev">
+    </div>
+
+    <button class="sb" id="btnEnviar" onclick="enviar()">✅ Enviar inscripción</button>
+    <div class="foot">Hero Tacna Academia · /herotacna · Loza deportiva Urb. Las Camelias</div>
+  </div>
+
+  <div id="ok" style="display:none"></div>
+</div>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDGU9qedhEr_OskfqZtz5JujMhziD8zTrdwFENvSr1sQugw/exec";
+
+const TURNOS={
+  TA1:'TA1 · L-M-V 3:30-4:30pm · Camelias',
+  TA2:'TA2 · L-M-V 4:30-6:00pm · Camelias',
+  TB1:'TB1 · M-J-S 4:00-5:00pm · Camelias',
+  TB2:'TB2 · M-J-S 5:00-6:00pm · Camelias',
+  TC1:'TC1 · M-J-S 4:00-5:00pm · Coliseo Zela',
+  TC2:'TC2 · M-J-S 5:00-6:00pm · Coliseo Zela'
+};
+
+let NINOS=[], ACEPTA=false, APO2=false, VOUCHER='', TOTAL=0;
+let firmaCanvas, firmaCtx, firmando=false, firmaVacia=true;
+
+function init(){
+  // Leer config del link (?c=...)
+  const params=new URLSearchParams(window.location.search);
+  const c=params.get('c');
+  if(c){
+    try{NINOS=JSON.parse(decodeURIComponent(c));}catch(e){NINOS=[{t:'',p:0,d:''}];}
+  } else {
+    NINOS=[{t:'',p:0,d:''}];
+  }
+  renderNinos();
+  initFirma();
+}
+
+function renderNinos(){
+  const cont=document.getElementById('ninos-cont');
+  cont.innerHTML='<div class="sec-title">👦 Datos del / los Niño(s)</div>';
+  TOTAL=0;
+  NINOS.forEach((n,idx)=>{
+    TOTAL+=parseFloat(n.p)||0;
+    const turnoLbl=TURNOS[n.t]||n.t||'Por asignar';
+    cont.innerHTML+=`
+    <div class="nino-box">
+      <div class="nino-tag"><span>Niño ${idx+1}</span><span class="nino-info">${turnoLbl}${n.d?' · 🔄 '+n.d:''}</span></div>
+      <span class="fl">Nombre y apellidos <span class="req">*</span></span>
+      <input class="fi" id="n-nombre-${idx}" type="text" placeholder="Nombre completo del niño(a)">
+      <div class="row2">
+        <div><span class="fl">Fecha nacimiento <span class="req">*</span></span><input class="fi" id="n-fnac-${idx}" type="date"></div>
+        <div><span class="fl">DNI</span><input class="fi" id="n-dni-${idx}" type="number" placeholder="DNI"></div>
+      </div>
+      <span class="fl">Dirección <span class="req">*</span></span>
+      <input class="fi" id="n-dir-${idx}" type="text" placeholder="Dirección">
+      <div class="row2">
+        <div><span class="fl">Colegio <span class="req">*</span></span><input class="fi" id="n-col-${idx}" type="text" placeholder="Colegio"></div>
+        <div><span class="fl">Talla camiseta</span>
+          <select class="fi" id="n-talla-${idx}"><option value="">—</option><option>4</option><option>6</option><option>8</option><option>10</option><option>12</option><option>14</option><option>16</option><option>S</option><option>M</option><option>L</option><option>XL</option></select>
+        </div>
+      </div>
+    </div>`;
+  });
+  document.getElementById('pago-monto').textContent='S/ '+TOTAL;
+}
+
+// ===== Firma =====
+function initFirma(){
+  firmaCanvas=document.getElementById('firma');
+  const rect=firmaCanvas.getBoundingClientRect();
+  firmaCanvas.width=rect.width*2;firmaCanvas.height=180*2;
+  firmaCtx=firmaCanvas.getContext('2d');
+  firmaCtx.scale(2,2);firmaCtx.lineWidth=2.2;firmaCtx.lineCap='round';firmaCtx.lineJoin='round';firmaCtx.strokeStyle='#111';
+  firmaCanvas.addEventListener('mousedown',startDraw);
+  firmaCanvas.addEventListener('mousemove',draw);
+  firmaCanvas.addEventListener('mouseup',endDraw);
+  firmaCanvas.addEventListener('mouseleave',endDraw);
+  firmaCanvas.addEventListener('touchstart',startDrawT,{passive:false});
+  firmaCanvas.addEventListener('touchmove',drawT,{passive:false});
+  firmaCanvas.addEventListener('touchend',endDraw);
+}
+function getPos(e){const r=firmaCanvas.getBoundingClientRect();return {x:e.clientX-r.left,y:e.clientY-r.top};}
+function getPosT(e){const r=firmaCanvas.getBoundingClientRect();return {x:e.touches[0].clientX-r.left,y:e.touches[0].clientY-r.top};}
+function startDraw(e){firmando=true;const p=getPos(e);firmaCtx.beginPath();firmaCtx.moveTo(p.x,p.y);}
+function draw(e){if(!firmando)return;const p=getPos(e);firmaCtx.lineTo(p.x,p.y);firmaCtx.stroke();marcar();}
+function startDrawT(e){e.preventDefault();firmando=true;const p=getPosT(e);firmaCtx.beginPath();firmaCtx.moveTo(p.x,p.y);}
+function drawT(e){e.preventDefault();if(!firmando)return;const p=getPosT(e);firmaCtx.lineTo(p.x,p.y);firmaCtx.stroke();marcar();}
+function endDraw(){firmando=false;}
+function marcar(){if(firmaVacia){firmaVacia=false;document.getElementById('firma-hint').style.display='none';}}
+function limpiarFirma(){firmaCtx.clearRect(0,0,firmaCanvas.width,firmaCanvas.height);firmaVacia=true;document.getElementById('firma-hint').style.display='block';}
+
+function toggleApo2(){APO2=!APO2;document.getElementById('apo2box').style.display=APO2?'block':'none';document.getElementById('addApo').textContent=APO2?'− Quitar segundo apoderado':'+ Agregar segundo apoderado';}
+function toggleAcepta(){ACEPTA=!ACEPTA;document.getElementById('acepta').classList.toggle('on',ACEPTA);document.getElementById('acepta-box').textContent=ACEPTA?'✓':'';}
+
+function cargarVoucher(input){
+  const f=input.files[0];if(!f)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      const c=document.createElement('canvas');const M=900;let w=img.width,h=img.height;
+      if(w>h){if(w>M){h=h*(M/w);w=M;}}else{if(h>M){w=w*(M/h);h=M;}}
+      c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+      const d=c.toDataURL('image/jpeg',0.7);
+      VOUCHER=d.split(',')[1];
+      const p=document.getElementById('voucher-prev');p.src=d;p.style.display='block';
+      document.getElementById('voucher-txt').textContent='✅ Comprobante cargado';
+    };img.src=e.target.result;
+  };reader.readAsDataURL(f);
+}
+
+function showErr(msg){const e=document.getElementById('err');e.textContent='⚠️ '+msg;e.style.display='block';window.scrollTo({top:0,behavior:'smooth'});}
+
+function enviar(){
+  document.getElementById('err').style.display='none';
+  const g=id=>{const el=document.getElementById(id);return el?el.value.trim():'';};
+  // Validar cada niño
+  let ninosData=[];
+  for(let i=0;i<NINOS.length;i++){
+    if(!g('n-nombre-'+i))return showErr('Falta el nombre del niño '+(i+1));
+    if(!g('n-fnac-'+i))return showErr('Falta la fecha de nacimiento del niño '+(i+1));
+    if(!g('n-dir-'+i))return showErr('Falta la dirección del niño '+(i+1));
+    if(!g('n-col-'+i))return showErr('Falta el colegio del niño '+(i+1));
+    ninosData.push({
+      nombre:g('n-nombre-'+i),fnac:g('n-fnac-'+i),dni:g('n-dni-'+i),
+      direccion:g('n-dir-'+i),colegio:g('n-col-'+i),talla:g('n-talla-'+i),
+      turno:NINOS[i].t,precio:NINOS[i].p,diaCambio:NINOS[i].d||''
+    });
+  }
+  if(!g('apo1Nombre'))return showErr('Falta el nombre del apoderado.');
+  if(!g('apo1Tel'))return showErr('Falta el teléfono del apoderado.');
+  if(!g('apo1Parentesco'))return showErr('Falta el parentesco.');
+  if(!ACEPTA)return showErr('Debes aceptar los términos y condiciones.');
+  if(firmaVacia)return showErr('Falta la firma.');
+  if(!g('firmanteNombre'))return showErr('Falta el nombre de quien firma.');
+  if(!g('firmanteDni'))return showErr('Falta el DNI de quien firma.');
+  if(!VOUCHER)return showErr('Sube el comprobante de pago de Yape.');
+
+  const firma=firmaCanvas.toDataURL('image/jpeg',0.7).split(',')[1];
+  const datos={
+    app:'inscripciones',
+    ninos:ninosData,
+    apo1Nombre:g('apo1Nombre'),apo1Tel:g('apo1Tel'),apo1Parentesco:g('apo1Parentesco'),apo1Dni:g('apo1Dni'),
+    apo2Nombre:APO2?g('apo2Nombre'):'',apo2Tel:APO2?g('apo2Tel'):'',apo2Parentesco:APO2?g('apo2Parentesco'):'',apo2Dni:APO2?g('apo2Dni'):'',
+    aceptaTerminos:'SÍ',firmanteNombre:g('firmanteNombre'),firmanteDni:g('firmanteDni'),
+    total:TOTAL,firma,voucher:VOUCHER
+  };
+
+  const btn=document.getElementById('btnEnviar');btn.disabled=true;btn.textContent='⏳ Enviando...';
+  fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify(datos)});
+  setTimeout(()=>mostrarOk(datos),1800);
+}
+
+function mostrarOk(d){
+  document.getElementById('form').style.display='none';
+  const ok=document.getElementById('ok');ok.style.display='block';
+  let resumen=`🏀 HERO TACNA ACADEMIA\n📋 INSCRIPCIÓN REGISTRADA\n`;
+  d.ninos.forEach((n,i)=>{
+    resumen+=`\n👦 Niño ${i+1}: ${n.nombre}\n⏰ ${n.turno}${n.diaCambio?' (🔄 '+n.diaCambio+')':''}\n💰 Inscripción: S/ ${n.precio}\n`;
+  });
+  resumen+=`\n👨 Apoderado: ${d.apo1Nombre}\n📱 ${d.apo1Tel} (${d.apo1Parentesco})\n✍️ Firmado por: ${d.firmanteNombre} (DNI ${d.firmanteDni})\n💳 Total pagado: S/ ${d.total}\n\n✅ Comprobante enviado.`;
+  ok.innerHTML=`
+    <div class="ok-screen">
+      <div class="ok-icon">✅</div>
+      <div class="ok-title">¡Inscripción enviada!</div>
+      <div class="ok-txt">Los datos se registraron correctamente.<br>Verificaremos tu pago y nos pondremos en contacto pronto. ¡Bienvenido a la familia Hero! 🟢</div>
+      <button class="wa-btn" onclick='compartir(${JSON.stringify(JSON.stringify(resumen))})'>📤 Compartir resumen por WhatsApp</button>
+    </div>`;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+async function compartir(txtStr){
+  const txt=JSON.parse(txtStr);
+  try{if(navigator.share)await navigator.share({text:txt});else{await navigator.clipboard.writeText(txt);alert('✅ Copiado');}}
+  catch(e){try{await navigator.clipboard.writeText(txt);alert('✅ Copiado');}catch(e2){alert(txt);}}
+}
+
+init();
+</script>
+</body>
+</html>
