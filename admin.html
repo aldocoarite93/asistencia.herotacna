@@ -86,6 +86,9 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .b-deb{background:#FEF2F2;color:#D14343}
 .b-par{background:#FFFBEB;color:#B26A00}
 .xb{background:none;border:none;font-size:18px;cursor:pointer;color:#bbb;padding:4px 6px}
+.vbtn{padding:9px;border:1.5px solid #ddd;border-radius:9px;background:#fff;color:#333;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;touch-action:manipulation}
+.vbtn.prim{border-color:#0F6E56;background:#F0FAF6;color:#0F6E56}
+.vprev{width:100%;max-height:140px;object-fit:cover;border-radius:8px;margin-top:8px;display:none}
 </style>
 </head>
 <body>
@@ -163,6 +166,17 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
       </div>
       <div class="fs"><span class="fl">Descripción (opcional)</span><textarea class="fta" id="desc" placeholder="Detalle..."></textarea></div>
       <div class="fs"><span class="fl">¿Quién registra?</span><select class="fi" id="quien"><option value="Aldo">Aldo</option><option value="Mauricio">Mauricio</option><option value="Otro">Otro</option></select></div>
+      <div class="fs">
+        <span class="fl">📎 Voucher (opcional · pega con Ctrl+V 📋)</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button type="button" class="vbtn prim" onclick="document.getElementById('cf-cam').click()">📸 Foto</button>
+          <button type="button" class="vbtn" onclick="document.getElementById('cf-gal').click()">🖼️ Adjuntar</button>
+        </div>
+        <div id="cf-vt" style="font-size:12px;color:#888;margin-top:6px"></div>
+        <img id="cf-prev" class="vprev">
+        <input type="file" id="cf-cam" accept="image/*" capture="environment" style="display:none" onchange="cfFoto(this)">
+        <input type="file" id="cf-gal" accept="image/*" style="display:none" onchange="cfFoto(this)">
+      </div>
       <button class="sb" id="btnGuardar" onclick="guardarCaja()">✅ Registrar movimiento</button>
     </div>
     <div id="caja-res"></div>
@@ -193,6 +207,38 @@ let TIPO=null, CAT=null, CAJA_SEL=null, COMB=false;
 let mesActual=new Date(), mesControl=new Date();
 let DATA_CAJA=null, DATA_MENS=null, CONTROL_VIEW='deben';
 let MENS_COMB=false;
+let CF_FOTO='', CF_NOM='', MF_FOTO='', MF_NOM='';
+
+// Procesa una imagen y la deja lista en base64 (comprimida)
+function procesarImg(file, cb){
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      const c=document.createElement('canvas');
+      const M=800;let w=img.width,h=img.height;
+      if(w>h){if(w>M){h=h*(M/w);w=M;}}else{if(h>M){w=w*(M/h);h=M;}}
+      c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+      cb(c.toDataURL('image/jpeg',0.7));
+    };img.src=e.target.result;
+  };reader.readAsDataURL(file);
+}
+function cfFoto(input){const f=input.files[0];if(!f)return;procesarImg(f,d=>{CF_FOTO=d.split(',')[1];CF_NOM='caja_'+Date.now()+'.jpg';const p=document.getElementById('cf-prev');p.src=d;p.style.display='block';document.getElementById('cf-vt').textContent='✅ Voucher listo';});}
+function mfFoto(input){const f=input.files[0];if(!f)return;procesarImg(f,d=>{MF_FOTO=d.split(',')[1];MF_NOM='mens_'+Date.now()+'.jpg';const p=document.getElementById('mf-prev');p.src=d;p.style.display='block';document.getElementById('mf-vt').textContent='✅ Voucher listo';});}
+// Pegar con Ctrl+V según la pestaña activa
+document.addEventListener('paste',function(e){
+  const items=(e.clipboardData||window.clipboardData).items;
+  for(let i=0;i<items.length;i++){
+    if(items[i].type.indexOf('image')!==-1){
+      const blob=items[i].getAsFile();if(!blob)break;
+      const cajaVisible=document.getElementById('main-caja').classList.contains('on');
+      const mensVisible=document.getElementById('main-mens').classList.contains('on');
+      if(cajaVisible){procesarImg(blob,d=>{CF_FOTO=d.split(',')[1];CF_NOM='caja_'+Date.now()+'.jpg';const p=document.getElementById('cf-prev');p.src=d;p.style.display='block';document.getElementById('cf-vt').textContent='✅ Voucher pegado';});e.preventDefault();}
+      else if(mensVisible&&ALU_MENS){procesarImg(blob,d=>{MF_FOTO=d.split(',')[1];MF_NOM='mens_'+Date.now()+'.jpg';const p=document.getElementById('mf-prev');if(p){p.src=d;p.style.display='block';}const vt=document.getElementById('mf-vt');if(vt)vt.textContent='✅ Voucher pegado';});e.preventDefault();}
+      break;
+    }
+  }
+});
 
 const CATEGORIAS={
   INGRESO:['Inscripción','Mensualidad','Tienda','Venta de agua','Torneos','Otro ingreso'],
@@ -247,7 +293,7 @@ function filtMens(){
 
 function elegMens(cod){
   ALU_MENS=AL.find(a=>String(a.cod)===String(cod));
-  MENS_COMB=false;
+  MENS_COMB=false;MF_FOTO='';MF_NOM='';
   document.getElementById('bmens').value='';
   document.getElementById('dmens').style.display='none';
   const precioGuardado=PRECIOS[String(cod)]?PRECIOS[String(cod)].precio:'';
@@ -297,6 +343,17 @@ function elegMens(cod){
       <div id="mens-comb-info" style="font-size:12px;font-weight:600;margin-top:8px;color:#888"></div>
     </div>
     <div class="fs"><span class="fl">¿Quién registra?</span><select class="fi" id="mens-quien"><option value="Aldo">Aldo</option><option value="Mauricio">Mauricio</option><option value="Otro">Otro</option></select></div>
+    <div class="fs">
+      <span class="fl">📎 Voucher (opcional · pega con Ctrl+V 📋)</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button type="button" class="vbtn prim" onclick="document.getElementById('mf-cam').click()">📸 Foto</button>
+        <button type="button" class="vbtn" onclick="document.getElementById('mf-gal').click()">🖼️ Adjuntar</button>
+      </div>
+      <div id="mf-vt" style="font-size:12px;color:#888;margin-top:6px"></div>
+      <img id="mf-prev" class="vprev">
+      <input type="file" id="mf-cam" accept="image/*" capture="environment" style="display:none" onchange="mfFoto(this)">
+      <input type="file" id="mf-gal" accept="image/*" style="display:none" onchange="mfFoto(this)">
+    </div>
     <button class="sb" id="btnMens" onclick="guardarMens()">✅ Registrar pago</button>
     <div id="mens-result"></div>`;
   TIPO_MENS='Mensualidad';CAJA_MENS=null;
@@ -387,7 +444,7 @@ function guardarMens(){
 
   const btn=document.getElementById('btnMens');
   btn.disabled=true;btn.textContent='⏳ Guardando...';
-  const payload={app:'mensualidades',cod:ALU_MENS.cod,alumno:ALU_MENS.nom,mes,tipo:TIPO_MENS,precioMes:precio,montoPagado:pago,registradoPor:quien,partes};
+  const payload={app:'mensualidades',cod:ALU_MENS.cod,alumno:ALU_MENS.nom,mes,tipo:TIPO_MENS,precioMes:precio,montoPagado:pago,registradoPor:quien,partes,foto:MF_FOTO,nombreFoto:MF_NOM};
   fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
 
   setTimeout(()=>{
@@ -398,7 +455,7 @@ function guardarMens(){
         <div style="font-size:22px;font-weight:800;color:#0F6E56;margin-top:4px">S/ ${pago}</div>
         <div style="font-size:13px;color:#666;margin-top:4px">${ALU_MENS.nom.split(' ').slice(0,2).join(' ')} · ${TIPO_MENS} · ${mes}</div>
         ${saldo>0?`<div style="font-size:13px;color:#D14343;margin-top:4px;font-weight:600">Debe: S/ ${saldo}</div>`:`<div style="font-size:13px;color:#0F6E56;margin-top:4px;font-weight:600">Pagó completo</div>`}
-        <button class="sb" style="margin-top:12px" onclick="ALU_MENS=null;document.getElementById('mens-form').innerHTML='';">+ Cobrar a otro</button>
+        <button class="sb" style="margin-top:12px" onclick="MF_FOTO='';MF_NOM='';ALU_MENS=null;document.getElementById('mens-form').innerHTML='';">+ Cobrar a otro</button>
       </div>`;
   },1200);
 }
@@ -499,7 +556,7 @@ function guardarCaja(){
     else partes=[{monto:total,cajaOrigen:CAJA_SEL,cajaDestino:''}];
   }
   const btn=document.getElementById('btnGuardar');btn.disabled=true;btn.textContent='⏳ Guardando...';
-  fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'caja',tipo:TIPO,categoria:CAT,descripcion:desc,registradoPor:quien,partes})});
+  fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'caja',tipo:TIPO,categoria:CAT,descripcion:desc,registradoPor:quien,partes,foto:CF_FOTO,nombreFoto:CF_NOM})});
   setTimeout(()=>{
     const col=TIPO==='INGRESO'?'#0F6E56':TIPO==='GASTO'?'#D14343':'#2563EB';
     const signo=TIPO==='GASTO'?'−':TIPO==='INGRESO'?'+':'';
@@ -512,7 +569,8 @@ function guardarCaja(){
   },1200);
 }
 function nuevoCaja(){
-  TIPO=null;CAT=null;CAJA_SEL=null;COMB=false;
+  TIPO=null;CAT=null;CAJA_SEL=null;COMB=false;CF_FOTO='';CF_NOM='';
+  document.getElementById('cf-prev').style.display='none';document.getElementById('cf-vt').textContent='';
   document.getElementById('caja-res').innerHTML='';document.getElementById('form-mov').style.display='none';
   document.getElementById('monto').value='';document.getElementById('desc').value='';
   document.getElementById('m-efec').value='';document.getElementById('m-yape').value='';
