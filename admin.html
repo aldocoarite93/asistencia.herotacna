@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Hero Tacna — Administración</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding:12px}
+.app{max-width:460px;margin:0 auto;background:#fff;border-radius:16px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,0.1)}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid #eee}
+.logo-icon{width:42px;height:42px;min-width:42px;background:#0F6E56;border-radius:11px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px}
+.logo-text{font-size:16px;font-weight:700;color:#111}
+.logo-sub{font-size:12px;color:#999;margin-top:1px}
+.spinner{display:inline-block;width:11px;height:11px;border:2px solid #ddd;border-top-color:#0F6E56;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:4px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.maintabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:16px;background:#f0f0f0;border-radius:12px;padding:4px}
+.mtab{padding:10px 3px;border:none;border-radius:9px;background:none;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:#888;touch-action:manipulation;text-align:center}
+.mtab.on{background:#fff;color:#0F6E56;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
+.msec{display:none}.msec.on{display:block}
+.sh{font-size:11px;font-weight:600;color:#999;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.6px}
+.fs{background:#fafafa;border:1px solid #ececec;border-radius:11px;padding:13px;margin-bottom:11px}
+.fl{font-size:12px;font-weight:600;color:#555;margin-bottom:7px;display:block}
+.fi{width:100%;padding:11px 13px;border:1.5px solid #ddd;border-radius:9px;font-size:15px;font-family:inherit;background:#fff;color:#111}
+.fi:focus{outline:none;border-color:#0F6E56}
+.fta{width:100%;padding:10px 13px;border:1.5px solid #ddd;border-radius:9px;font-size:14px;font-family:inherit;background:#fff;color:#111;resize:none;height:55px}
+.fta:focus{outline:none;border-color:#0F6E56}
+.tipo3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:4px}
+.tipo3b{padding:13px 4px;border:1.5px solid #ddd;border-radius:10px;background:#fff;font-size:13px;font-weight:700;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#444}
+.tipo3b.ing{border-color:#1D9E75;background:#ECFDF5;color:#0F6E56}
+.tipo3b.gas{border-color:#EF4444;background:#FEF2F2;color:#D14343}
+.tipo3b.mov{border-color:#2563EB;background:#EFF6FF;color:#2563EB}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{padding:8px 12px;border:1.5px solid #ddd;border-radius:20px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;touch-action:manipulation;color:#444}
+.chip.on{background:#0F6E56;color:#fff;border-color:#0F6E56}
+.cajas{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.cajab{padding:11px 6px;border:1.5px solid #ddd;border-radius:9px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#444}
+.cajab.on{background:#0F6E56;color:#fff;border-color:#0F6E56}
+.sb{width:100%;padding:14px;background:#0F6E56;color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;touch-action:manipulation;min-height:50px;margin-top:4px}
+.sb:disabled{opacity:0.5}
+.combinado-tog{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#fff;border:1px solid #eee;border-radius:9px;margin-top:8px}
+.ct-label{font-size:13px;font-weight:600;color:#333}
+.switch{width:44px;height:26px;border-radius:14px;background:#ccc;position:relative;cursor:pointer;transition:0.2s;flex-shrink:0}
+.switch.on{background:#0F6E56}
+.switch::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:0.2s}
+.switch.on::after{left:21px}
+.ok-card{background:#ECFDF5;border:1.5px solid #c8ead9;border-radius:12px;padding:16px;text-align:center;margin-top:10px}
+.saldo-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+.saldo-card{border-radius:12px;padding:14px;border:1px solid #eee}
+.saldo-card.efec{background:#F0FAF6;border-color:#c8ead9}
+.saldo-card.yape{background:#EFF6FF;border-color:#BFDBFE}
+.saldo-card.ahor{background:#FFFBEB;border-color:#fde8c8}
+.saldo-card.prov{background:#F5F3FF;border-color:#ddd6fe}
+.saldo-lbl{font-size:11px;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:0.4px}
+.saldo-val{font-size:22px;font-weight:800;color:#111;margin-top:4px}
+.resumen-box{background:#fafafa;border:1px solid #ececec;border-radius:12px;padding:14px;margin-bottom:14px}
+.res-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;font-size:14px;color:#333;border-bottom:1px solid #eee}
+.res-row:last-child{border-bottom:none}
+.res-row.total{font-weight:800;font-size:16px;padding-top:10px}
+.mes-sel{display:flex;align-items:center;gap:8px;margin-bottom:14px}
+.fnav{padding:8px 14px;border:1.5px solid #ddd;border-radius:9px;background:#fff;font-size:16px;cursor:pointer;touch-action:manipulation}
+.flbl{flex:1;text-align:center;font-size:14px;font-weight:700;color:#111}
+.mov-row{display:flex;align-items:center;justify-content:space-between;padding:11px 12px;border:1px solid #eee;border-radius:10px;margin-bottom:7px}
+.mov-cat{font-size:14px;font-weight:600;color:#111}
+.mov-meta{font-size:11px;color:#999;margin-top:2px}
+.mov-monto{font-size:15px;font-weight:800;white-space:nowrap;margin-left:8px}
+.mov-monto.ing{color:#0F6E56}.mov-monto.gas{color:#D14343}.mov-monto.mov{color:#2563EB}
+.empty{text-align:center;padding:26px;color:#bbb;font-size:14px}
+.si{width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:10px;font-size:15px;font-family:inherit;color:#111;background:#fff;margin-bottom:6px}
+.si:focus{outline:none;border-color:#0F6E56}
+.dl{background:#fff;border:1.5px solid #ddd;border-radius:10px;max-height:210px;overflow-y:auto;margin-bottom:10px;display:none;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.dr{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;border-bottom:1px solid #f0f0f0;cursor:pointer;touch-action:manipulation}
+.dr:last-child{border-bottom:none}
+.dr:active{background:#f0f4ff}
+.dn{font-size:14px;color:#111;font-weight:500}
+.di{font-size:11px;color:#aaa;margin-top:1px}
+.tp{font-size:11px;padding:3px 8px;border-radius:6px;border:1px solid #e0e0e0;background:#f7f7f7;color:#444;font-weight:500;white-space:nowrap;margin-left:8px;flex-shrink:0}
+.alu-card{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:#F0FAF6;border:1px solid #c8ead9;border-radius:10px;margin-bottom:12px}
+.subtabs{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-bottom:14px;background:#f0f0f0;border-radius:10px;padding:3px}
+.subtab{padding:8px;border:none;border-radius:8px;background:none;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:#888;touch-action:manipulation}
+.subtab.on{background:#fff;color:#0F6E56;box-shadow:0 1px 3px rgba(0,0,0,0.1)}
+.subsec{display:none}.subsec.on{display:block}
+.deuda-row{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid #eee;border-radius:9px;margin-bottom:6px}
+.badge{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap}
+.b-pag{background:#ECFDF5;color:#0F6E56}
+.b-deb{background:#FEF2F2;color:#D14343}
+.b-par{background:#FFFBEB;color:#B26A00}
+.xb{background:none;border:none;font-size:18px;cursor:pointer;color:#bbb;padding:4px 6px}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="logo">
+    <div class="logo-icon">📊</div>
+    <div>
+      <div class="logo-text">Hero Tacna — Administración</div>
+      <div class="logo-sub" id="st"><span class="spinner"></span>Cargando...</div>
+    </div>
+  </div>
+
+  <div class="maintabs">
+    <button class="mtab on" id="mt-mens" onclick="showMain('mens')">🎫 Mensualidades</button>
+    <button class="mtab" id="mt-caja" onclick="showMain('caja')">💰 Caja</button>
+    <button class="mtab" id="mt-res" onclick="showMain('res')">📊 Resumen</button>
+  </div>
+
+  <!-- ============ MENSUALIDADES ============ -->
+  <div class="msec on" id="main-mens">
+    <div class="subtabs">
+      <button class="subtab on" id="sub-cobrar" onclick="showSub('cobrar')">Cobrar</button>
+      <button class="subtab" id="sub-control" onclick="showSub('control')">Control del mes</button>
+    </div>
+
+    <!-- COBRAR -->
+    <div class="subsec on" id="subsec-cobrar">
+      <div class="sh">Buscar alumno</div>
+      <input class="si" id="bmens" type="text" placeholder="🔍 Nombre o código..." oninput="filtMens()" autocomplete="off">
+      <div class="dl" id="dmens"></div>
+      <div id="mens-form"></div>
+    </div>
+
+    <!-- CONTROL -->
+    <div class="subsec" id="subsec-control">
+      <div class="mes-sel">
+        <button class="fnav" onclick="cambMesC(-1)">◀</button>
+        <div class="flbl" id="mesLblC"></div>
+        <button class="fnav" onclick="cambMesC(1)">▶</button>
+      </div>
+      <div class="subtabs">
+        <button class="subtab on" id="cv-deben" onclick="showControl('deben')">❌ Deben</button>
+        <button class="subtab" id="cv-pagaron" onclick="showControl('pagaron')">✅ Pagaron</button>
+      </div>
+      <div id="control-cont"><div class="empty"><span class="spinner"></span> Cargando...</div></div>
+    </div>
+  </div>
+
+  <!-- ============ CAJA ============ -->
+  <div class="msec" id="main-caja">
+    <div class="sh">¿Qué movimiento es?</div>
+    <div class="tipo3">
+      <button class="tipo3b" id="t-ing" onclick="selTipo('INGRESO')">⬇️ Ingreso</button>
+      <button class="tipo3b" id="t-gas" onclick="selTipo('GASTO')">⬆️ Gasto</button>
+      <button class="tipo3b" id="t-mov" onclick="selTipo('MOVIMIENTO')">🔄 Movim.</button>
+    </div>
+    <div id="form-mov" style="display:none">
+      <div class="fs" style="margin-top:11px"><span class="fl">Categoría</span><div class="chips" id="chips"></div></div>
+      <div class="fs"><span class="fl">Monto total (S/)</span><input class="fi" type="number" id="monto" placeholder="Ej: 150" style="font-size:18px;font-weight:700" oninput="calcCombinado()"></div>
+      <div id="cajaUnica" class="fs">
+        <span class="fl" id="cajaLbl">Caja</span>
+        <div class="cajas" id="cajasBox"></div>
+        <div class="combinado-tog" id="togWrap">
+          <span class="ct-label">💵📱 Pago combinado (efectivo + Yape)</span>
+          <div class="switch" id="sw-comb" onclick="toggleComb()"></div>
+        </div>
+      </div>
+      <div id="cajaCombinado" class="fs" style="display:none">
+        <span class="fl">Dividir el pago</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <div><div style="font-size:11px;color:#888;margin-bottom:4px">💵 Efectivo</div><input class="fi" type="number" id="m-efec" placeholder="0" oninput="calcCombinado()"></div>
+          <div><div style="font-size:11px;color:#888;margin-bottom:4px">📱 Yape</div><input class="fi" type="number" id="m-yape" placeholder="0" oninput="calcCombinado()"></div>
+        </div>
+        <div id="comb-info" style="font-size:12px;font-weight:600;margin-top:8px;color:#888"></div>
+      </div>
+      <div class="fs"><span class="fl">Descripción (opcional)</span><textarea class="fta" id="desc" placeholder="Detalle..."></textarea></div>
+      <div class="fs"><span class="fl">¿Quién registra?</span><select class="fi" id="quien"><option value="Aldo">Aldo</option><option value="Mauricio">Mauricio</option><option value="Otro">Otro</option></select></div>
+      <button class="sb" id="btnGuardar" onclick="guardarCaja()">✅ Registrar movimiento</button>
+    </div>
+    <div id="caja-res"></div>
+  </div>
+
+  <!-- ============ RESUMEN ============ -->
+  <div class="msec" id="main-res">
+    <div class="sh">Saldo en cada caja</div>
+    <div class="saldo-grid" id="saldos"><div class="empty" style="grid-column:span 2"><span class="spinner"></span> Cargando...</div></div>
+    <div class="sh">Resumen del mes</div>
+    <div class="mes-sel">
+      <button class="fnav" onclick="cambMes(-1)">◀</button>
+      <div class="flbl" id="mesLbl"></div>
+      <button class="fnav" onclick="cambMes(1)">▶</button>
+    </div>
+    <div class="resumen-box" id="resumenMes"></div>
+    <div class="sh">Últimos movimientos</div>
+    <div id="listaMov"><div class="empty">—</div></div>
+    <button class="sb" style="background:#888;margin-top:10px" onclick="cargarResumen()">🔄 Actualizar</button>
+  </div>
+</div>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDGU9qedhEr_OskfqZtz5JujMhziD8zTrdwFENvSr1sQugw/exec";
+
+let AL=[], PRECIOS={}, ALU_MENS=null;
+let TIPO=null, CAT=null, CAJA_SEL=null, COMB=false;
+let mesActual=new Date(), mesControl=new Date();
+let DATA_CAJA=null, DATA_MENS=null, CONTROL_VIEW='deben';
+let MENS_COMB=false;
+
+const CATEGORIAS={
+  INGRESO:['Inscripción','Mensualidad','Tienda','Venta de agua','Torneos','Otro ingreso'],
+  GASTO:['Pago profesores','Pago asistentes','Alquiler lozas','Mercadería','Compra de agua','Materiales','Transporte','Publicidad','Comida','SUNAT/tributos','Sueldo socios','Otro gasto'],
+  MOVIMIENTO:['A Ahorro (cancha)','A Provisión (costos fijos)','Otro movimiento']
+};
+const CAJAS=['Efectivo','Yape','Ahorro','Provisión'];
+const MESES=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+async function init(){
+  try{
+    const r=await fetch(API+'?app=alumnos');
+    AL=(await r.json()).filter(a=>a.cod&&a.nom);
+    // Cargar precios
+    const rp=await fetch(API+'?app=precios');
+    const pr=(await rp.json()).precios||[];
+    pr.forEach(p=>PRECIOS[String(p.cod)]={precio:p.precio,turno:p.turno});
+    document.getElementById('st').innerHTML='🟢 '+AL.length+' alumnos';
+  }catch(e){document.getElementById('st').innerHTML='⚠️ Sin conexión';}
+  updMes();updMesC();
+}
+
+function showMain(id){
+  document.querySelectorAll('.mtab').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.msec').forEach(s=>s.classList.remove('on'));
+  document.getElementById('mt-'+id).classList.add('on');
+  document.getElementById('main-'+id).classList.add('on');
+  if(id==='res')cargarResumen();
+}
+function showSub(id){
+  document.querySelectorAll('.subsec').forEach(s=>s.classList.remove('on'));
+  document.getElementById('sub-cobrar').classList.toggle('on',id==='cobrar');
+  document.getElementById('sub-control').classList.toggle('on',id==='control');
+  document.getElementById('subsec-'+id).classList.add('on');
+  if(id==='control')cargarControl();
+}
+
+// ===== MENSUALIDADES: COBRAR =====
+function filtMens(){
+  const q=document.getElementById('bmens').value.toLowerCase().trim();
+  const dd=document.getElementById('dmens');
+  if(!q){dd.style.display='none';return;}
+  const r=AL.filter(a=>(a.nom||'').toLowerCase().includes(q)||String(a.cod||'').includes(q));
+  if(!r.length){dd.style.display='none';return;}
+  dd.innerHTML=r.slice(0,15).map(a=>`
+    <div class="dr" onmousedown="elegMens('${a.cod}')">
+      <div><div class="dn">${a.nom.split(' ').slice(0,3).join(' ')}</div><div class="di">Cod: ${a.cod} · ${a.categoria||'—'}</div></div>
+      <div class="tp">${a.turno||'—'}</div>
+    </div>`).join('');
+  dd.style.display='block';
+}
+
+function elegMens(cod){
+  ALU_MENS=AL.find(a=>String(a.cod)===String(cod));
+  MENS_COMB=false;
+  document.getElementById('bmens').value='';
+  document.getElementById('dmens').style.display='none';
+  const precioGuardado=PRECIOS[String(cod)]?PRECIOS[String(cod)].precio:'';
+  const mesAct=MESES[new Date().getMonth()]+' '+new Date().getFullYear();
+  document.getElementById('mens-form').innerHTML=`
+    <div class="alu-card">
+      <div><div class="acn" style="font-weight:700">${ALU_MENS.nom.split(' ').slice(0,3).join(' ')}</div>
+      <div style="font-size:11px;color:#666">${ALU_MENS.categoria||'—'} · Turno ${ALU_MENS.turno||'—'} · Cod ${ALU_MENS.cod}</div></div>
+      <button class="xb" onclick="ALU_MENS=null;document.getElementById('mens-form').innerHTML=''">✕</button>
+    </div>
+    <div class="fs"><span class="fl">Tipo</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <button class="cajab on" id="tm-mens" onclick="selTipoMens('Mensualidad',this)">Mensualidad</button>
+        <button class="cajab" id="tm-ins" onclick="selTipoMens('Inscripción',this)">Inscripción</button>
+      </div>
+    </div>
+    <div class="fs"><span class="fl">Mes que paga</span>
+      <select class="fi" id="mens-mes">${mesOpts()}</select>
+    </div>
+    <div class="fs">
+      <span class="fl">Precio del mes (S/) ${precioGuardado?'· guardado: S/'+precioGuardado:'· sin precio guardado'}</span>
+      <input class="fi" type="number" id="mens-precio" value="${precioGuardado}" placeholder="Ej: 129" style="font-size:17px;font-weight:700" oninput="syncMonto()">
+      <div style="margin-top:6px"><button class="chip" onclick="guardarPrecio()">💾 Guardar este precio para el alumno</button></div>
+    </div>
+    <div class="fs">
+      <span class="fl">¿Cuánto paga ahora? (S/)</span>
+      <input class="fi" type="number" id="mens-monto" value="${precioGuardado}" placeholder="Monto" style="font-size:17px;font-weight:700" oninput="calcMensSaldo()">
+      <div id="mens-saldo-info" style="margin-top:6px;font-size:12px;font-weight:600;color:#888"></div>
+    </div>
+    <div class="fs" id="mens-caja-box">
+      <span class="fl">¿En qué caja entró?</span>
+      <div class="cajas" id="mens-cajas">
+        <button class="cajab" onclick="selCajaMens('Efectivo',this)">💵 Efectivo</button>
+        <button class="cajab" onclick="selCajaMens('Yape',this)">📱 Yape</button>
+      </div>
+      <div class="combinado-tog">
+        <span class="ct-label">💵📱 Pago combinado</span>
+        <div class="switch" id="mens-sw" onclick="toggleMensComb()"></div>
+      </div>
+    </div>
+    <div class="fs" id="mens-comb-box" style="display:none">
+      <span class="fl">Dividir el pago</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><div style="font-size:11px;color:#888;margin-bottom:4px">💵 Efectivo</div><input class="fi" type="number" id="mens-efec" placeholder="0" oninput="calcMensComb()"></div>
+        <div><div style="font-size:11px;color:#888;margin-bottom:4px">📱 Yape</div><input class="fi" type="number" id="mens-yape" placeholder="0" oninput="calcMensComb()"></div>
+      </div>
+      <div id="mens-comb-info" style="font-size:12px;font-weight:600;margin-top:8px;color:#888"></div>
+    </div>
+    <div class="fs"><span class="fl">¿Quién registra?</span><select class="fi" id="mens-quien"><option value="Aldo">Aldo</option><option value="Mauricio">Mauricio</option><option value="Otro">Otro</option></select></div>
+    <button class="sb" id="btnMens" onclick="guardarMens()">✅ Registrar pago</button>
+    <div id="mens-result"></div>`;
+  TIPO_MENS='Mensualidad';CAJA_MENS=null;
+  calcMensSaldo();
+}
+
+let TIPO_MENS='Mensualidad', CAJA_MENS=null;
+function selTipoMens(t,btn){TIPO_MENS=t;document.getElementById('tm-mens').className='cajab'+(t==='Mensualidad'?' on':'');document.getElementById('tm-ins').className='cajab'+(t==='Inscripción'?' on':'');}
+function selCajaMens(c,btn){CAJA_MENS=c;document.querySelectorAll('#mens-cajas .cajab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+
+function mesOpts(){
+  const now=new Date();let opts='';
+  for(let i=1;i>=-2;i--){
+    const d=new Date(now.getFullYear(),now.getMonth()-i+1,1);
+    // genera meses: anterior, actual, próximos
+  }
+  // generar: 2 atrás, actual, 1 adelante
+  let arr=[];
+  for(let off=-2;off<=1;off++){
+    const d=new Date(now.getFullYear(),now.getMonth()+off,1);
+    const key=String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
+    const lbl=MESES[d.getMonth()]+' '+d.getFullYear();
+    arr.push(`<option value="${key}" ${off===0?'selected':''}>${lbl}</option>`);
+  }
+  return arr.join('');
+}
+
+function syncMonto(){
+  const precio=document.getElementById('mens-precio').value;
+  const mo=document.getElementById('mens-monto');
+  if(mo&&!mo.dataset.touched) mo.value=precio;
+  calcMensSaldo();
+}
+function calcMensSaldo(){
+  const precio=parseFloat(document.getElementById('mens-precio').value)||0;
+  const pago=parseFloat(document.getElementById('mens-monto').value)||0;
+  const info=document.getElementById('mens-saldo-info');
+  if(!info)return;
+  const saldo=precio-pago;
+  if(precio<=0){info.textContent='';return;}
+  if(saldo<=0){info.style.color='#0F6E56';info.textContent='✅ Paga completo';}
+  else{info.style.color='#D14343';info.textContent='Quedará debiendo: S/ '+saldo.toFixed(0);}
+}
+function toggleMensComb(){
+  MENS_COMB=!MENS_COMB;
+  document.getElementById('mens-sw').className='switch'+(MENS_COMB?' on':'');
+  document.getElementById('mens-comb-box').style.display=MENS_COMB?'block':'none';
+  document.getElementById('mens-cajas').style.display=MENS_COMB?'none':'grid';
+}
+function calcMensComb(){
+  const total=parseFloat(document.getElementById('mens-monto').value)||0;
+  const ef=parseFloat(document.getElementById('mens-efec').value)||0;
+  const yp=parseFloat(document.getElementById('mens-yape').value)||0;
+  const info=document.getElementById('mens-comb-info');
+  if(ef+yp===total&&total>0){info.style.color='#0F6E56';info.textContent='✅ Cuadra';}
+  else{info.style.color='#D14343';info.textContent=`Suma S/ ${ef+yp} de S/ ${total}`;}
+}
+
+async function guardarPrecio(){
+  if(!ALU_MENS)return;
+  const precio=parseFloat(document.getElementById('mens-precio').value)||0;
+  if(precio<=0){alert('Ingresa un precio válido.');return;}
+  fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'precios',cod:ALU_MENS.cod,alumno:ALU_MENS.nom,precio,turno:ALU_MENS.turno||''})});
+  PRECIOS[String(ALU_MENS.cod)]={precio:String(precio),turno:ALU_MENS.turno||''};
+  alert('✅ Precio guardado para '+ALU_MENS.nom.split(' ')[0]);
+}
+
+function guardarMens(){
+  if(!ALU_MENS){alert('Selecciona un alumno.');return;}
+  const precio=parseFloat(document.getElementById('mens-precio').value)||0;
+  const pago=parseFloat(document.getElementById('mens-monto').value)||0;
+  const mes=document.getElementById('mens-mes').value;
+  const quien=document.getElementById('mens-quien').value;
+  if(precio<=0){alert('Ingresa el precio del mes.');return;}
+  if(pago<=0){alert('Ingresa cuánto paga.');return;}
+
+  let partes=[];
+  if(MENS_COMB){
+    const ef=parseFloat(document.getElementById('mens-efec').value)||0;
+    const yp=parseFloat(document.getElementById('mens-yape').value)||0;
+    if(ef+yp!==pago){alert('Efectivo + Yape debe sumar el monto que paga.');return;}
+    if(ef>0)partes.push({monto:ef,caja:'Efectivo'});
+    if(yp>0)partes.push({monto:yp,caja:'Yape'});
+  } else {
+    if(!CAJA_MENS){alert('Selecciona la caja.');return;}
+    partes=[{monto:pago,caja:CAJA_MENS}];
+  }
+
+  const btn=document.getElementById('btnMens');
+  btn.disabled=true;btn.textContent='⏳ Guardando...';
+  const payload={app:'mensualidades',cod:ALU_MENS.cod,alumno:ALU_MENS.nom,mes,tipo:TIPO_MENS,precioMes:precio,montoPagado:pago,registradoPor:quien,partes};
+  fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
+
+  setTimeout(()=>{
+    const saldo=precio-pago;
+    document.getElementById('mens-result').innerHTML=`
+      <div class="ok-card">
+        <div style="font-size:13px;color:#0F6E56;font-weight:700">✅ PAGO REGISTRADO</div>
+        <div style="font-size:22px;font-weight:800;color:#0F6E56;margin-top:4px">S/ ${pago}</div>
+        <div style="font-size:13px;color:#666;margin-top:4px">${ALU_MENS.nom.split(' ').slice(0,2).join(' ')} · ${TIPO_MENS} · ${mes}</div>
+        ${saldo>0?`<div style="font-size:13px;color:#D14343;margin-top:4px;font-weight:600">Debe: S/ ${saldo}</div>`:`<div style="font-size:13px;color:#0F6E56;margin-top:4px;font-weight:600">Pagó completo</div>`}
+        <button class="sb" style="margin-top:12px" onclick="ALU_MENS=null;document.getElementById('mens-form').innerHTML='';">+ Cobrar a otro</button>
+      </div>`;
+  },1200);
+}
+
+// ===== MENSUALIDADES: CONTROL =====
+function updMesC(){document.getElementById('mesLblC').textContent=MESES[mesControl.getMonth()]+' '+mesControl.getFullYear();}
+function cambMesC(d){mesControl.setMonth(mesControl.getMonth()+d);updMesC();cargarControl();}
+function mesKeyC(){return String(mesControl.getMonth()+1).padStart(2,'0')+'/'+mesControl.getFullYear();}
+function showControl(v){CONTROL_VIEW=v;document.getElementById('cv-deben').classList.toggle('on',v==='deben');document.getElementById('cv-pagaron').classList.toggle('on',v==='pagaron');renderControl();}
+
+async function cargarControl(){
+  document.getElementById('control-cont').innerHTML='<div class="empty"><span class="spinner"></span> Cargando...</div>';
+  try{
+    const r=await fetch(API+'?app=mensualidades&mes='+mesKeyC());
+    DATA_MENS=await r.json();
+    renderControl();
+  }catch(e){document.getElementById('control-cont').innerHTML='<div class="empty">⚠️ Error al cargar</div>';}
+}
+
+function renderControl(){
+  if(!DATA_MENS){return;}
+  const cont=document.getElementById('control-cont');
+  if(CONTROL_VIEW==='deben'){
+    const deben=DATA_MENS.deben||[];
+    if(!deben.length){cont.innerHTML='<div class="empty">🎉 Nadie debe este mes</div>';return;}
+    cont.innerHTML=`<div style="font-size:12px;color:#888;margin-bottom:8px">${deben.length} alumno(s) sin pagar:</div>`+
+      deben.map(d=>`<div class="deuda-row">
+        <div><div style="font-size:14px;font-weight:600">${(d.alumno||'—').split(' ').slice(0,3).join(' ')}</div>
+        <div style="font-size:11px;color:#999">Cod ${d.cod} · ${d.turno||'—'}${d.precio?' · S/'+d.precio:''}</div></div>
+        <span class="badge b-deb">DEBE</span>
+      </div>`).join('');
+  } else {
+    const pagaron=DATA_MENS.pagaron||[];
+    if(!pagaron.length){cont.innerHTML='<div class="empty">Nadie ha pagado aún este mes</div>';return;}
+    cont.innerHTML=`<div style="font-size:12px;color:#888;margin-bottom:8px">${pagaron.length} alumno(s) pagaron:</div>`+
+      pagaron.map(p=>`<div class="deuda-row">
+        <div><div style="font-size:14px;font-weight:600">${(p.alumno||'—').split(' ').slice(0,3).join(' ')}</div>
+        <div style="font-size:11px;color:#999">Cod ${p.cod} · Pagó S/${p.pagado} de S/${p.precio}</div></div>
+        <span class="badge ${p.saldo<=0?'b-pag':'b-par'}">${p.saldo<=0?'PAGADO':'PARCIAL'}</span>
+      </div>`).join('');
+  }
+}
+
+// ===== CAJA =====
+function selTipo(t){
+  TIPO=t;CAT=null;CAJA_SEL=null;COMB=false;
+  document.getElementById('t-ing').className='tipo3b'+(t==='INGRESO'?' ing':'');
+  document.getElementById('t-gas').className='tipo3b'+(t==='GASTO'?' gas':'');
+  document.getElementById('t-mov').className='tipo3b'+(t==='MOVIMIENTO'?' mov':'');
+  document.getElementById('form-mov').style.display='block';
+  document.getElementById('caja-res').innerHTML='';
+  document.getElementById('chips').innerHTML=CATEGORIAS[t].map(c=>`<button class="chip" onclick="selCat('${c.replace(/'/g,"\\'")}',this)">${c}</button>`).join('');
+  renderCajasBox();
+}
+function renderCajasBox(){
+  const cont=document.getElementById('cajasBox');const lbl=document.getElementById('cajaLbl');const togWrap=document.getElementById('togWrap');
+  if(TIPO==='MOVIMIENTO'){
+    lbl.textContent='De qué caja sale → A qué caja entra';togWrap.style.display='none';
+    cont.innerHTML=`<div style="grid-column:span 2;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div><div style="font-size:11px;color:#888;margin-bottom:4px">Sale de</div><select class="fi" id="cajaOrigen">${CAJAS.map(c=>`<option>${c}</option>`).join('')}</select></div>
+      <div><div style="font-size:11px;color:#888;margin-bottom:4px">Entra a</div><select class="fi" id="cajaDestino">${CAJAS.map((c,i)=>`<option ${i===2?'selected':''}>${c}</option>`).join('')}</select></div></div>`;
+  } else {
+    lbl.textContent=TIPO==='INGRESO'?'¿En qué caja entró?':'¿De qué caja salió?';togWrap.style.display='flex';
+    cont.innerHTML=['Efectivo','Yape'].map(c=>`<button class="cajab" onclick="selCaja('${c}',this)">${c==='Efectivo'?'💵':'📱'} ${c}</button>`).join('');
+  }
+}
+function selCat(c,btn){CAT=c;document.querySelectorAll('#chips .chip').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+function selCaja(c,btn){CAJA_SEL=c;document.querySelectorAll('#cajasBox .cajab').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+function toggleComb(){COMB=!COMB;document.getElementById('sw-comb').className='switch'+(COMB?' on':'');document.getElementById('cajaCombinado').style.display=COMB?'block':'none';document.getElementById('cajasBox').style.display=COMB?'none':'grid';calcCombinado();}
+function calcCombinado(){
+  if(!COMB)return;
+  const total=parseFloat(document.getElementById('monto').value)||0;
+  const ef=parseFloat(document.getElementById('m-efec').value)||0;
+  const yp=parseFloat(document.getElementById('m-yape').value)||0;
+  const info=document.getElementById('comb-info');
+  if(ef+yp===total&&total>0){info.style.color='#0F6E56';info.textContent='✅ Cuadra: S/ '+(ef+yp);}
+  else{info.style.color='#D14343';info.textContent=`Suma S/ ${ef+yp} de S/ ${total}`;}
+}
+function guardarCaja(){
+  if(!TIPO){alert('Selecciona el tipo.');return;}
+  if(!CAT){alert('Selecciona una categoría.');return;}
+  const total=parseFloat(document.getElementById('monto').value)||0;
+  if(total<=0){alert('Ingresa el monto.');return;}
+  const desc=document.getElementById('desc').value.trim();const quien=document.getElementById('quien').value;
+  let partes=[];
+  if(TIPO==='MOVIMIENTO'){
+    const org=document.getElementById('cajaOrigen').value;const dst=document.getElementById('cajaDestino').value;
+    if(org===dst){alert('Origen y destino no pueden ser iguales.');return;}
+    partes=[{monto:total,cajaOrigen:org,cajaDestino:dst}];
+  } else if(COMB){
+    const ef=parseFloat(document.getElementById('m-efec').value)||0;const yp=parseFloat(document.getElementById('m-yape').value)||0;
+    if(ef+yp!==total){alert('Efectivo + Yape debe sumar el total.');return;}
+    if(TIPO==='INGRESO'){if(ef>0)partes.push({monto:ef,cajaOrigen:'',cajaDestino:'Efectivo'});if(yp>0)partes.push({monto:yp,cajaOrigen:'',cajaDestino:'Yape'});}
+    else{if(ef>0)partes.push({monto:ef,cajaOrigen:'Efectivo',cajaDestino:''});if(yp>0)partes.push({monto:yp,cajaOrigen:'Yape',cajaDestino:''});}
+  } else {
+    if(!CAJA_SEL){alert('Selecciona la caja.');return;}
+    if(TIPO==='INGRESO')partes=[{monto:total,cajaOrigen:'',cajaDestino:CAJA_SEL}];
+    else partes=[{monto:total,cajaOrigen:CAJA_SEL,cajaDestino:''}];
+  }
+  const btn=document.getElementById('btnGuardar');btn.disabled=true;btn.textContent='⏳ Guardando...';
+  fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'caja',tipo:TIPO,categoria:CAT,descripcion:desc,registradoPor:quien,partes})});
+  setTimeout(()=>{
+    const col=TIPO==='INGRESO'?'#0F6E56':TIPO==='GASTO'?'#D14343':'#2563EB';
+    const signo=TIPO==='GASTO'?'−':TIPO==='INGRESO'?'+':'';
+    document.getElementById('form-mov').style.display='none';
+    document.getElementById('caja-res').innerHTML=`<div class="ok-card">
+      <div style="font-size:13px;color:#0F6E56;font-weight:700">✅ REGISTRADO</div>
+      <div style="font-size:24px;font-weight:800;color:${col};margin-top:4px">${signo} S/ ${total}</div>
+      <div style="font-size:13px;color:#666;margin-top:4px">${TIPO} · ${CAT}</div>
+      <button class="sb" style="margin-top:12px" onclick="nuevoCaja()">+ Registrar otro</button></div>`;
+  },1200);
+}
+function nuevoCaja(){
+  TIPO=null;CAT=null;CAJA_SEL=null;COMB=false;
+  document.getElementById('caja-res').innerHTML='';document.getElementById('form-mov').style.display='none';
+  document.getElementById('monto').value='';document.getElementById('desc').value='';
+  document.getElementById('m-efec').value='';document.getElementById('m-yape').value='';
+  document.getElementById('sw-comb').className='switch';document.getElementById('cajaCombinado').style.display='none';document.getElementById('cajasBox').style.display='grid';
+  ['t-ing','t-gas','t-mov'].forEach(id=>document.getElementById(id).className='tipo3b');
+}
+
+// ===== RESUMEN =====
+function updMes(){document.getElementById('mesLbl').textContent=MESES[mesActual.getMonth()]+' '+mesActual.getFullYear();}
+function cambMes(d){mesActual.setMonth(mesActual.getMonth()+d);updMes();renderResumen();}
+function mesKey(){return String(mesActual.getMonth()+1).padStart(2,'0')+'/'+mesActual.getFullYear();}
+
+async function cargarResumen(){
+  document.getElementById('saldos').innerHTML='<div class="empty" style="grid-column:span 2"><span class="spinner"></span> Cargando...</div>';
+  try{
+    const r=await fetch(API+'?app=caja');
+    DATA_CAJA=await r.json();
+    renderSaldos();renderResumen();
+  }catch(e){document.getElementById('saldos').innerHTML='<div class="empty" style="grid-column:span 2">⚠️ Error</div>';}
+}
+function renderSaldos(){
+  if(!DATA_CAJA||!DATA_CAJA.saldos)return;const s=DATA_CAJA.saldos;
+  document.getElementById('saldos').innerHTML=`
+    <div class="saldo-card efec"><div class="saldo-lbl">💵 Efectivo</div><div class="saldo-val">S/ ${(s.Efectivo||0).toFixed(0)}</div></div>
+    <div class="saldo-card yape"><div class="saldo-lbl">📱 Yape</div><div class="saldo-val">S/ ${(s.Yape||0).toFixed(0)}</div></div>
+    <div class="saldo-card ahor"><div class="saldo-lbl">🏦 Ahorro</div><div class="saldo-val">S/ ${(s.Ahorro||0).toFixed(0)}</div></div>
+    <div class="saldo-card prov"><div class="saldo-lbl">📦 Provisión</div><div class="saldo-val">S/ ${(s['Provisión']||0).toFixed(0)}</div></div>`;
+}
+function renderResumen(){
+  if(!DATA_CAJA)return;const mk=mesKey();
+  const movs=(DATA_CAJA.movimientos||[]).filter(m=>{const mm=m.fecha.length>=7?m.fecha.substring(3):'';return mm===mk;});
+  let ing=0,gas=0,mov=0;
+  movs.forEach(m=>{const v=parseFloat(m.monto)||0;if(m.tipo==='INGRESO')ing+=v;else if(m.tipo==='GASTO')gas+=v;else mov+=v;});
+  const util=ing-gas;
+  document.getElementById('resumenMes').innerHTML=`
+    <div class="res-row"><span>⬇️ Ingresos</span><span style="color:#0F6E56;font-weight:700">S/ ${ing.toFixed(0)}</span></div>
+    <div class="res-row"><span>⬆️ Gastos</span><span style="color:#D14343;font-weight:700">S/ ${gas.toFixed(0)}</span></div>
+    <div class="res-row"><span>🔄 Movido (ahorro/provisión)</span><span style="color:#2563EB;font-weight:700">S/ ${mov.toFixed(0)}</span></div>
+    <div class="res-row total"><span>Utilidad del mes</span><span style="color:${util>=0?'#0F6E56':'#D14343'}">S/ ${util.toFixed(0)}</span></div>`;
+  const cont=document.getElementById('listaMov');
+  if(!movs.length){cont.innerHTML='<div class="empty">Sin movimientos este mes</div>';return;}
+  cont.innerHTML=movs.map(m=>{
+    const v=parseFloat(m.monto)||0;const cls=m.tipo==='INGRESO'?'ing':m.tipo==='GASTO'?'gas':'mov';
+    const signo=m.tipo==='GASTO'?'−':m.tipo==='INGRESO'?'+':'';
+    const caja=m.tipo==='MOVIMIENTO'?`${m.cajaOrigen}→${m.cajaDestino}`:(m.cajaDestino||m.cajaOrigen);
+    return `<div class="mov-row"><div style="min-width:0"><div class="mov-cat">${m.categoria}</div><div class="mov-meta">${m.fecha} · ${caja}${m.descripcion?' · '+m.descripcion:''}</div></div><div class="mov-monto ${cls}">${signo} S/ ${v.toFixed(0)}</div></div>`;
+  }).join('');
+}
+
+document.addEventListener('mousedown',e=>{if(!e.target.closest('#bmens')&&!e.target.closest('#dmens')){const d=document.getElementById('dmens');if(d)d.style.display='none';}});
+document.addEventListener('touchstart',e=>{if(!e.target.closest('#bmens')&&!e.target.closest('#dmens')){const d=document.getElementById('dmens');if(d)d.style.display='none';}});
+
+init();
+</script>
+</body>
+</html>
