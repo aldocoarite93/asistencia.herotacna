@@ -24,13 +24,17 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .tbtn small{font-size:11px;display:block;margin-top:3px;opacity:0.75;font-weight:400}
 .tbtn.active{background:#1D9E75;color:#fff;border-color:#1D9E75}
 .tbtn:active{opacity:0.8}
-.th{display:grid;grid-template-columns:1fr 80px 80px;padding:10px 12px;background:#f7f7f7;border-radius:10px;font-size:13px;font-weight:500;color:#777;margin-bottom:4px;text-align:center}
+.th{display:grid;grid-template-columns:1fr 62px 62px 62px;padding:10px 12px;background:#f7f7f7;border-radius:10px;font-size:12px;font-weight:500;color:#777;margin-bottom:4px;text-align:center}
 .th span:first-child{text-align:left}
-.arow{display:grid;grid-template-columns:1fr 80px 80px;align-items:center;padding:12px;border-bottom:1px solid #f0f0f0;min-height:54px}
+.arow{display:grid;grid-template-columns:1fr 62px 62px 62px;align-items:center;padding:12px;border-bottom:1px solid #f0f0f0;min-height:54px}
 .arow:last-child{border-bottom:none}
 .aname{font-size:14px;color:#111;line-height:1.3}
 .acod{font-size:12px;color:#999;margin-top:2px}
 .rcell{display:flex;justify-content:center;align-items:center}
+.aft-btn{width:44px;height:44px;border-radius:10px;border:1.5px solid #ddd;background:#fff;font-size:17px;font-weight:800;cursor:pointer;font-family:inherit;color:#bbb;touch-action:manipulation;transition:all 0.15s}
+.aft-btn.a-on{background:#1D9E75;border-color:#1D9E75;color:#fff}
+.aft-btn.f-on{background:#EF4444;border-color:#EF4444;color:#fff}
+.aft-btn.t-on{background:#F0A0C0;border-color:#F0A0C0;color:#fff}
 .rcell input[type=radio]{width:22px;height:22px;accent-color:#1D9E75;cursor:pointer;touch-action:manipulation}
 .tabla-wrap{border:1px solid #eee;border-radius:10px;overflow:hidden;margin-top:8px}
 .no-sel{text-align:center;padding:28px;color:#aaa;font-size:14px}
@@ -120,7 +124,7 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 
   <div class="blk">
     <div class="sec-title">📋 Asistencia <span class="cnt-badge" id="badge"></span></div>
-    <div class="th"><span>Alumno</span><span>Asistió</span><span>No asistió</span></div>
+    <div class="th"><span>Alumno</span><span>✅ A</span><span>❌ F</span><span>🕐 T</span></div>
     <div class="tabla-wrap" id="tabla">
       <div class="no-sel">⬆️ Selecciona un turno arriba</div>
     </div>
@@ -200,9 +204,11 @@ function renderTabla(t){
   document.getElementById('tabla').innerHTML=lista.map((a,i)=>`
     <div class="arow">
       <div><div class="aname">${(a.nom||'').split(' ').slice(0,3).join(' ')}</div><div class="acod">${a.cod}</div></div>
-      <div class="rcell"><input type="radio" name="a${i}" value="SI"></div>
-      <div class="rcell"><input type="radio" name="a${i}" value="NO"></div>
+      <div class="rcell"><button type="button" class="aft-btn" id="a${i}-A" onclick="marcarAFT(${i},'A')">A</button></div>
+      <div class="rcell"><button type="button" class="aft-btn" id="a${i}-F" onclick="marcarAFT(${i},'F')">F</button></div>
+      <div class="rcell"><button type="button" class="aft-btn" id="a${i}-T" onclick="marcarAFT(${i},'T')">T</button></div>
     </div>`).join('');
+  ESTADO_ASIS={};
 }
 
 function togSec(tipo,val){
@@ -308,12 +314,22 @@ function addPr(){
     <input type="text" id="pn${n}" placeholder="Nombre completo del niño/a">
     <div class="pr-bottom">
       <div class="radio-box">
-        <label><input type="radio" name="pr${n}" value="SI"> Asistió</label>
-        <label><input type="radio" name="pr${n}" value="NO"> No asistió</label>
+        <label><input type="radio" name="pr${n}" value="A"> Asistió</label>
+        <label><input type="radio" name="pr${n}" value="F"> No asistió</label>
       </div>
       <textarea class="nota-pr" id="pt${n}" placeholder="Tel, edad, colegio, notas..."></textarea>
     </div>`;
   c.appendChild(div);
+}
+
+let ESTADO_ASIS={};
+function marcarAFT(i,val){
+  ESTADO_ASIS[i]=val;
+  ['A','F','T'].forEach(v=>{
+    const b=document.getElementById('a'+i+'-'+v);
+    if(!b)return;
+    b.className='aft-btn'+(v===val?(' '+v.toLowerCase()+'-on'):'');
+  });
 }
 
 async function enviar(){
@@ -323,8 +339,8 @@ async function enviar(){
 
   const lista=APT[turno]||[];
   const alumnos=lista.map((a,i)=>{
-    const s=document.querySelector(`input[name="a${i}"]:checked`);
-    return{cod:a.cod,nom:a.nom,asistencia:s?s.value:'—'};
+    const est=ESTADO_ASIS[i]||'';
+    return{cod:a.cod,nom:a.nom,asistencia:est||'—'};
   });
 
   const prueba=[];
