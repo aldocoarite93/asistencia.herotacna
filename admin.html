@@ -187,23 +187,34 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 
   <!-- ============ INSCRIBIR (generar link) ============ -->
   <div class="msec" id="main-insc">
-    <div class="sh">Generar link de inscripción</div>
-    <div style="font-size:12px;color:#888;margin-bottom:12px;line-height:1.5">Define el turno y precio de cada niño, y genera el link para enviarle al padre por WhatsApp.</div>
-
-    <div class="fs">
-      <span class="fl">¿Cuántos niños va a inscribir?</span>
-      <div class="cajas" style="grid-template-columns:repeat(4,1fr)">
-        <button class="cajab on" id="nn-1" onclick="setNinos(1)">1</button>
-        <button class="cajab" id="nn-2" onclick="setNinos(2)">2</button>
-        <button class="cajab" id="nn-3" onclick="setNinos(3)">3</button>
-        <button class="cajab" id="nn-4" onclick="setNinos(4)">4</button>
-      </div>
+    <div class="subtabs">
+      <button class="subtab on" id="si-link" onclick="showInsc('link')">🔗 Generar link</button>
+      <button class="subtab" id="si-rev" onclick="showInsc('rev')">📥 Revisar</button>
     </div>
 
-    <div id="ninos-config"></div>
+    <div class="subsec on" id="subsec-link">
+      <div class="sh">Generar link de inscripción</div>
+      <div style="font-size:12px;color:#888;margin-bottom:12px;line-height:1.5">Define el turno y precio de cada niño, y genera el link para enviarle al padre por WhatsApp.</div>
+      <div class="fs">
+        <span class="fl">¿Cuántos niños va a inscribir?</span>
+        <div class="cajas" style="grid-template-columns:repeat(4,1fr)">
+          <button class="cajab on" id="nn-1" onclick="setNinos(1)">1</button>
+          <button class="cajab" id="nn-2" onclick="setNinos(2)">2</button>
+          <button class="cajab" id="nn-3" onclick="setNinos(3)">3</button>
+          <button class="cajab" id="nn-4" onclick="setNinos(4)">4</button>
+        </div>
+      </div>
+      <div id="ninos-config"></div>
+      <button class="sb" onclick="generarLink()">🔗 Generar link</button>
+      <div id="link-result"></div>
+    </div>
 
-    <button class="sb" onclick="generarLink()">🔗 Generar link</button>
-    <div id="link-result"></div>
+    <div class="subsec" id="subsec-rev">
+      <div class="sh">Inscripciones recibidas</div>
+      <div style="font-size:12px;color:#888;margin-bottom:12px;line-height:1.5">Revisa las inscripciones y apruébalas para pasarlas a la base de alumnos (DATA).</div>
+      <div id="rev-cont"><div class="empty"><span class="spinner"></span> Cargando...</div></div>
+      <button class="sb" style="background:#888;margin-top:10px" onclick="cargarInscripciones()">🔄 Actualizar</button>
+    </div>
   </div>
 
   <!-- ============ RESUMEN ============ -->
@@ -750,6 +761,58 @@ async function compartirLink(txtStr){
 }
 async function copiarLink(link){
   try{await navigator.clipboard.writeText(link);alert('✅ Link copiado');}catch(e){alert(link);}
+}
+
+// Sub-pestañas de Inscribir
+function showInsc(v){
+  document.getElementById('si-link').classList.toggle('on',v==='link');
+  document.getElementById('si-rev').classList.toggle('on',v==='rev');
+  document.getElementById('subsec-link').classList.toggle('on',v==='link');
+  document.getElementById('subsec-rev').classList.toggle('on',v==='rev');
+  if(v==='rev')cargarInscripciones();
+}
+
+let INSCRIPCIONES=[];
+async function cargarInscripciones(){
+  document.getElementById('rev-cont').innerHTML='<div class="empty"><span class="spinner"></span> Cargando...</div>';
+  try{
+    const r=await fetch(API+'?app=inscripciones');
+    INSCRIPCIONES=(await r.json()).inscripciones||[];
+    renderInscripciones();
+  }catch(e){document.getElementById('rev-cont').innerHTML='<div class="empty">⚠️ Error al cargar</div>';}
+}
+
+function renderInscripciones(){
+  const cont=document.getElementById('rev-cont');
+  if(!INSCRIPCIONES.length){cont.innerHTML='<div class="empty">Aún no hay inscripciones</div>';return;}
+  cont.innerHTML=INSCRIPCIONES.map(x=>{
+    const aprobado=x.estado&&x.estado.indexOf('APROBADO')>-1;
+    return `<div class="apo-box">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
+        <div><div style="font-size:15px;font-weight:700;color:#111">${x.nombreNino}</div>
+        <div style="font-size:11px;color:#888">${x.fecha} · ${x.turno||'—'}${x.precio?' · S/'+x.precio:''}</div></div>
+        ${aprobado?`<span class="badge b-pag">✅ ${x.estado.replace('APROBADO → ','Cod ')}</span>`:`<span class="badge b-par">NUEVO</span>`}
+      </div>
+      <div style="font-size:12px;color:#666;line-height:1.6">
+        🎂 ${x.fechaNac||'—'} · 🏫 ${x.colegio||'—'}<br>
+        📍 ${x.direccion||'—'}<br>
+        👨 ${x.apo1Nombre||'—'} · 📱 ${x.apo1Tel||'—'} (${x.apo1Parentesco||'—'})
+        ${x.diaCambio?'<br>🔄 '+x.diaCambio:''}
+      </div>
+      <div style="display:grid;grid-template-columns:${x.linkVoucher?'1fr 1fr':'1fr'};gap:8px;margin-top:10px">
+        ${x.linkVoucher?`<a href="${x.linkVoucher}" target="_blank" class="chip" style="text-align:center;text-decoration:none">🧾 Ver voucher</a>`:''}
+        ${aprobado?'':`<button class="chip" style="background:#0F6E56;color:#fff;border-color:#0F6E56" onclick="aprobar(${x.fila},'${(x.nombreNino||'').replace(/'/g,"")}')">✅ Aprobar → DATA</button>`}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+async function aprobar(fila,nombre){
+  if(!confirm('¿Aprobar a '+nombre+' y pasarlo a la base de alumnos (DATA)?'))return;
+  const cat=prompt('¿Qué categoría? (ej: Cat7, Cat9, Cat11) — puedes dejarlo vacío y completar luego en DATA','');
+  fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'aprobar_insc',fila,categoria:cat||''})});
+  alert('✅ Enviado a DATA. Actualiza en unos segundos para ver el cambio.');
+  setTimeout(cargarInscripciones,2500);
 }
 
 document.addEventListener('mousedown',e=>{if(!e.target.closest('#bmens')&&!e.target.closest('#dmens')){const d=document.getElementById('dmens');if(d)d.style.display='none';}});
