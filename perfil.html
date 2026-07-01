@@ -61,6 +61,24 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .back-btn{background:none;border:none;color:#0F6E56;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;padding:8px 0;margin-bottom:8px}
 .acciones{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
 .acc-btn{padding:12px;border:1.5px solid #0F6E56;border-radius:10px;background:#F0FAF6;color:#0F6E56;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;text-align:center;display:block}
+
+.cal-full{grid-column:1/-1}
+.cal-mes-sel{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.cal-nav{padding:6px 14px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:15px;cursor:pointer;font-family:inherit}
+.cal-lbl{flex:1;text-align:center;font-size:14px;font-weight:700;color:#111}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-bottom:12px}
+.cal-dow{font-size:10px;color:#aaa;text-align:center;font-weight:600;padding-bottom:2px}
+.cal-day{aspect-ratio:1;border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:13px;font-weight:700;background:#f7f7f7;color:#ccc;position:relative;min-height:38px}
+.cal-day.empty{background:transparent}
+.cal-day .dnum{font-size:10px;font-weight:600;position:absolute;top:2px;left:4px;color:inherit;opacity:0.6}
+.cal-day .dturno{font-size:8px;font-weight:600;position:absolute;bottom:2px;opacity:0.85}
+.cal-day.a{background:#1D9E75;color:#fff}
+.cal-day.f{background:#EF4444;color:#fff}
+.cal-day.t{background:#F0A0C0;color:#fff}
+.cal-day.recup{box-shadow:0 0 0 2.5px #F59E0B;background:#1D9E75;color:#fff}
+.cal-leyenda{display:flex;flex-wrap:wrap;gap:12px;font-size:11px;color:#666;justify-content:center;margin-top:4px}
+.cal-leyenda span{display:flex;align-items:center;gap:5px}
+.cal-dot{width:14px;height:14px;border-radius:4px;display:inline-block}
 </style>
 </head>
 <body>
@@ -135,7 +153,12 @@ function volver(){
 function renderPerfil(d,cod){
   const cont=document.getElementById('perfil-cont');
   const a=d.alumno||{cod:cod,nombre:'(sin datos en DATA)',categoria:'—',turno:'—'};
-  const s=d.statsAsistencia||{asistio:0,falto:0,justificadas:0,injustificadas:0,recuperaciones:0};
+  const s=d.statsAsistencia||{asistio:0,falto:0,justificadas:0,injustificadas:0,recuperaciones:0,tardanzas:0};
+
+  // Guardar para el calendario
+  CAL_ASIS=d.asistencias||[];
+  CAL_TURNO_ALUMNO=a.turno||'';
+  CAL_MES=new Date();
 
   // Cabecera
   let html=`
@@ -179,29 +202,37 @@ function renderPerfil(d,cod){
   } else html+='<div class="empty" style="padding:20px">Sin pagos registrados</div>';
   html+='</div>';
 
-  // ASISTENCIAS
+  // ASISTENCIAS (resumen de stats)
   html+=`<div class="card">
     <div class="sec-h">✅ Asistencias</div>
     <div class="stat-grid">
       <div class="stat green"><div class="stat-num">${s.asistio}</div><div class="stat-lbl">Asistió</div></div>
       <div class="stat red"><div class="stat-num">${s.falto}</div><div class="stat-lbl">Faltó</div></div>
-      <div class="stat blue"><div class="stat-num">${s.recuperaciones}</div><div class="stat-lbl">Recuper.</div></div>
+      <div class="stat amber"><div class="stat-num">${s.tardanzas||0}</div><div class="stat-lbl">Tardanzas</div></div>
     </div>
     <div class="stat-grid">
+      <div class="stat blue"><div class="stat-num">${s.recuperaciones}</div><div class="stat-lbl">Recuper.</div></div>
       <div class="stat green"><div class="stat-num">${s.justificadas}</div><div class="stat-lbl">Justific.</div></div>
       <div class="stat amber"><div class="stat-num">${s.injustificadas}</div><div class="stat-lbl">Injustif.</div></div>
-      <div class="stat"><div class="stat-num" style="color:#666">${s.asistio+s.falto}</div><div class="stat-lbl">Total</div></div>
-    </div>`;
-  if(d.asistencias&&d.asistencias.length){
-    html+='<div class="scroll-list" style="margin-top:8px">'+d.asistencias.slice(0,15).map(x=>{
-      const asis=(x.asistencia==='SI'||x.asistencia==='SÍ');
-      return `<div class="item-row">
-        <div><div class="item-main">${x.fecha}</div><div class="item-sub">${x.turno||'—'}${x.tipo?' · '+x.tipo:''}${x.nota?' · '+x.nota:''}</div></div>
-        <span class="badge ${asis?'b-si':'b-no'}">${asis?'✓ Asistió':'✕ Faltó'}</span>
-      </div>`;
-    }).join('')+'</div>';
-  }
-  html+='</div>';
+    </div>
+  </div>`;
+
+  // CALENDARIO (ancho completo)
+  html+=`<div class="card cal-full">
+    <div class="sec-h">📅 Calendario de asistencia</div>
+    <div class="cal-mes-sel">
+      <button class="cal-nav" onclick="calMes(-1)">◀</button>
+      <div class="cal-lbl" id="cal-lbl"></div>
+      <button class="cal-nav" onclick="calMes(1)">▶</button>
+    </div>
+    <div id="cal-grid-cont"></div>
+    <div class="cal-leyenda">
+      <span><span class="cal-dot" style="background:#1D9E75"></span> Asistió (A)</span>
+      <span><span class="cal-dot" style="background:#EF4444"></span> Falta (F)</span>
+      <span><span class="cal-dot" style="background:#F0A0C0"></span> Tardanza (T)</span>
+      <span><span class="cal-dot" style="background:#1D9E75;box-shadow:0 0 0 2px #F59E0B"></span> Recuperación</span>
+    </div>
+  </div>`;
 
   // PEDIDOS
   html+=`<div class="card">
@@ -236,7 +267,68 @@ function renderPerfil(d,cod){
 
   html+='</div>';
   cont.innerHTML=html;
+  renderCalendario();
   window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===== CALENDARIO DE ASISTENCIA =====
+let CAL_ASIS=[], CAL_TURNO_ALUMNO='', CAL_MES=new Date();
+const MESES_CAL=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+function calMes(d){CAL_MES.setMonth(CAL_MES.getMonth()+d);renderCalendario();}
+
+// Parsea una fecha "dd/MM/yyyy" a {d,m,y}
+function parseFechaCal(f){
+  if(!f)return null;
+  const s=String(f).trim().split(' ')[0];
+  let p;
+  if(s.indexOf('/')>-1){p=s.split('/');return {d:parseInt(p[0]),m:parseInt(p[1]),y:parseInt(p[2])};}
+  if(s.indexOf('-')>-1){p=s.split('-');return {d:parseInt(p[2]),m:parseInt(p[1]),y:parseInt(p[0])};}
+  return null;
+}
+
+function renderCalendario(){
+  const lbl=document.getElementById('cal-lbl');
+  if(!lbl)return;
+  const mes=CAL_MES.getMonth(), anio=CAL_MES.getFullYear();
+  lbl.textContent=MESES_CAL[mes]+' '+anio;
+
+  // Mapa día -> registro de asistencia de este mes
+  const porDia={};
+  CAL_ASIS.forEach(x=>{
+    const fp=parseFechaCal(x.fecha);
+    if(!fp)return;
+    if(fp.m!==mes+1||fp.y!==anio)return;
+    porDia[fp.d]=x;
+  });
+
+  const primerDia=new Date(anio,mes,1).getDay(); // 0=Dom
+  const diasEnMes=new Date(anio,mes+1,0).getDate();
+  const dow=['Do','Lu','Ma','Mi','Ju','Vi','Sa'];
+
+  let html='<div class="cal-grid">';
+  dow.forEach(d=>html+=`<div class="cal-dow">${d}</div>`);
+  // Espacios vacíos antes del día 1
+  for(let i=0;i<primerDia;i++)html+='<div class="cal-day empty"></div>';
+  // Días del mes
+  for(let dia=1;dia<=diasEnMes;dia++){
+    const reg=porDia[dia];
+    let cls='cal-day', letra='', turnoTxt='';
+    if(reg){
+      const asis=String(reg.asistencia||'').toUpperCase();
+      if(asis==='A'||asis==='SI'||asis==='SÍ'){cls+=' a';letra='A';}
+      else if(asis==='T'){cls+=' t';letra='T';}
+      else if(asis==='F'||asis==='NO'){cls+=' f';letra='F';}
+      // Detectar recuperación: asistió en un turno distinto al suyo
+      const turnoDia=String(reg.turno||'').toUpperCase();
+      const turnoAlu=String(CAL_TURNO_ALUMNO||'').toUpperCase();
+      if((letra==='A'||letra==='T')&&turnoAlu&&turnoDia&&turnoDia!==turnoAlu){cls+=' recup';}
+      turnoTxt=turnoDia;
+    }
+    html+=`<div class="${cls}"><span class="dnum">${dia}</span>${letra}${turnoTxt?`<span class="dturno">${turnoTxt}</span>`:''}</div>`;
+  }
+  html+='</div>';
+  document.getElementById('cal-grid-cont').innerHTML=html;
 }
 
 document.addEventListener('click',e=>{
