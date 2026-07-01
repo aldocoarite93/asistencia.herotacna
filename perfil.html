@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero Tacna — Perfil del Alumno</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;padding:12px}
+.app{max-width:900px;margin:0 auto}
+.card{background:#fff;border-radius:16px;padding:18px;box-shadow:0 2px 12px rgba(0,0,0,0.08);margin-bottom:14px}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.logo-icon{width:44px;height:44px;min-width:44px;background:#0F6E56;border-radius:12px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px}
+.logo-text{font-size:17px;font-weight:700;color:#111}
+.logo-sub{font-size:12px;color:#999}
+.si{width:100%;padding:13px 16px;border:1.5px solid #ddd;border-radius:11px;font-size:16px;font-family:inherit;color:#111;background:#fff}
+.si:focus{outline:none;border-color:#0F6E56}
+.dl{background:#fff;border:1.5px solid #ddd;border-radius:11px;max-height:280px;overflow-y:auto;margin-top:8px;display:none;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.dr{display:flex;align-items:center;justify-content:space-between;padding:12px 15px;border-bottom:1px solid #f0f0f0;cursor:pointer}
+.dr:last-child{border-bottom:none}
+.dr:active,.dr:hover{background:#f0f9f5}
+.dn{font-size:15px;color:#111;font-weight:500}
+.di{font-size:12px;color:#aaa;margin-top:1px}
+.tp{font-size:11px;padding:3px 9px;border-radius:7px;border:1px solid #e0e0e0;background:#f7f7f7;color:#444;font-weight:500;white-space:nowrap;margin-left:8px}
+.spinner{display:inline-block;width:12px;height:12px;border:2px solid #ddd;border-top-color:#0F6E56;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{text-align:center;padding:40px 20px;color:#bbb;font-size:14px}
+
+.perfil-head{background:linear-gradient(135deg,#0F6E56,#1D9E75);border-radius:16px;padding:22px;color:#fff;margin-bottom:14px}
+.ph-nombre{font-size:22px;font-weight:800;margin-bottom:4px}
+.ph-meta{font-size:13px;opacity:0.9;display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.ph-badge{background:rgba(255,255,255,0.2);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
+
+.grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:700px){.grid{grid-template-columns:1fr 1fr}}
+
+.sec-h{font-size:14px;font-weight:700;color:#0F6E56;margin-bottom:12px;display:flex;align-items:center;gap:8px;padding-bottom:8px;border-bottom:2px solid #f0f0f0}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px}
+.stat{background:#fafafa;border-radius:10px;padding:10px;text-align:center}
+.stat-num{font-size:22px;font-weight:800}
+.stat-lbl{font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.4px;margin-top:2px}
+.stat.green .stat-num{color:#0F6E56}
+.stat.red .stat-num{color:#D14343}
+.stat.amber .stat-num{color:#B26A00}
+.stat.blue .stat-num{color:#2563EB}
+
+.item-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f2f2f2;font-size:13px}
+.item-row:last-child{border-bottom:none}
+.item-main{font-weight:600;color:#111}
+.item-sub{font-size:11px;color:#999;margin-top:1px}
+.badge{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap;margin-left:8px}
+.b-pag{background:#ECFDF5;color:#0F6E56}
+.b-deb{background:#FEF2F2;color:#D14343}
+.b-par{background:#FFFBEB;color:#B26A00}
+.b-si{background:#ECFDF5;color:#0F6E56}
+.b-no{background:#FEF2F2;color:#D14343}
+.mini-total{background:#F0FAF6;border-radius:10px;padding:12px;text-align:center;margin-bottom:10px}
+.mini-total-num{font-size:20px;font-weight:800;color:#0F6E56}
+.mini-total-lbl{font-size:11px;color:#888}
+.scroll-list{max-height:280px;overflow-y:auto}
+.back-btn{background:none;border:none;color:#0F6E56;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;padding:8px 0;margin-bottom:8px}
+.acciones{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
+.acc-btn{padding:12px;border:1.5px solid #0F6E56;border-radius:10px;background:#F0FAF6;color:#0F6E56;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;text-align:center;display:block}
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- BUSCADOR -->
+  <div class="card" id="buscador-card">
+    <div class="logo">
+      <div class="logo-icon">👤</div>
+      <div>
+        <div class="logo-text">Perfil del Alumno</div>
+        <div class="logo-sub" id="st"><span class="spinner"></span>Cargando alumnos...</div>
+      </div>
+    </div>
+    <input class="si" id="busca" type="text" placeholder="🔍 Buscar por nombre o código..." oninput="filtrar()" autocomplete="off">
+    <div class="dl" id="lista"></div>
+  </div>
+
+  <!-- PERFIL -->
+  <div id="perfil-cont" style="display:none"></div>
+</div>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDGU9qedhEr_OskfqZtz5JujMhziD8zTrdwFENvSr1sQugw/exec";
+const BASE = "https://aldocoarite93.github.io/asistencia.herotacna";
+let AL=[];
+
+async function init(){
+  try{
+    const r=await fetch(API+'?app=alumnos');
+    AL=(await r.json()).filter(a=>a.cod&&a.nom);
+    document.getElementById('st').innerHTML='🟢 '+AL.length+' alumnos · busca uno para ver su perfil';
+  }catch(e){document.getElementById('st').innerHTML='⚠️ Sin conexión';}
+}
+
+function filtrar(){
+  const q=document.getElementById('busca').value.toLowerCase().trim();
+  const dd=document.getElementById('lista');
+  if(!q){dd.style.display='none';return;}
+  const r=AL.filter(a=>(a.nom||'').toLowerCase().includes(q)||String(a.cod||'').includes(q));
+  if(!r.length){dd.style.display='none';return;}
+  dd.innerHTML=r.slice(0,20).map(a=>`
+    <div class="dr" onclick="verPerfil('${a.cod}')">
+      <div><div class="dn">${a.nom.split(' ').slice(0,3).join(' ')}</div>
+      <div class="di">Cod: ${a.cod} · ${a.categoria||'—'}</div></div>
+      <div class="tp">${a.turno||'—'}</div>
+    </div>`).join('');
+  dd.style.display='block';
+}
+
+async function verPerfil(cod){
+  document.getElementById('lista').style.display='none';
+  document.getElementById('busca').value='';
+  document.getElementById('buscador-card').style.display='none';
+  const cont=document.getElementById('perfil-cont');
+  cont.style.display='block';
+  cont.innerHTML='<div class="card"><div class="empty"><span class="spinner"></span> Cargando perfil...</div></div>';
+  try{
+    const r=await fetch(API+'?app=perfil&cod='+encodeURIComponent(cod));
+    const d=await r.json();
+    renderPerfil(d,cod);
+  }catch(e){
+    cont.innerHTML='<div class="card"><div class="empty">⚠️ No se pudo cargar el perfil</div><button class="back-btn" onclick="volver()">← Volver a buscar</button></div>';
+  }
+}
+
+function volver(){
+  document.getElementById('perfil-cont').style.display='none';
+  document.getElementById('buscador-card').style.display='block';
+  document.getElementById('busca').focus();
+}
+
+function renderPerfil(d,cod){
+  const cont=document.getElementById('perfil-cont');
+  const a=d.alumno||{cod:cod,nombre:'(sin datos en DATA)',categoria:'—',turno:'—'};
+  const s=d.statsAsistencia||{asistio:0,falto:0,justificadas:0,injustificadas:0,recuperaciones:0};
+
+  // Cabecera
+  let html=`
+    <button class="back-btn" onclick="volver()">← Volver a buscar</button>
+    <div class="perfil-head">
+      <div class="ph-nombre">${a.nombre}</div>
+      <div style="font-size:13px;opacity:0.9">Código ${a.cod}</div>
+      <div class="ph-meta">
+        <span class="ph-badge">📁 ${a.categoria||'—'}</span>
+        <span class="ph-badge">⏰ ${a.turno||'—'}</span>
+        ${a.numCamiseta?`<span class="ph-badge">👕 #${a.numCamiseta}${a.talla?' · T'+a.talla:''}</span>`:''}
+      </div>
+    </div>`;
+
+  // Acciones rápidas
+  html+=`<div class="card">
+    <div class="acciones">
+      <a class="acc-btn" href="${BASE}/tienda.html" target="_blank">🛍️ Tienda</a>
+      <a class="acc-btn" href="${BASE}/avisos.html" target="_blank">📋 Avisos</a>
+      <a class="acc-btn" href="${BASE}/admin.html" target="_blank">💰 Cobrar</a>
+      <a class="acc-btn" href="${BASE}/index.html" target="_blank">✅ Asistencia</a>
+    </div>
+  </div>`;
+
+  html+='<div class="grid">';
+
+  // MENSUALIDADES
+  html+=`<div class="card">
+    <div class="sec-h">🎫 Mensualidades</div>
+    <div class="mini-total"><div class="mini-total-num">S/ ${d.totalPagadoMens||0}</div><div class="mini-total-lbl">Total pagado histórico</div></div>`;
+  if(d.mensualidades&&d.mensualidades.length){
+    html+='<div class="scroll-list">'+d.mensualidades.map(m=>{
+      const bc=m.estado==='PAGADO'?'b-pag':(parseFloat(m.saldo)>0?'b-par':'b-pag');
+      return `<div class="item-row">
+        <div><div class="item-main">${m.mes} · ${m.tipo}</div>
+        <div class="item-sub">${m.fecha} · ${m.caja||'—'}</div></div>
+        <div style="text-align:right"><div style="font-weight:700;color:#0F6E56">S/ ${m.pagado}</div>
+        <span class="badge ${bc}">${m.estado}</span></div>
+      </div>`;
+    }).join('')+'</div>';
+  } else html+='<div class="empty" style="padding:20px">Sin pagos registrados</div>';
+  html+='</div>';
+
+  // ASISTENCIAS
+  html+=`<div class="card">
+    <div class="sec-h">✅ Asistencias</div>
+    <div class="stat-grid">
+      <div class="stat green"><div class="stat-num">${s.asistio}</div><div class="stat-lbl">Asistió</div></div>
+      <div class="stat red"><div class="stat-num">${s.falto}</div><div class="stat-lbl">Faltó</div></div>
+      <div class="stat blue"><div class="stat-num">${s.recuperaciones}</div><div class="stat-lbl">Recuper.</div></div>
+    </div>
+    <div class="stat-grid">
+      <div class="stat green"><div class="stat-num">${s.justificadas}</div><div class="stat-lbl">Justific.</div></div>
+      <div class="stat amber"><div class="stat-num">${s.injustificadas}</div><div class="stat-lbl">Injustif.</div></div>
+      <div class="stat"><div class="stat-num" style="color:#666">${s.asistio+s.falto}</div><div class="stat-lbl">Total</div></div>
+    </div>`;
+  if(d.asistencias&&d.asistencias.length){
+    html+='<div class="scroll-list" style="margin-top:8px">'+d.asistencias.slice(0,15).map(x=>{
+      const asis=(x.asistencia==='SI'||x.asistencia==='SÍ');
+      return `<div class="item-row">
+        <div><div class="item-main">${x.fecha}</div><div class="item-sub">${x.turno||'—'}${x.tipo?' · '+x.tipo:''}${x.nota?' · '+x.nota:''}</div></div>
+        <span class="badge ${asis?'b-si':'b-no'}">${asis?'✓ Asistió':'✕ Faltó'}</span>
+      </div>`;
+    }).join('')+'</div>';
+  }
+  html+='</div>';
+
+  // PEDIDOS
+  html+=`<div class="card">
+    <div class="sec-h">🛍️ Pedidos de tienda</div>`;
+  if(d.pedidos&&d.pedidos.length){
+    html+='<div class="scroll-list">'+d.pedidos.map(p=>{
+      const saldo=parseFloat(p.saldo)||0;
+      const bc=saldo>0?'b-deb':'b-pag';
+      return `<div class="item-row">
+        <div><div class="item-main">${p.articulo}${p.talla?' · T'+p.talla:''}${p.numCamiseta?' · #'+p.numCamiseta:''}</div>
+        <div class="item-sub">${p.fecha} · ${p.estado||'—'}</div></div>
+        <div style="text-align:right"><div style="font-weight:700">S/ ${p.pagado}/${p.total}</div>
+        ${saldo>0?`<span class="badge b-deb">Debe S/${saldo}</span>`:`<span class="badge b-pag">Pagado</span>`}</div>
+      </div>`;
+    }).join('')+'</div>';
+  } else html+='<div class="empty" style="padding:20px">Sin pedidos</div>';
+  html+='</div>';
+
+  // INSCRIPCIÓN
+  html+=`<div class="card">
+    <div class="sec-h">📝 Inscripción</div>`;
+  if(d.inscripcion){
+    const i=d.inscripcion;
+    html+=`<div style="font-size:13px;color:#333;line-height:1.9">
+      📅 Inscrito: <b>${i.fecha}</b><br>
+      👨 Apoderado: ${i.apoderado||'—'}<br>
+      📱 ${i.telefono||'—'}<br>
+      ⏰ Turno: ${i.turno||'—'}${i.precio?' · 💰 S/'+i.precio:''}
+    </div>`;
+  } else html+='<div class="empty" style="padding:20px">Sin datos de inscripción digital</div>';
+  html+='</div>';
+
+  html+='</div>';
+  cont.innerHTML=html;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#busca')&&!e.target.closest('#lista')){
+    const d=document.getElementById('lista');if(d)d.style.display='none';
+  }
+});
+
+init();
+</script>
+</body>
+</html>
