@@ -195,6 +195,48 @@ function selTurno(t,btn){
   document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   renderTabla(t);
+  cargarRecuperaciones(); // trae invitados y pruebas agendados en Avisos
+}
+
+// Trae automáticamente los alumnos agendados para recuperar y las clases de prueba de ese día+turno
+async function cargarRecuperaciones(){
+  const fecha=document.getElementById('fecha').value;
+  if(!fecha||!turno)return;
+  try{
+    const r=await fetch(API+'?app=recuperaciones&fecha='+fecha+'&turno='+turno);
+    const d=await r.json();
+    // Invitados agendados (recuperaciones)
+    (d.invitados||[]).forEach(inv=>{
+      if(inv.cod && !invitados.find(x=>x.cod===inv.cod)){
+        invitados.push({cod:inv.cod,nom:inv.nom,turno:inv.turnoOrigen||'',nota:inv.nota||'',auto:true});
+      }
+    });
+    if((d.invitados||[]).length){
+      // abrir la sección de invitados automáticamente
+      togSec('inv','si');
+      renderInvitados();
+    }
+    // Clases de prueba agendadas
+    (d.pruebas||[]).forEach(pb=>{
+      if(!PRUEBAS_AUTO.find(x=>x.nom===pb.nom)){
+        PRUEBAS_AUTO.push(pb);
+        addPrAuto(pb.nom,pb.nota);
+      }
+    });
+    if((d.pruebas||[]).length){togSec('pr','si');}
+  }catch(e){}
+}
+
+let PRUEBAS_AUTO=[];
+function addPrAuto(nombre,nota){
+  addPr();
+  // Rellenar el último row de prueba con el nombre agendado
+  const rows=document.querySelectorAll('#rows-pr .pr-row, #rows-pr > div');
+  const idx=prN-1;
+  const inNom=document.getElementById('pn'+idx);
+  const inNota=document.getElementById('pt'+idx);
+  if(inNom)inNom.value=nombre;
+  if(inNota&&nota)inNota.value=nota;
 }
 
 function renderTabla(t){
@@ -258,19 +300,25 @@ function renderInvitados(){
   c.innerHTML=invitados.map((a,i)=>`
     <div class="inv-item">
       <div class="inv-left">
-        <div class="inv-name">${a.nom.split(' ').slice(0,2).join(' ')}</div>
-        <div class="inv-cod">${a.cod}</div>
+        <div class="inv-name">${a.nom.split(' ').slice(0,2).join(' ')}${a.auto?' 🔄':''}</div>
+        <div class="inv-cod">${a.cod}${a.turno?' · viene de '+a.turno:''}</div>
       </div>
-      <div class="inv-pill">Turno ${a.turno||'—'}</div>
-      <div class="nota-wrap">
-        <div class="nota-display ${a.nota?'has-text':''}" id="nd_${i}" onclick="abrirNota(${i})">${a.nota||'Comentario...'}</div>
-        <input type="text" class="nota-input-inv" id="ni_${i}"
-          value="${a.nota}" placeholder="Comentario..."
-          oninput="actualizarNotaInv('${a.cod}',this.value)"
-          onblur="cerrarNota(${i})">
+      <div style="display:flex;gap:5px">
+        <button type="button" class="aft-btn" id="inv${i}-A" onclick="marcarInvAFT(${i},'A')">A</button>
+        <button type="button" class="aft-btn" id="inv${i}-F" onclick="marcarInvAFT(${i},'F')">F</button>
+        <button type="button" class="aft-btn" id="inv${i}-T" onclick="marcarInvAFT(${i},'T')">T</button>
       </div>
       <button class="del-btn" onclick="eliminarInv('${a.cod}')">🗑</button>
     </div>`).join('');
+}
+
+let ESTADO_INV={};
+function marcarInvAFT(i,val){
+  ESTADO_INV[i]=val;
+  ['A','F','T'].forEach(v=>{
+    const b=document.getElementById('inv'+i+'-'+v);
+    if(b)b.className='aft-btn'+(v===val?(' '+v.toLowerCase()+'-on'):'');
+  });
 }
 
 function abrirNota(i){
@@ -313,13 +361,23 @@ function addPr(){
   div.innerHTML=`
     <input type="text" id="pn${n}" placeholder="Nombre completo del niño/a">
     <div class="pr-bottom">
-      <div class="radio-box">
-        <label><input type="radio" name="pr${n}" value="A"> Asistió</label>
-        <label><input type="radio" name="pr${n}" value="F"> No asistió</label>
+      <div style="display:flex;gap:6px" id="praft${n}">
+        <button type="button" class="aft-btn" id="pr${n}-A" onclick="marcarPrAFT(${n},'A')">A</button>
+        <button type="button" class="aft-btn" id="pr${n}-F" onclick="marcarPrAFT(${n},'F')">F</button>
+        <button type="button" class="aft-btn" id="pr${n}-T" onclick="marcarPrAFT(${n},'T')">T</button>
       </div>
       <textarea class="nota-pr" id="pt${n}" placeholder="Tel, edad, colegio, notas..."></textarea>
     </div>`;
   c.appendChild(div);
+}
+
+let ESTADO_PR={};
+function marcarPrAFT(n,val){
+  ESTADO_PR[n]=val;
+  ['A','F','T'].forEach(v=>{
+    const b=document.getElementById('pr'+n+'-'+v);
+    if(b)b.className='aft-btn'+(v===val?(' '+v.toLowerCase()+'-on'):'');
+  });
 }
 
 let ESTADO_ASIS={};
@@ -343,21 +401,26 @@ async function enviar(){
     return{cod:a.cod,nom:a.nom,asistencia:est||'—'};
   });
 
+  // Invitados con su estado A/F/T
+  const invitadosData=invitados.map((a,i)=>({
+    cod:a.cod, nom:a.nom, turno:a.turno||'', nota:a.nota||'',
+    asistencia:ESTADO_INV[i]||'A'
+  }));
+
   const prueba=[];
   document.querySelectorAll('.pr-card').forEach(card=>{
     const inp=card.querySelector('input[type=text]');
     const n=inp.id.replace('pn','');
     const nom=inp.value.trim();
     if(!nom)return;
-    const s=card.querySelector('input[type=radio]:checked');
-    prueba.push({nom,asistencia:s?s.value:'—',nota:document.getElementById('pt'+n).value});
+    prueba.push({nom,asistencia:ESTADO_PR[n]||'A',nota:document.getElementById('pt'+n).value});
   });
 
   const btn=document.getElementById('sbtn');
   btn.disabled=true;btn.innerHTML='⏳ Enviando...';
 
   try{
-    await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'asistencia',fecha,profesor:prof,turno,alumnos,invitados,prueba})});
+    await fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'asistencia',fecha,profesor:prof,turno,alumnos,invitados:invitadosData,prueba})});
     btn.innerHTML='✅ Asistencia enviada';btn.style.background='#085041';
     document.getElementById('resultado').innerHTML='<div class="ok-msg">✅ Registro guardado correctamente en Google Sheets</div>';
   }catch(e){
