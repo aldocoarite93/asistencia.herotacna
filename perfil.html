@@ -61,6 +61,17 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .back-btn{background:none;border:none;color:#0F6E56;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;padding:8px 0;margin-bottom:8px}
 .acciones{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}
 .acc-btn{padding:12px;border:1.5px solid #0F6E56;border-radius:10px;background:#F0FAF6;color:#0F6E56;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;text-decoration:none;text-align:center;display:block}
+.cbtn{padding:11px 6px;border:1.5px solid #ddd;border-radius:9px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit;color:#444}
+.cbtn.on{background:#0F6E56;color:#fff;border-color:#0F6E56}
+.cfi{width:100%;padding:11px 13px;border:1.5px solid #ddd;border-radius:9px;font-size:15px;font-family:inherit;background:#fff;color:#111;margin-bottom:10px}
+.cfi:focus{outline:none;border-color:#0F6E56}
+.clbl{font-size:12px;font-weight:600;color:#555;margin-bottom:6px;display:block}
+.cswitch{width:44px;height:26px;border-radius:14px;background:#ccc;position:relative;cursor:pointer;transition:0.2s;flex-shrink:0}
+.cswitch.on{background:#0F6E56}
+.cswitch::after{content:'';position:absolute;width:20px;height:20px;border-radius:50%;background:#fff;top:3px;left:3px;transition:0.2s}
+.cswitch.on::after{left:21px}
+.sb-cobro{width:100%;padding:14px;background:#0F6E56;color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
+.sb-cobro:disabled{opacity:0.5}
 
 .cal-full{grid-column:1/-1}
 .cal-mes-sel{display:flex;align-items:center;gap:8px;margin-bottom:12px}
@@ -105,12 +116,15 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 <script>
 const API = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDGU9qedhEr_OskfqZtz5JujMhziD8zTrdwFENvSr1sQugw/exec";
 const BASE = "https://aldocoarite93.github.io/asistencia.herotacna";
-let AL=[];
+let AL=[], PRECIOS={}, ALU_ACTUAL=null;
 
 async function init(){
   try{
     const r=await fetch(API+'?app=alumnos');
     AL=(await r.json()).filter(a=>a.cod&&a.nom);
+    const rp=await fetch(API+'?app=precios');
+    const pr=(await rp.json()).precios||[];
+    pr.forEach(p=>PRECIOS[String(p.cod)]={precio:p.precio,turno:p.turno});
     document.getElementById('st').innerHTML='🟢 '+AL.length+' alumnos · busca uno para ver su perfil';
   }catch(e){document.getElementById('st').innerHTML='⚠️ Sin conexión';}
 }
@@ -155,6 +169,7 @@ function volver(){
 function renderPerfil(d,cod){
   const cont=document.getElementById('perfil-cont');
   const a=d.alumno||{cod:cod,nombre:'(sin datos en DATA)',categoria:'—',turno:'—'};
+  ALU_ACTUAL=a;
   const s=d.statsAsistencia||{asistio:0,falto:0,justificadas:0,injustificadas:0,recuperaciones:0,tardanzas:0};
 
   // Guardar para el calendario
@@ -178,11 +193,12 @@ function renderPerfil(d,cod){
   // Acciones rápidas
   html+=`<div class="card">
     <div class="acciones">
+      <button class="acc-btn" onclick="toggleCobro()">💰 Cobrar mensualidad</button>
       <a class="acc-btn" href="${BASE}/tienda.html" target="_blank">🛍️ Tienda</a>
       <a class="acc-btn" href="${BASE}/avisos.html" target="_blank">📋 Avisos</a>
-      <a class="acc-btn" href="${BASE}/admin.html" target="_blank">💰 Cobrar</a>
       <a class="acc-btn" href="${BASE}/index.html" target="_blank">✅ Asistencia</a>
     </div>
+    <div id="panel-cobro" style="display:none;margin-top:14px;border-top:1px solid #eee;padding-top:14px"></div>
   </div>`;
 
   html+='<div class="grid">';
@@ -273,7 +289,182 @@ function renderPerfil(d,cod){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-// ===== CALENDARIO DE ASISTENCIA =====
+// ===== PANEL DE COBRO DE MENSUALIDAD (dentro del perfil) =====
+let COBRO_TIPO='Mensualidad', COBRO_CAJA=null, COBRO_COMB=false, COBRO_FOTO='', COBRO_NOM='';
+const MESES_COBRO=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+function toggleCobro(){
+  const p=document.getElementById('panel-cobro');
+  if(p.style.display==='none'){
+    p.style.display='block';
+    renderPanelCobro();
+    p.scrollIntoView({behavior:'smooth',block:'nearest'});
+  } else {
+    p.style.display='none';
+  }
+}
+
+function mesOptsCobro(){
+  const now=new Date();let arr=[];
+  for(let off=-2;off<=1;off++){
+    const d=new Date(now.getFullYear(),now.getMonth()+off,1);
+    const key=String(d.getMonth()+1).padStart(2,'0')+'/'+d.getFullYear();
+    const lbl=MESES_COBRO[d.getMonth()]+' '+d.getFullYear();
+    arr.push(`<option value="${key}" ${off===0?'selected':''}>${lbl}</option>`);
+  }
+  return arr.join('');
+}
+
+function renderPanelCobro(){
+  if(!ALU_ACTUAL)return;
+  COBRO_TIPO='Mensualidad';COBRO_CAJA=null;COBRO_COMB=false;COBRO_FOTO='';COBRO_NOM='';
+  const precio=PRECIOS[String(ALU_ACTUAL.cod)]?PRECIOS[String(ALU_ACTUAL.cod)].precio:'';
+  document.getElementById('panel-cobro').innerHTML=`
+    <div style="font-size:13px;font-weight:700;color:#0F6E56;margin-bottom:12px">💰 Cobrar a ${ALU_ACTUAL.nombre.split(' ').slice(0,2).join(' ')}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+      <button class="cbtn on" id="ct-mens" onclick="cobroTipo('Mensualidad')">Mensualidad</button>
+      <button class="cbtn" id="ct-ins" onclick="cobroTipo('Inscripción')">Inscripción</button>
+    </div>
+    <label class="clbl">Mes que paga</label>
+    <select class="cfi" id="cobro-mes">${mesOptsCobro()}</select>
+    <label class="clbl">Precio del mes (S/) ${precio?'· guardado: S/'+precio:''}</label>
+    <input class="cfi" type="number" id="cobro-precio" value="${precio}" placeholder="Ej: 129" style="font-weight:700" oninput="cobroSaldo()">
+    <label class="clbl">¿Cuánto paga ahora? (S/)</label>
+    <input class="cfi" type="number" id="cobro-monto" value="${precio}" placeholder="Monto" style="font-weight:700" oninput="cobroSaldo()">
+    <div id="cobro-saldo-info" style="font-size:12px;font-weight:600;margin-bottom:10px;color:#888"></div>
+    <div id="cobro-caja-box">
+      <label class="clbl">¿En qué caja entró?</label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px" id="cobro-cajas">
+        <button class="cbtn" onclick="cobroCaja('Efectivo',this)">💵 Efectivo</button>
+        <button class="cbtn" onclick="cobroCaja('Yape',this)">📱 Yape</button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:#fff;border:1px solid #eee;border-radius:9px;margin-top:8px">
+        <span style="font-size:13px;font-weight:600;color:#333">💵📱 Pago combinado</span>
+        <div class="cswitch" id="cobro-sw" onclick="cobroToggleComb()"></div>
+      </div>
+    </div>
+    <div id="cobro-comb-box" style="display:none;margin-top:8px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+        <div><div style="font-size:11px;color:#888;margin-bottom:4px">💵 Efectivo</div><input class="cfi" type="number" id="cobro-efec" placeholder="0" oninput="cobroComb()"></div>
+        <div><div style="font-size:11px;color:#888;margin-bottom:4px">📱 Yape</div><input class="cfi" type="number" id="cobro-yape" placeholder="0" oninput="cobroComb()"></div>
+      </div>
+      <div id="cobro-comb-info" style="font-size:12px;font-weight:600;margin-top:6px;color:#888"></div>
+    </div>
+    <label class="clbl" style="margin-top:10px">📎 Voucher (opcional · Ctrl+V)</label>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button class="cbtn" onclick="document.getElementById('cobro-cam').click()">📸 Foto</button>
+      <button class="cbtn" onclick="document.getElementById('cobro-gal').click()">🖼️ Adjuntar</button>
+    </div>
+    <div id="cobro-vt" style="font-size:12px;color:#888;margin-top:6px"></div>
+    <img id="cobro-prev" style="width:100%;max-height:120px;object-fit:contain;border-radius:8px;margin-top:8px;display:none;border:1px solid #ddd">
+    <input type="file" id="cobro-cam" accept="image/*" capture="environment" style="display:none" onchange="cobroFoto(this)">
+    <input type="file" id="cobro-gal" accept="image/*" style="display:none" onchange="cobroFoto(this)">
+    <button class="sb-cobro" id="btn-cobro" onclick="guardarCobro()">✅ Registrar pago</button>
+    <div id="cobro-result"></div>`;
+  cobroSaldo();
+}
+
+function cobroTipo(t){COBRO_TIPO=t;document.getElementById('ct-mens').className='cbtn'+(t==='Mensualidad'?' on':'');document.getElementById('ct-ins').className='cbtn'+(t==='Inscripción'?' on':'');}
+function cobroCaja(c,btn){COBRO_CAJA=c;document.querySelectorAll('#cobro-cajas .cbtn').forEach(b=>b.classList.remove('on'));btn.classList.add('on');}
+function cobroSaldo(){
+  const precio=parseFloat(document.getElementById('cobro-precio').value)||0;
+  const pago=parseFloat(document.getElementById('cobro-monto').value)||0;
+  const info=document.getElementById('cobro-saldo-info');
+  if(!info)return;
+  const saldo=precio-pago;
+  if(precio<=0){info.textContent='';return;}
+  if(saldo<=0){info.style.color='#0F6E56';info.textContent='✅ Paga completo';}
+  else{info.style.color='#D14343';info.textContent='Quedará debiendo: S/ '+saldo.toFixed(0);}
+}
+function cobroToggleComb(){
+  COBRO_COMB=!COBRO_COMB;
+  document.getElementById('cobro-sw').className='cswitch'+(COBRO_COMB?' on':'');
+  document.getElementById('cobro-comb-box').style.display=COBRO_COMB?'block':'none';
+  document.getElementById('cobro-cajas').style.display=COBRO_COMB?'none':'grid';
+}
+function cobroComb(){
+  const total=parseFloat(document.getElementById('cobro-monto').value)||0;
+  const ef=parseFloat(document.getElementById('cobro-efec').value)||0;
+  const yp=parseFloat(document.getElementById('cobro-yape').value)||0;
+  const info=document.getElementById('cobro-comb-info');
+  if(ef+yp===total&&total>0){info.style.color='#0F6E56';info.textContent='✅ Cuadra';}
+  else{info.style.color='#D14343';info.textContent=`Suma S/ ${ef+yp} de S/ ${total}`;}
+}
+function cobroFoto(input){
+  const f=input.files[0];if(!f)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const img=new Image();
+    img.onload=function(){
+      const c=document.createElement('canvas');const M=800;let w=img.width,h=img.height;
+      if(w>h){if(w>M){h=h*(M/w);w=M;}}else{if(h>M){w=w*(M/h);h=M;}}
+      c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+      const dd=c.toDataURL('image/jpeg',0.7);
+      COBRO_FOTO=dd.split(',')[1];COBRO_NOM='cobro_'+Date.now()+'.jpg';
+      const p=document.getElementById('cobro-prev');p.src=dd;p.style.display='block';
+      document.getElementById('cobro-vt').textContent='✅ Voucher listo';
+    };img.src=e.target.result;
+  };reader.readAsDataURL(f);
+}
+
+function guardarCobro(){
+  if(!ALU_ACTUAL)return;
+  const precio=parseFloat(document.getElementById('cobro-precio').value)||0;
+  const pago=parseFloat(document.getElementById('cobro-monto').value)||0;
+  const mes=document.getElementById('cobro-mes').value;
+  if(precio<=0){alert('Ingresa el precio del mes.');return;}
+  if(pago<=0){alert('Ingresa cuánto paga.');return;}
+  let partes=[];
+  if(COBRO_COMB){
+    const ef=parseFloat(document.getElementById('cobro-efec').value)||0;
+    const yp=parseFloat(document.getElementById('cobro-yape').value)||0;
+    if(ef+yp!==pago){alert('Efectivo + Yape debe sumar el monto que paga.');return;}
+    if(ef>0)partes.push({monto:ef,caja:'Efectivo'});
+    if(yp>0)partes.push({monto:yp,caja:'Yape'});
+  } else {
+    if(!COBRO_CAJA){alert('Selecciona la caja.');return;}
+    partes=[{monto:pago,caja:COBRO_CAJA}];
+  }
+  const btn=document.getElementById('btn-cobro');btn.disabled=true;btn.textContent='⏳ Guardando...';
+  const payload={app:'mensualidades',cod:ALU_ACTUAL.cod,alumno:ALU_ACTUAL.nombre,mes,tipo:COBRO_TIPO,precioMes:precio,montoPagado:pago,registradoPor:'Aldo',partes,foto:COBRO_FOTO,nombreFoto:COBRO_NOM};
+  fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
+  setTimeout(()=>{
+    const saldo=precio-pago;
+    document.getElementById('cobro-result').innerHTML=`
+      <div style="background:#ECFDF5;border:1.5px solid #c8ead9;border-radius:10px;padding:14px;text-align:center;margin-top:10px">
+        <div style="font-size:13px;color:#0F6E56;font-weight:700">✅ PAGO REGISTRADO</div>
+        <div style="font-size:20px;font-weight:800;color:#0F6E56;margin-top:4px">S/ ${pago}</div>
+        <div style="font-size:12px;color:#666;margin-top:4px">${COBRO_TIPO} · ${mes}${saldo>0?' · Debe S/'+saldo:''}</div>
+        <div style="font-size:11px;color:#888;margin-top:6px">Se registró en el flujo de caja automáticamente</div>
+        <button class="sb-cobro" style="margin-top:10px" onclick="toggleCobro();verPerfil(ALU_ACTUAL.cod)">🔄 Ver perfil actualizado</button>
+      </div>`;
+  },1200);
+}
+
+document.addEventListener('paste',function(e){
+  const panel=document.getElementById('panel-cobro');
+  if(!panel||panel.style.display==='none')return;
+  const items=(e.clipboardData||window.clipboardData).items;
+  for(let i=0;i<items.length;i++){
+    if(items[i].type.indexOf('image')!==-1){
+      const blob=items[i].getAsFile();if(!blob)break;
+      const reader=new FileReader();
+      reader.onload=function(ev){
+        const img=new Image();
+        img.onload=function(){
+          const c=document.createElement('canvas');const M=800;let w=img.width,h=img.height;
+          if(w>h){if(w>M){h=h*(M/w);w=M;}}else{if(h>M){w=w*(M/h);h=M;}}
+          c.width=w;c.height=h;c.getContext('2d').drawImage(img,0,0,w,h);
+          const dd=c.toDataURL('image/jpeg',0.7);
+          COBRO_FOTO=dd.split(',')[1];COBRO_NOM='cobro_'+Date.now()+'.jpg';
+          const p=document.getElementById('cobro-prev');if(p){p.src=dd;p.style.display='block';}
+          const vt=document.getElementById('cobro-vt');if(vt)vt.textContent='✅ Voucher pegado';
+        };img.src=ev.target.result;
+      };reader.readAsDataURL(blob);
+      e.preventDefault();break;
+    }
+  }
+});
 let CAL_ASIS=[], CAL_TURNO_ALUMNO='', CAL_MES=new Date();
 const MESES_CAL=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
