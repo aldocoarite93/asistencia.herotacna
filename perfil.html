@@ -16,6 +16,13 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .si{width:100%;padding:13px 16px;border:1.5px solid #ddd;border-radius:11px;font-size:16px;font-family:inherit;color:#111;background:#fff}
 .si:focus{outline:none;border-color:#0F6E56}
 .dl{background:#fff;border:1.5px solid #ddd;border-radius:11px;max-height:280px;overflow-y:auto;margin-top:8px;display:none;box-shadow:0 4px 12px rgba(0,0,0,0.08)}
+.turno-filtros{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tf{padding:7px 13px;border:1.5px solid #ddd;border-radius:20px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:#666}
+.tf.on{background:#0F6E56;color:#fff;border-color:#0F6E56}
+.lt-item{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border:1px solid #eee;border-radius:10px;margin-top:8px;cursor:pointer;background:#fff}
+.lt-item:active{background:#f0f9f5}
+.lt-name{font-size:15px;font-weight:600;color:#111}
+.lt-info{font-size:12px;color:#aaa;margin-top:1px}
 .dr{display:flex;align-items:center;justify-content:space-between;padding:12px 15px;border-bottom:1px solid #f0f0f0;cursor:pointer}
 .dr:last-child{border-bottom:none}
 .dr:active,.dr:hover{background:#f0f9f5}
@@ -106,7 +113,17 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
       </div>
     </div>
     <input class="si" id="busca" type="text" placeholder="🔍 Buscar por nombre o código..." oninput="filtrar()" autocomplete="off">
+    <div class="turno-filtros">
+      <button class="tf on" data-t="" onclick="filtroTurno('',this)">Todos</button>
+      <button class="tf" data-t="TA1" onclick="filtroTurno('TA1',this)">TA1</button>
+      <button class="tf" data-t="TA2" onclick="filtroTurno('TA2',this)">TA2</button>
+      <button class="tf" data-t="TB1" onclick="filtroTurno('TB1',this)">TB1</button>
+      <button class="tf" data-t="TB2" onclick="filtroTurno('TB2',this)">TB2</button>
+      <button class="tf" data-t="TC1" onclick="filtroTurno('TC1',this)">TC1</button>
+      <button class="tf" data-t="TC2" onclick="filtroTurno('TC2',this)">TC2</button>
+    </div>
     <div class="dl" id="lista"></div>
+    <div id="lista-turno"></div>
   </div>
 
   <!-- PERFIL -->
@@ -142,6 +159,23 @@ function filtrar(){
       <div class="tp">${a.turno||'—'}</div>
     </div>`).join('');
   dd.style.display='block';
+}
+
+function filtroTurno(t,btn){
+  document.querySelectorAll('.tf').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  const cont=document.getElementById('lista-turno');
+  document.getElementById('lista').style.display='none';
+  if(!t){cont.innerHTML='';return;}
+  const r=AL.filter(a=>String(a.turno||'').toUpperCase()===t.toUpperCase());
+  if(!r.length){cont.innerHTML='<div class="empty">Sin alumnos en '+t+'</div>';return;}
+  cont.innerHTML=`<div style="font-size:12px;color:#888;margin:12px 0 4px">${r.length} alumno(s) en ${t}</div>`+
+    r.sort((a,b)=>a.nom.localeCompare(b.nom)).map(a=>`
+    <div class="lt-item" onclick="verPerfil('${a.cod}')">
+      <div><div class="lt-name">${a.nom.split(' ').slice(0,3).join(' ')}</div>
+      <div class="lt-info">Cod: ${a.cod} · ${a.categoria||'—'}</div></div>
+      <div class="tp">${a.turno||'—'}</div>
+    </div>`).join('');
 }
 
 async function verPerfil(cod){
