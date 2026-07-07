@@ -79,6 +79,7 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .cswitch.on::after{left:21px}
 .sb-cobro{width:100%;padding:14px;background:#0F6E56;color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px}
 .sb-cobro:disabled{opacity:0.5}
+.ed-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
 .cal-full{grid-column:1/-1}
 .cal-mes-sel{display:flex;align-items:center;gap:8px;margin-bottom:12px}
@@ -228,11 +229,12 @@ function renderPerfil(d,cod){
   html+=`<div class="card">
     <div class="acciones">
       <button class="acc-btn" onclick="toggleCobro()">💰 Cobrar mensualidad</button>
+      <button class="acc-btn" onclick="toggleEditar()">✏️ Editar datos</button>
       <a class="acc-btn" href="${BASE}/tienda.html" target="_blank">🛍️ Tienda</a>
       <a class="acc-btn" href="${BASE}/avisos.html" target="_blank">📋 Avisos</a>
-      <a class="acc-btn" href="${BASE}/index.html" target="_blank">✅ Asistencia</a>
     </div>
     <div id="panel-cobro" style="display:none;margin-top:14px;border-top:1px solid #eee;padding-top:14px"></div>
+    <div id="panel-editar" style="display:none;margin-top:14px;border-top:1px solid #eee;padding-top:14px"></div>
   </div>`;
 
   html+='<div class="grid">';
@@ -321,6 +323,86 @@ function renderPerfil(d,cod){
   cont.innerHTML=html;
   renderCalendario();
   window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ===== EDITOR DE DATOS DEL ALUMNO (migración) =====
+let EDIT_FILA=null;
+async function toggleEditar(){
+  const p=document.getElementById('panel-editar');
+  if(p.style.display==='none'){
+    document.getElementById('panel-cobro').style.display='none';
+    p.style.display='block';
+    p.innerHTML='<div class="empty"><span class="spinner"></span> Cargando datos...</div>';
+    p.scrollIntoView({behavior:'smooth',block:'nearest'});
+    try{
+      const r=await fetch(API+'?app=alumno_full&cod='+encodeURIComponent(ALU_ACTUAL.cod));
+      const d=await r.json();
+      if(d.ok)renderEditar(d.alumno);
+      else p.innerHTML='<div class="empty">⚠️ '+(d.error||'Error')+'</div>';
+    }catch(e){p.innerHTML='<div class="empty">⚠️ Sin conexión</div>';}
+  } else {
+    p.style.display='none';
+  }
+}
+
+function renderEditar(a){
+  EDIT_FILA=a.fila;
+  const turnos=['TA1','TA2','TB1','TB2','TC1','TC2','R'];
+  document.getElementById('panel-editar').innerHTML=`
+    <div style="font-size:13px;font-weight:700;color:#0F6E56;margin-bottom:4px">✏️ Editar datos de ${a.nombre} ${a.apellido}</div>
+    <div style="font-size:11px;color:#999;margin-bottom:12px">Cod ${a.cod} · Categoría ${a.categoria||'—'} (automática) · Edad ${a.edad||'—'} (automática)</div>
+    <div class="ed-grid">
+      <div><label class="clbl">Nombre</label><input class="cfi" id="ed-nombre" value="${a.nombre}"></div>
+      <div><label class="clbl">Apellido</label><input class="cfi" id="ed-apellido" value="${a.apellido}"></div>
+    </div>
+    <label class="clbl">Turno / Horario</label>
+    <select class="cfi" id="ed-horario">${turnos.map(t=>`<option ${a.horario.toUpperCase()===t?'selected':''}>${t}</option>`).join('')}<option ${!turnos.includes(a.horario.toUpperCase())?'selected':''} value="${a.horario}">${a.horario||'(otro)'}</option></select>
+    <label class="clbl">Fecha de nacimiento</label>
+    <input class="cfi" id="ed-fnac" value="${a.fnac}" placeholder="dd/mm/aaaa">
+    <div class="ed-grid">
+      <div><label class="clbl">Apoderado 1</label><input class="cfi" id="ed-apo1" value="${a.apo1}"></div>
+      <div><label class="clbl">Teléfono 1</label><input class="cfi" id="ed-tel1" value="${a.tel1}"></div>
+    </div>
+    <div class="ed-grid">
+      <div><label class="clbl">Apoderado 2</label><input class="cfi" id="ed-apo2" value="${a.apo2}"></div>
+      <div><label class="clbl">Teléfono 2</label><input class="cfi" id="ed-tel2" value="${a.tel2}"></div>
+    </div>
+    <div class="ed-grid">
+      <div><label class="clbl">Colegio</label><input class="cfi" id="ed-colegio" value="${a.colegio}"></div>
+      <div><label class="clbl">DNI</label><input class="cfi" id="ed-dni" value="${a.dni}"></div>
+    </div>
+    <div class="ed-grid">
+      <div><label class="clbl">Hermanos</label><input class="cfi" id="ed-hermanos" value="${a.hermanos}"></div>
+      <div><label class="clbl">Monto mensual (S/)</label><input class="cfi" id="ed-monto" value="${a.monto}"></div>
+    </div>
+    <div class="ed-grid">
+      <div><label class="clbl">Nombre en camiseta</label><input class="cfi" id="ed-nomcam" value="${a.nomCamiseta}"></div>
+      <div><label class="clbl">Fecha inscripción</label><input class="cfi" id="ed-finsc" value="${a.fechaInsc}" placeholder="dd/mm/aaaa"></div>
+    </div>
+    <div style="font-size:11px;color:#999;margin:8px 0">🔒 N° camiseta (${a.numCamiseta||'—'}) y talla (${a.talla||'—'}) se llenan solos desde Tienda</div>
+    <button class="sb-cobro" id="btn-editar" onclick="guardarEditar()">💾 Guardar cambios</button>
+    <div id="editar-result"></div>`;
+}
+
+function guardarEditar(){
+  const g=id=>document.getElementById(id).value.trim();
+  const nombre=g('ed-nombre'), apellido=g('ed-apellido');
+  if(!nombre){alert('El nombre no puede quedar vacío.');return;}
+  if(!confirm('¿Guardar los cambios en la base de datos del alumno?'))return;
+  const payload={app:'editar_alumno',fila:EDIT_FILA,
+    nombre,apellido,horario:g('ed-horario'),fnac:g('ed-fnac'),
+    apo1:g('ed-apo1'),apo2:g('ed-apo2'),tel1:g('ed-tel1'),tel2:g('ed-tel2'),
+    colegio:g('ed-colegio'),dni:g('ed-dni'),hermanos:g('ed-hermanos'),monto:g('ed-monto'),
+    nomCamiseta:g('ed-nomcam'),fechaInsc:g('ed-finsc')};
+  const btn=document.getElementById('btn-editar');btn.disabled=true;btn.textContent='⏳ Guardando...';
+  fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
+  setTimeout(()=>{
+    document.getElementById('editar-result').innerHTML=`
+      <div style="background:#ECFDF5;border:1.5px solid #c8ead9;border-radius:10px;padding:14px;text-align:center;margin-top:10px">
+        <div style="font-size:13px;color:#0F6E56;font-weight:700">✅ DATOS ACTUALIZADOS</div>
+        <button class="sb-cobro" style="margin-top:10px" onclick="toggleEditar();verPerfil(ALU_ACTUAL.cod)">🔄 Ver perfil actualizado</button>
+      </div>`;
+  },1200);
 }
 
 // ===== PANEL DE COBRO DE MENSUALIDAD (dentro del perfil) =====
