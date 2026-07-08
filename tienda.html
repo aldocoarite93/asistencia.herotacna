@@ -65,6 +65,14 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 .ob{background:#fff8f0;border:1px solid #fde8c8;border-radius:9px;padding:11px}
 .ot{font-size:11px;font-weight:600;color:#854F0B;margin-bottom:5px}
 .on2{font-size:13px;color:#993C1D;font-weight:600;line-height:1.7}
+.tgl-btn{padding:10px;border:1.5px solid #ddd;border-radius:9px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:#555}
+.num-list{background:#fafafa;border:1px solid #eee;border-radius:9px;padding:11px;margin-top:8px}
+.nl-title{font-size:11px;font-weight:700;margin-bottom:8px}
+.nl-nums{display:flex;flex-wrap:wrap;gap:6px}
+.nl-chip{display:inline-flex;align-items:center;justify-content:center;min-width:32px;height:32px;padding:0 6px;border-radius:7px;font-size:13px;font-weight:700}
+.nl-chip.disp{background:#e8f8f2;color:#0F6E56;border:1px solid #b6e5d5;cursor:pointer}
+.nl-chip.disp:active{background:#0F6E56;color:#fff}
+.nl-chip.ocup{background:#fff0f0;color:#c0392b;border:1px solid #f5c6c6}
 .ppg{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-bottom:10px}
 .ppb{padding:9px 3px;border:1.5px solid #ddd;border-radius:8px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;text-align:center;font-family:inherit;touch-action:manipulation;color:#333}
 .ppb.on{background:#1D9E75;color:#fff;border-color:#1D9E75}
@@ -285,18 +293,56 @@ function showMain(id){
   if(id==='gestion') cargarPedidos();
 }
 
+// Extrae el año de nacimiento de una fecha "dd/mm/aaaa"
+function anioNac(fnac){
+  if(!fnac)return null;
+  const m=String(fnac).trim().match(/(\d{4})/);
+  return m?parseInt(m[1]):null;
+}
+// Edad (U) que cumple en un año dado
+function uEnAnio(anioNacim, anio){ return anio - anioNacim; }
+// Mapea U -> CAT (U par sube a impar de arriba): U6->7, U8->9, U10->11
+function uACat(u){ return u%2===0 ? u+1 : u; }
+
+// Para compatibilidad: número de categoría base desde la U del alumno (para mostrar)
 function catNum(c){
-  const n=parseInt(String(c||'').replace('U',''));
+  const n=parseInt(String(c||'').replace(/[^0-9]/g,''));
   if(isNaN(n))return null;
-  return n%2===0?n+1:n;
+  return uACat(n);
 }
 
-function numsOcup(cn){
-  const u1='U'+(cn-1), u2='U'+cn;
-  return AL.filter(a=>{
-    const c=String(a.categoria||'').toUpperCase().trim();
-    return (c===u1||c===u2)&&a.numCamiseta&&String(a.numCamiseta).trim()!=='';
-  }).map(a=>parseInt(a.numCamiseta)).filter(n=>!isNaN(n)&&n>0).sort((a,b)=>a-b);
+// Números NO disponibles para un alumno según su FECHA DE NACIMIENTO.
+// Un número se bloquea si el alumno y otro que ya lo tiene COINCIDIRÁN
+// en la misma CAT en algún año (este + los próximos 4).
+function numsOcup(alumno){
+  const anioActual=new Date().getFullYear();
+  const anioA=anioNac(alumno&&alumno.fnac);
+  if(!anioA)return []; // sin fecha no podemos proyectar
+  const catsA=[];
+  for(let y=anioActual;y<=anioActual+4;y++)catsA.push(uACat(uEnAnio(anioA,y)));
+  const bloqueados=new Set();
+  AL.forEach(o=>{
+    if(!o.numCamiseta||String(o.numCamiseta).trim()==='')return;
+    if(alumno&&o.cod===alumno.cod)return;
+    const anioO=anioNac(o.fnac);
+    if(!anioO)return;
+    for(let i=0;i<catsA.length;i++){
+      const catO=uACat(uEnAnio(anioO,anioActual+i));
+      if(catO===catsA[i]){
+        const n=parseInt(o.numCamiseta);
+        if(!isNaN(n)&&n>0)bloqueados.add(n);
+        break;
+      }
+    }
+  });
+  return Array.from(bloqueados).sort((a,b)=>a-b);
+}
+
+// Lista de números disponibles (1-99 menos los ocupados)
+function numsDispon(ocupados){
+  const disp=[];
+  for(let n=1;n<=99;n++)if(!ocupados.includes(n))disp.push(n);
+  return disp;
 }
 
 function filtrar(){
@@ -368,8 +414,9 @@ function calcSaldo(){
 function rP3(){
   const s=document.getElementById('s3');
   if(PROD==='camiseta'){
+    const oc=numsOcup(A);
+    const disp=numsDispon(oc);
     const cn=catNum(A.categoria);
-    const oc=numsOcup(cn);
     s.innerHTML=`
       ${ahHTML()}
       <div class="row2">
@@ -378,7 +425,7 @@ function rP3(){
       </div>
       <div class="sh">Paso 3 — Detalles de la camiseta</div>
       <div class="fs">
-        <div class="cb">Categoría ${cn} (${A.categoria||'—'})</div>
+        <div class="cb">${A.nombre||''} · ${A.categoria||'—'}${A.fnac?' · nac '+A.fnac:''}</div>
         <span class="fl">Talla</span>
         <div class="tg" id="tg-c">
           ${['12','14','16','XS','S','M','L','XL'].map(t=>`<button class="tb" onclick="sTalla(this,'${t}')">${t}</button>`).join('')}
@@ -394,9 +441,18 @@ function rP3(){
           <input class="ni" id="nn" type="number" min="1" max="99" placeholder="Ej: 10" oninput="vNum(this.value)">
           <div class="ne" id="ne">—</div>
         </div>
-        <div class="ob">
-          <div class="ot">🚫 Ocupados en Categoría ${cn}:</div>
-          <div class="on2">${oc.length?oc.join('   '):'Todos disponibles ✅'}</div>
+        ${!A.fnac?'<div style="font-size:12px;color:#B26A00;margin-top:6px">⚠️ Este alumno no tiene fecha de nacimiento, no se puede validar choques futuros.</div>':''}
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px">
+          <button type="button" class="tgl-btn" onclick="togList('disp')">✅ Ver disponibles (${disp.length})</button>
+          <button type="button" class="tgl-btn" onclick="togList('ocup')">🚫 Ver ocupados (${oc.length})</button>
+        </div>
+        <div class="num-list" id="list-disp" style="display:none">
+          <div class="nl-title" style="color:#0F6E56">✅ Números DISPONIBLES:</div>
+          <div class="nl-nums">${disp.map(n=>`<span class="nl-chip disp" onclick="pickNum(${n})">${n}</span>`).join('')}</div>
+        </div>
+        <div class="num-list" id="list-ocup" style="display:none">
+          <div class="nl-title" style="color:#C0392B">🚫 Números OCUPADOS:</div>
+          <div class="nl-nums">${oc.length?oc.map(n=>`<span class="nl-chip ocup">${n}</span>`).join(''):'<span style="color:#888;font-size:13px">Ninguno ✅</span>'}</div>
         </div>
       </div>
       <div class="row2">
@@ -457,9 +513,20 @@ function sTalla(btn,t){
 function vNum(v){
   const n=parseInt(v),e=document.getElementById('ne');
   if(!v||isNaN(n)||n<1||n>99){e.style.background='#f5f5f5';e.style.color='#999';e.textContent='—';D.numCamiseta='';return;}
-  const cn=catNum(A.categoria),oc=numsOcup(cn);
+  const oc=numsOcup(A);
   if(oc.includes(n)){e.style.background='#fff0f0';e.style.color='#c0392b';e.textContent='❌ Ocupado';D.numCamiseta='';}
   else{e.style.background='#e8f8f2';e.style.color='#0F6E56';e.textContent='✅ Libre';D.numCamiseta=String(n);}
+}
+
+function togList(cual){
+  const d=document.getElementById('list-disp'), o=document.getElementById('list-ocup');
+  if(cual==='disp'){d.style.display=d.style.display==='none'?'block':'none';o.style.display='none';}
+  else{o.style.display=o.style.display==='none'?'block':'none';d.style.display='none';}
+}
+function pickNum(n){
+  const inp=document.getElementById('nn');
+  if(inp){inp.value=n;vNum(String(n));}
+  document.getElementById('list-disp').style.display='none';
 }
 
 function vCam(){
