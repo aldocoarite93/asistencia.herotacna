@@ -112,13 +112,8 @@ body{background:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 
   <div class="blk">
     <span class="blk-label">🕐 Turno</span>
-    <div class="turno-grid">
-      <button class="tbtn" onclick="selTurno('TA1',this)">TA1<small>LMV 3:30–4:30pm · Camelias</small></button>
-      <button class="tbtn" onclick="selTurno('TA2',this)">TA2<small>LMV 4:30–6:00pm · Camelias</small></button>
-      <button class="tbtn" onclick="selTurno('TB1',this)">TB1<small>MJS 4:00–5:00pm · Camelias</small></button>
-      <button class="tbtn" onclick="selTurno('TB2',this)">TB2<small>MJS 5:00–6:00pm · Camelias</small></button>
-      <button class="tbtn" onclick="selTurno('TC1',this)">TC1<small>MJS 4:00–5:00pm · Coliseo</small></button>
-      <button class="tbtn" onclick="selTurno('TC2',this)">TC2<small>MJS 5:00–6:00pm · Coliseo</small></button>
+    <div class="turno-grid" id="turno-grid">
+      <div class="no-sel" style="grid-column:1/-1">Elige primero la fecha 📅</div>
     </div>
   </div>
 
@@ -198,25 +193,75 @@ function selTurno(t,btn){
   cargarRecuperaciones(); // trae invitados y pruebas agendados en Avisos
 }
 
+// Definición de turnos con su día y horario
+const DEF_TURNOS={
+  TA1:{dias:[1,3,5],sab:null,lbl:'LMV 3:30–4:30pm · Camelias'},
+  TA2:{dias:[1,3,5],sab:null,lbl:'LMV 4:30–6:00pm · Camelias'},
+  TB1:{dias:[2,4],sab:'3:00–4:00pm',lbl:'MJS 4:00–5:00pm · Camelias'},
+  TB2:{dias:[2,4],sab:'4:00–5:00pm',lbl:'MJS 5:00–6:00pm · Camelias'},
+  TC1:{dias:[2,4],sab:'10:30am–12:00pm',lbl:'MJS 4:00–5:00pm · Coliseo'},
+  TC2:{dias:[2,4],sab:'9:00–10:30am',lbl:'MJS 5:00–6:00pm · Coliseo'}
+};
+
+// Muestra solo los turnos válidos para el día de la fecha elegida
+function renderTurnos(){
+  const fechaVal=document.getElementById('fecha').value;
+  const grid=document.getElementById('turno-grid');
+  turno=null;
+  if(!fechaVal){grid.innerHTML='<div class="no-sel" style="grid-column:1/-1">Elige primero la fecha 📅</div>';return;}
+  // Día de la semana de la fecha (0=Dom, 6=Sáb). Ojo: parsear como local.
+  const p=fechaVal.split('-');
+  const d=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2]));
+  const dow=d.getDay(); // 0 Dom, 1 Lun ... 6 Sáb
+
+  let disponibles=[];
+  for(const t in DEF_TURNOS){
+    const def=DEF_TURNOS[t];
+    if(dow===6){ // sábado: los que tienen horario de sábado (TB y TC)
+      if(def.sab)disponibles.push(t);
+    } else {
+      if(def.dias.includes(dow))disponibles.push(t);
+    }
+  }
+
+  if(!disponibles.length){
+    grid.innerHTML='<div class="no-sel" style="grid-column:1/-1">No hay turnos programados para este día (¿domingo?)</div>';
+    return;
+  }
+  grid.innerHTML=disponibles.map(t=>{
+    const def=DEF_TURNOS[t];
+    const horario=dow===6?('Sáb '+def.sab):def.lbl;
+    return `<button class="tbtn" onclick="selTurno('${t}',this)">${t}<small>${horario}</small></button>`;
+  }).join('');
+}
+
 // Trae automáticamente los alumnos agendados para recuperar y las clases de prueba de ese día+turno
 async function cargarRecuperaciones(){
   const fecha=document.getElementById('fecha').value;
   if(!fecha||!turno)return;
+  // Limpiar invitados y pruebas AUTOMÁTICOS del turno anterior (mantener los manuales)
+  invitados=invitados.filter(x=>!x.auto);
+  PRUEBAS_AUTO=[];
+  ESTADO_INV={};
+  renderInvitados();
+  // Quitar las filas de prueba automáticas (las que se llenaron solas)
+  document.querySelectorAll('.pr-card').forEach(card=>{
+    if(card.dataset.auto==='1')card.remove();
+  });
   try{
     const r=await fetch(API+'?app=recuperaciones&fecha='+fecha+'&turno='+turno);
     const d=await r.json();
-    // Invitados agendados (recuperaciones)
+    // Invitados agendados (recuperaciones) — solo de ESTE turno
     (d.invitados||[]).forEach(inv=>{
       if(inv.cod && !invitados.find(x=>x.cod===inv.cod)){
         invitados.push({cod:inv.cod,nom:inv.nom,turno:inv.turnoOrigen||'',nota:inv.nota||'',auto:true});
       }
     });
     if((d.invitados||[]).length){
-      // abrir la sección de invitados automáticamente
       togSec('inv','si');
       renderInvitados();
     }
-    // Clases de prueba agendadas
+    // Clases de prueba agendadas — solo de ESTE turno
     (d.pruebas||[]).forEach(pb=>{
       if(!PRUEBAS_AUTO.find(x=>x.nom===pb.nom)){
         PRUEBAS_AUTO.push(pb);
@@ -230,8 +275,10 @@ async function cargarRecuperaciones(){
 let PRUEBAS_AUTO=[];
 function addPrAuto(nombre,nota){
   addPr();
-  // Rellenar el último row de prueba con el nombre agendado
-  const rows=document.querySelectorAll('#rows-pr .pr-row, #rows-pr > div');
+  // Marcar la última fila como automática y rellenar el nombre
+  const cards=document.querySelectorAll('.pr-card');
+  const card=cards[cards.length-1];
+  if(card)card.dataset.auto='1';
   const idx=prN-1;
   const inNom=document.getElementById('pn'+idx);
   const inNota=document.getElementById('pt'+idx);
@@ -430,6 +477,8 @@ async function enviar(){
 }
 
 document.getElementById('fecha').valueAsDate=new Date();
+document.getElementById('fecha').addEventListener('change',renderTurnos);
+renderTurnos(); // mostrar turnos del día actual al cargar
 init();
 </script>
 </body>
