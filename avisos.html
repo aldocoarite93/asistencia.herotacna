@@ -144,6 +144,18 @@ const SAB = {
   TC2: 'Sáb 9:00–10:30am · Coliseo Zela'
 };
 
+// Devuelve los turnos válidos según el día de la fecha (ISO aaaa-mm-dd)
+// L-M-V (1,3,5): TA1, TA2 · M-J (2,4): TB/TC · Sábado (6): TB/TC con horario sábado
+function turnosDelDia(fechaISO){
+  if(!fechaISO) return Object.keys(TI); // sin fecha, todos
+  const [y,m,d] = fechaISO.split('-');
+  const dow = new Date(parseInt(y), parseInt(m)-1, parseInt(d)).getDay();
+  const AB = {1:['TA1','TA2'], 3:['TA1','TA2'], 5:['TA1','TA2'],
+              2:['TB1','TB2','TC1','TC2'], 4:['TB1','TB2','TC1','TC2'],
+              6:['TB1','TB2','TC1','TC2']}; // sábado: turnos B y C
+  return AB[dow] || [];
+}
+
 // Devuelve la etiqueta correcta según fecha y turno
 function labelTurno(turnoId, fechaISO){
   if(!turnoId) return TI[turnoId] || '—';
@@ -156,9 +168,9 @@ function labelTurno(turnoId, fechaISO){
   return TI[turnoId] || turnoId;
 }
 
-// Genera las opciones del select de turno de recuperación según fecha elegida
+// Genera las opciones del select de turno de recuperación según fecha elegida (solo turnos del día)
 function buildTurnoOpts(fechaRecup, turnoAlumno){
-  return Object.keys(TI).map(t => {
+  return turnosDelDia(fechaRecup).map(t => {
     const lbl = labelTurno(t, fechaRecup);
     const sel = t === turnoAlumno ? 'selected' : '';
     return `<option value="${t}" ${sel}>${t} — ${lbl}</option>`;
@@ -269,7 +281,7 @@ function renderR2(){
   if(TIPO==='prueba'){
     r2.innerHTML=`
       <div class="sh" style="margin-top:12px">Datos de clase de prueba</div>
-      <div class="fs"><span class="fl">Fecha *</span><input class="fi" id="pf" type="date" value="${hoyISO()}"></div>
+      <div class="fs"><span class="fl">Fecha *</span><input class="fi" id="pf" type="date" value="${hoyISO()}" onchange="actualizarTurnoPrueba()"></div>
       <div class="fs"><span class="fl">Nombre completo *</span><input class="fi" id="pn" type="text" placeholder="Nombre y apellido"></div>
       <div class="fs"><span class="fl">Edad</span><input class="fi" id="pe" type="number" placeholder="Ej: 10" min="4" max="20"></div>
       <div class="fs"><span class="fl">Apoderado (opcional)</span><input class="fi" id="pa" type="text" placeholder="Nombre del apoderado"></div>
@@ -277,7 +289,7 @@ function renderR2(){
       <div class="fs"><span class="fl">Turno *</span>
         <select class="fi" id="ptu">
           <option value="">Seleccionar...</option>
-          ${Object.keys(TI).map(t=>`<option value="${t}">${t} — ${TI[t]}</option>`).join('')}
+          ${turnosDelDia(hoyISO()).map(t=>`<option value="${t}">${t} — ${labelTurno(t,hoyISO())}</option>`).join('')}
         </select>
       </div>
       <div class="fs"><span class="fl">Comentario / Seguimiento</span><textarea class="fta" id="pc" placeholder="Notas, quién lo recomendó..."></textarea></div>
@@ -352,6 +364,39 @@ function renderFav(){
   selSub('justificada');
 }
 
+// Días de cada turno: L-M-V (1,3,5) para TA; M-J-S (2,4,6) para TB/TC
+const DIAS_TURNO={
+  TA1:[1,3,5], TA2:[1,3,5],
+  TB1:[2,4,6], TB2:[2,4,6], TC1:[2,4,6], TC2:[2,4,6]
+};
+
+// Devuelve los turnos válidos para una fecha ISO (aaaa-mm-dd)
+function turnosDelDia(fechaISO){
+  if(!fechaISO)return Object.keys(TI);
+  const [y,m,d]=fechaISO.split('-');
+  const dow=new Date(parseInt(y),parseInt(m)-1,parseInt(d)).getDay();
+  return Object.keys(TI).filter(t=>(DIAS_TURNO[t]||[]).includes(dow));
+}
+
+// Actualiza el selector de turno de la clase de prueba según la fecha elegida
+function actualizarTurnoPrueba(){
+  const pf=document.getElementById('pf');
+  const ptu=document.getElementById('ptu');
+  if(!pf||!ptu)return;
+  const fecha=pf.value;
+  const actual=ptu.value;
+  const turnos=turnosDelDia(fecha);
+  if(!turnos.length){
+    ptu.innerHTML='<option value="">Sin turnos ese día (¿domingo?)</option>';
+    return;
+  }
+  ptu.innerHTML='<option value="">Seleccionar...</option>'+
+    turnos.map(t=>{
+      const sel=t===actual?'selected':'';
+      return `<option value="${t}" ${sel}>${t} — ${labelTurno(t,fecha)}</option>`;
+    }).join('');
+}
+
 // Actualiza las opciones del turno cuando cambia la fecha de recuperación
 function actualizarTurnos(){
   const fr = document.getElementById('fr');
@@ -359,8 +404,13 @@ function actualizarTurnos(){
   if(!fr || !ftr) return;
   const fechaSel = fr.value;
   const turnoActual = ftr.value; // mantener selección si ya eligió
-  ftr.innerHTML = `<option value="">Seleccionar...</option>` + 
-    Object.keys(TI).map(t => {
+  const disponibles = turnosDelDia(fechaSel);
+  if(!disponibles.length){
+    ftr.innerHTML=`<option value="">Sin turnos ese día (¿domingo?)</option>`;
+    return;
+  }
+  ftr.innerHTML = `<option value="">Seleccionar...</option>` +
+    disponibles.map(t => {
       const lbl = labelTurno(t, fechaSel);
       const sel = t === turnoActual ? 'selected' : '';
       return `<option value="${t}" ${sel}>${t} — ${lbl}</option>`;
