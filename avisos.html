@@ -16,6 +16,19 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
 @keyframes spin{to{transform:rotate(360deg)}}
 .tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-bottom:18px;background:#f0f0f0;border-radius:12px;padding:4px}
 .tab{padding:9px 4px;border:none;border-radius:9px;background:none;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:#888;touch-action:manipulation;text-align:center}
+.rtab{flex:1;padding:10px;border:1.5px solid #ddd;border-radius:9px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#666}
+.rtab.on{background:#0F6E56;color:#fff;border-color:#0F6E56}
+.gon{background:#0F6E56 !important;color:#fff !important;border-color:#0F6E56 !important}
+.cred-card{background:#fafafa;border:1px solid #ececec;border-radius:11px;padding:13px;margin-bottom:10px}
+.cred-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px}
+.cred-nom{font-size:15px;font-weight:700;color:#111}
+.cred-info{font-size:12px;color:#888;margin-top:2px}
+.cred-badge{font-size:10px;padding:3px 9px;border-radius:20px;font-weight:700;white-space:nowrap}
+.cb-pend{background:#FFFBEB;color:#B26A00}
+.cred-acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.cred-btn{padding:9px;border-radius:8px;border:none;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
+.cbtn-ok{background:#0F6E56;color:#fff}
+.cbtn-del{background:#fff0f0;color:#c0392b;border:1px solid #f5c6c6}
 .tab.on{background:#fff;color:#2563EB;box-shadow:0 1px 4px rgba(0,0,0,0.1)}
 .sec{display:none}.sec.on{display:block}
 .sh{font-size:11px;font-weight:600;color:#999;margin-bottom:10px;text-transform:uppercase;letter-spacing:0.6px}
@@ -77,6 +90,7 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
   <div class="tabs">
     <button class="tab on" onclick="showTab('reg',this)">➕ Registrar</button>
     <button class="tab" onclick="showTab('dia',this)">📅 Día</button>
+    <button class="tab" onclick="showTab('rec',this)">🔄 Recuperar</button>
     <button class="tab" onclick="showTab('per',this)">🔍 Alumno</button>
   </div>
 
@@ -105,6 +119,35 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
     </div>
     <div id="dia-cont"><div class="empty">Selecciona una fecha</div></div>
     <button style="width:100%;padding:14px;background:#25D366;color:#fff;border:none;border-radius:11px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;margin-top:8px" onclick="compartirDia()">📤 Compartir al grupo</button>
+  </div>
+
+  <!-- TAB RECUPERACIONES (créditos) -->
+  <div class="sec" id="tab-rec">
+    <div class="subtabs" style="display:flex;gap:6px;margin-bottom:14px">
+      <button class="rtab on" id="rt-pend" onclick="showRec('pend')">📋 Pendientes</button>
+      <button class="rtab" id="rt-gen" onclick="showRec('gen')">➕ Generar</button>
+    </div>
+
+    <!-- Pendientes -->
+    <div id="rec-pend">
+      <div class="sh">Créditos pendientes de recuperar</div>
+      <div style="font-size:12px;color:#888;margin-bottom:12px;line-height:1.5">Alumnos que tienen clases por recuperar. Marca "✅ Recuperó" cuando vengan.</div>
+      <div id="pend-cont"><div class="empty"><span class="spinner"></span> Cargando...</div></div>
+      <button style="width:100%;padding:12px;background:#888;color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px" onclick="cargarPendientes()">🔄 Actualizar</button>
+    </div>
+
+    <!-- Generar -->
+    <div id="rec-gen" style="display:none">
+      <div class="sh">Generar créditos de recuperación</div>
+      <div class="fs">
+        <span class="fl">Tipo de generación</span>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+          <button class="tipo-btn gon" id="gt-masivo" onclick="selGen('masivo')">🏟️ Cierre de cancha</button>
+          <button class="tipo-btn" id="gt-indiv" onclick="selGen('indiv')">👤 Individual</button>
+        </div>
+      </div>
+      <div id="gen-form"></div>
+    </div>
   </div>
 
   <!-- TAB ALUMNO -->
@@ -260,6 +303,163 @@ function showTab(id,btn){
   btn.classList.add('on');
   document.getElementById('tab-'+id).classList.add('on');
   if(id==='dia')cargarDia();
+  if(id==='rec'){showRec('pend');}
+}
+
+// ===== RECUPERACIONES (créditos) =====
+let GEN_TIPO='masivo';
+function showRec(v){
+  document.getElementById('rt-pend').className='rtab'+(v==='pend'?' on':'');
+  document.getElementById('rt-gen').className='rtab'+(v==='gen'?' on':'');
+  document.getElementById('rec-pend').style.display=v==='pend'?'block':'none';
+  document.getElementById('rec-gen').style.display=v==='gen'?'block':'none';
+  if(v==='pend')cargarPendientes();
+  if(v==='gen'){selGen(GEN_TIPO);}
+}
+
+async function cargarPendientes(){
+  const cont=document.getElementById('pend-cont');
+  cont.innerHTML='<div class="empty"><span class="spinner"></span> Cargando...</div>';
+  try{
+    const r=await fetch(API_A+'?app=creditos&estado=PENDIENTE');
+    const d=await r.json();
+    const cr=d.creditos||[];
+    if(!cr.length){cont.innerHTML='<div class="empty">✅ No hay créditos pendientes</div>';return;}
+    // Agrupar por alumno
+    const porAlu={};
+    cr.forEach(c=>{if(!porAlu[c.cod])porAlu[c.cod]={nom:c.alumno,items:[]};porAlu[c.cod].items.push(c);});
+    let html='<div style="font-size:13px;font-weight:700;color:#0F6E56;margin-bottom:10px">'+cr.length+' crédito(s) pendiente(s)</div>';
+    Object.keys(porAlu).forEach(cod=>{
+      const g=porAlu[cod];
+      html+=`<div class="cred-card">
+        <div class="cred-top">
+          <div><div class="cred-nom">${g.nom.split(' ').slice(0,3).join(' ')}</div>
+          <div class="cred-info">${g.items.length} clase(s) por recuperar</div></div>
+          <span class="cred-badge cb-pend">${g.items.length} pend.</span>
+        </div>`;
+      g.items.forEach(c=>{
+        html+=`<div style="border-top:1px solid #eee;padding-top:8px;margin-top:8px">
+          <div style="font-size:12px;color:#666">📅 Faltó: ${c.fechaFalta||'—'} · ${c.turno||''} · ${c.motivo}</div>
+          <div class="cred-acts">
+            <button class="cred-btn cbtn-ok" onclick="marcarUsado('${c.id}','${(g.nom||'').replace(/'/g,'')}')">✅ Recuperó</button>
+            <button class="cred-btn cbtn-del" onclick="cancelarCredito('${c.id}')">🗑 Cancelar</button>
+          </div>
+        </div>`;
+      });
+      html+='</div>';
+    });
+    cont.innerHTML=html;
+  }catch(e){cont.innerHTML='<div class="empty">⚠️ Error al cargar</div>';}
+}
+
+function marcarUsado(id,nom){
+  const fecha=prompt('¿Qué día recuperó '+nom+'? (dd/mm/aaaa)\nDeja vacío para hoy:','');
+  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'credito_usar',id,fechaUsada:fecha||''})});
+  alert('✅ Marcado como recuperado');
+  setTimeout(cargarPendientes,1500);
+}
+function cancelarCredito(id){
+  if(!confirm('¿Cancelar (eliminar) este crédito de recuperación?'))return;
+  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'credito_cancelar',id})});
+  alert('🗑 Crédito cancelado');
+  setTimeout(cargarPendientes,1500);
+}
+
+function selGen(t){
+  GEN_TIPO=t;
+  document.getElementById('gt-masivo').className='tipo-btn'+(t==='masivo'?' gon':'');
+  document.getElementById('gt-indiv').className='tipo-btn'+(t==='indiv'?' gon':'');
+  renderGenForm();
+}
+
+function renderGenForm(){
+  const cont=document.getElementById('gen-form');
+  const turnos=['TA1','TA2','TB1','TB2','TC1','TC2'];
+  if(GEN_TIPO==='masivo'){
+    cont.innerHTML=`
+      <div style="font-size:12px;color:#888;margin-bottom:12px;line-height:1.5">Genera crédito para <b>todos</b> los alumnos de un turno (cuando cierras la cancha).</div>
+      <div class="fs"><span class="fl">Turno afectado *</span>
+        <select class="fi" id="gm-turno">${turnos.map(t=>`<option value="${t}">${t}</option>`).join('')}</select>
+      </div>
+      <div class="fs"><span class="fl">Días cerrados * (elige uno o varios)</span>
+        <div id="gm-fechas"></div>
+        <button type="button" class="addbtn" onclick="addFecha('gm-fechas')" style="width:100%;padding:10px;background:#fff;color:#0F6E56;border:1.5px dashed #0F6E56;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:6px">+ Agregar día</button>
+      </div>
+      <div class="fs"><span class="fl">Motivo</span>
+        <input class="fi" id="gm-motivo" type="text" value="Cierre de cancha" placeholder="Ej: Cierre Coliseo Zela">
+      </div>
+      <button class="sb" onclick="generarMasivo()">🏟️ Generar para todo el turno</button>
+      <div id="gen-result"></div>`;
+    addFecha('gm-fechas');
+  } else {
+    cont.innerHTML=`
+      <div style="font-size:12px;color:#888;margin-bottom:12px;line-height:1.5">Genera crédito para <b>un alumno</b> (falta justificada, viaje, enfermedad).</div>
+      <div class="fs"><span class="fl">Buscar alumno *</span>
+        <input class="si" id="gi-busca" type="text" placeholder="🔍 Nombre o código..." oninput="filtGenAlu()" autocomplete="off">
+        <div class="dl" id="gi-lista"></div>
+        <div id="gi-sel" style="font-size:13px;color:#0F6E56;font-weight:700;margin-top:6px"></div>
+      </div>
+      <div class="fs"><span class="fl">Días que faltó/faltará * (uno o varios)</span>
+        <div id="gi-fechas"></div>
+        <button type="button" class="addbtn" onclick="addFecha('gi-fechas')" style="width:100%;padding:10px;background:#fff;color:#0F6E56;border:1.5px dashed #0F6E56;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:6px">+ Agregar día</button>
+      </div>
+      <div class="fs"><span class="fl">Motivo</span>
+        <input class="fi" id="gi-motivo" type="text" value="Falta justificada" placeholder="Ej: Enfermedad, viaje">
+      </div>
+      <button class="sb" onclick="generarIndividual()">👤 Generar crédito(s)</button>
+      <div id="gen-result"></div>`;
+    addFecha('gi-fechas');
+  }
+}
+
+let fechaCounter=0;
+function addFecha(contId){
+  const cont=document.getElementById(contId);
+  const id='f'+(fechaCounter++);
+  const div=document.createElement('div');
+  div.style.cssText='display:flex;gap:8px;margin-bottom:6px;align-items:center';
+  div.innerHTML=`<input class="fi" type="date" value="${hoyISO()}" style="margin:0;flex:1" data-fecha="1">
+    <button type="button" onclick="this.parentElement.remove()" style="width:38px;height:38px;border:none;border-radius:8px;background:#fff0f0;color:#c0392b;font-size:16px;cursor:pointer;flex-shrink:0">🗑</button>`;
+  cont.appendChild(div);
+}
+function getFechas(contId){
+  return Array.from(document.querySelectorAll('#'+contId+' input[data-fecha]')).map(i=>i.value).filter(v=>v);
+}
+
+function generarMasivo(){
+  const turno=document.getElementById('gm-turno').value;
+  const fechas=getFechas('gm-fechas');
+  const motivo=document.getElementById('gm-motivo').value.trim();
+  if(!fechas.length){alert('Agrega al menos un día.');return;}
+  if(!confirm('¿Generar crédito para TODOS los alumnos de '+turno+' en '+fechas.length+' día(s)?'))return;
+  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'credito_masivo',turno,fechasFalta:fechas,motivo})});
+  document.getElementById('gen-result').innerHTML='<div style="background:#ECFDF5;border:1.5px solid #c8ead9;border-radius:10px;padding:14px;text-align:center;margin-top:10px;font-size:13px;color:#0F6E56;font-weight:700">✅ Créditos generados para el turno '+turno+'</div>';
+}
+
+let GEN_ALU=null;
+function filtGenAlu(){
+  const q=document.getElementById('gi-busca').value.toLowerCase().trim();
+  const dd=document.getElementById('gi-lista');
+  if(!q||!AL){dd.style.display='none';return;}
+  const r=AL.filter(a=>(a.nom||'').toLowerCase().includes(q)||String(a.cod).includes(q));
+  if(!r.length){dd.style.display='none';return;}
+  dd.innerHTML=r.slice(0,10).map(a=>`<div class="dr" onclick="selGenAlu('${a.cod}','${(a.nom||'').replace(/'/g,'')}','${a.turno||''}')"><div class="dn">${a.nom.split(' ').slice(0,3).join(' ')}</div><div class="di">${a.cod} · ${a.turno||'—'}</div></div>`).join('');
+  dd.style.display='block';
+}
+function selGenAlu(cod,nom,turno){
+  GEN_ALU={cod,nom,turno};
+  document.getElementById('gi-sel').textContent='✅ '+nom;
+  document.getElementById('gi-lista').style.display='none';
+  document.getElementById('gi-busca').value='';
+}
+function generarIndividual(){
+  if(!GEN_ALU){alert('Selecciona un alumno.');return;}
+  const fechas=getFechas('gi-fechas');
+  const motivo=document.getElementById('gi-motivo').value.trim();
+  if(!fechas.length){alert('Agrega al menos un día.');return;}
+  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'credito_generar',cod:GEN_ALU.cod,alumno:GEN_ALU.nom,turno:GEN_ALU.turno,fechasFalta:fechas,motivo})});
+  document.getElementById('gen-result').innerHTML='<div style="background:#ECFDF5;border:1.5px solid #c8ead9;border-radius:10px;padding:14px;text-align:center;margin-top:10px;font-size:13px;color:#0F6E56;font-weight:700">✅ '+fechas.length+' crédito(s) generado(s) para '+GEN_ALU.nom.split(' ')[0]+'</div>';
+  GEN_ALU=null;
 }
 
 // REGISTRAR
