@@ -189,6 +189,11 @@ async function verPerfil(cod){
   try{
     const r=await fetch(API+'?app=perfil&cod='+encodeURIComponent(cod));
     const d=await r.json();
+    // Cargar créditos pendientes del alumno
+    try{
+      const rc=await fetch(API+'?app=creditos&cod='+encodeURIComponent(cod)+'&estado=PENDIENTE');
+      d.creditos=(await rc.json()).creditos||[];
+    }catch(e){d.creditos=[];}
     renderPerfil(d,cod);
   }catch(e){
     cont.innerHTML='<div class="card"><div class="empty">⚠️ No se pudo cargar el perfil</div><button class="back-btn" onclick="volver()">← Volver a buscar</button></div>';
@@ -317,6 +322,22 @@ function renderPerfil(d,cod){
       ⏰ Turno: ${i.turno||'—'}${i.precio?' · 💰 S/'+i.precio:''}
     </div>`;
   } else html+='<div class="empty" style="padding:20px">Sin datos de inscripción digital</div>';
+  html+='</div>';
+
+  // CRÉDITOS DE RECUPERACIÓN
+  const creds=d.creditos||[];
+  html+=`<div class="card">
+    <div class="sec-h">🔄 Recuperaciones pendientes</div>`;
+  if(creds.length){
+    html+=`<div class="mini-total" style="background:#FFFBEB"><div class="mini-total-num" style="color:#B26A00">${creds.length}</div><div class="mini-total-lbl">clase(s) por recuperar</div></div>`;
+    html+='<div class="scroll-list">'+creds.map(c=>`
+      <div class="item-row">
+        <div><div class="item-main">${c.motivo}</div>
+        <div class="item-sub">Faltó: ${c.fechaFalta||'—'} · ${c.turno||''}</div></div>
+        <span class="badge b-par">Pendiente</span>
+      </div>`).join('')+'</div>';
+    html+='<div style="font-size:11px;color:#999;margin-top:8px">Para marcar como recuperada, usa la app de Avisos → Recuperar</div>';
+  } else html+='<div class="empty" style="padding:20px">Sin clases pendientes de recuperar ✅</div>';
   html+='</div>';
 
   html+='</div>';
