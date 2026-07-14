@@ -132,6 +132,7 @@ body{background:#f0f0f0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',
     <div id="rec-pend">
       <div class="sh">Créditos pendientes de recuperar</div>
       <div style="font-size:12px;color:#888;margin-bottom:12px;line-height:1.5">Alumnos que tienen clases por recuperar. Marca "✅ Recuperó" cuando vengan.</div>
+      <input class="si" id="pend-busca" type="text" placeholder="🔍 Buscar por nombre, código o turno..." oninput="filtrarPend()" autocomplete="off" style="margin-bottom:12px">
       <div id="pend-cont"><div class="empty"><span class="spinner"></span> Cargando...</div></div>
       <button style="width:100%;padding:12px;background:#888;color:#fff;border:none;border-radius:11px;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:8px" onclick="cargarPendientes()">🔄 Actualizar</button>
     </div>
@@ -323,39 +324,65 @@ async function cargarPendientes(){
   try{
     const r=await fetch(API_A+'?app=creditos&estado=PENDIENTE');
     const d=await r.json();
-    const cr=d.creditos||[];
-    if(!cr.length){cont.innerHTML='<div class="empty">✅ No hay créditos pendientes</div>';return;}
-    // Agrupar por alumno
-    const porAlu={};
-    cr.forEach(c=>{if(!porAlu[c.cod])porAlu[c.cod]={nom:c.alumno,items:[]};porAlu[c.cod].items.push(c);});
-    let html='<div style="font-size:13px;font-weight:700;color:#0F6E56;margin-bottom:10px">'+cr.length+' crédito(s) pendiente(s)</div>';
-    Object.keys(porAlu).forEach(cod=>{
-      const g=porAlu[cod];
-      html+=`<div class="cred-card">
-        <div class="cred-top">
-          <div><div class="cred-nom">${g.nom.split(' ').slice(0,3).join(' ')}</div>
-          <div class="cred-info">${g.items.length} clase(s) por recuperar</div></div>
-          <span class="cred-badge cb-pend">${g.items.length} pend.</span>
-        </div>`;
-      g.items.forEach(c=>{
-        html+=`<div style="border-top:1px solid #eee;padding-top:8px;margin-top:8px">
-          <div style="font-size:12px;color:#666">📅 Faltó: ${c.fechaFalta||'—'} · ${c.turno||''} · ${c.motivo}</div>
-          <div class="cred-acts">
-            <button class="cred-btn cbtn-ok" onclick="marcarUsado('${c.id}','${(g.nom||'').replace(/'/g,'')}')">✅ Recuperó</button>
-            <button class="cred-btn cbtn-del" onclick="cancelarCredito('${c.id}')">🗑 Cancelar</button>
-          </div>
-        </div>`;
-      });
-      html+='</div>';
-    });
-    cont.innerHTML=html;
+    PEND_CREDITOS=d.creditos||[];
+    renderPendientes();
   }catch(e){cont.innerHTML='<div class="empty">⚠️ Error al cargar</div>';}
+}
+
+let PEND_CREDITOS=[];
+function filtrarPend(){
+  renderPendientes();
+}
+function renderPendientes(){
+  const cont=document.getElementById('pend-cont');
+  const q=(document.getElementById('pend-busca')?.value||'').toLowerCase().trim();
+  let cr=PEND_CREDITOS;
+  if(q){
+    cr=cr.filter(c=>(c.alumno||'').toLowerCase().includes(q)||String(c.cod).includes(q)||String(c.turno||'').toLowerCase().includes(q));
+  }
+  if(!cr.length){cont.innerHTML='<div class="empty">'+(q?'Sin resultados para "'+q+'"':'✅ No hay créditos pendientes')+'</div>';return;}
+  // Agrupar por alumno
+  const porAlu={};
+  cr.forEach(c=>{if(!porAlu[c.cod])porAlu[c.cod]={nom:c.alumno,turno:c.turno,items:[]};porAlu[c.cod].items.push(c);});
+  let html='<div style="font-size:13px;font-weight:700;color:#0F6E56;margin-bottom:10px">'+cr.length+' crédito(s) pendiente(s)</div>';
+  Object.keys(porAlu).forEach(cod=>{
+    const g=porAlu[cod];
+    html+=`<div class="cred-card">
+      <div class="cred-top">
+        <div><div class="cred-nom">${g.nom.split(' ').slice(0,3).join(' ')}</div>
+        <div class="cred-info">${g.items.length} clase(s) · ${g.turno||''} · cod ${cod}</div></div>
+        <span class="cred-badge cb-pend">${g.items.length} pend.</span>
+      </div>`;
+    g.items.forEach(c=>{
+      const prog=c.estado==='PROGRAMADO';
+      html+=`<div style="border-top:1px solid #eee;padding-top:8px;margin-top:8px">
+        <div style="font-size:12px;color:#666">📅 Faltó: ${c.fechaFalta||'—'} · ${c.motivo}${prog?'<br>🗓️ <b style="color:#0F6E56">Programado: '+c.fechaUsada+' '+(c.turnoUsado||'')+'</b>':''}</div>
+        <div class="cred-acts" style="grid-template-columns:${prog?'1fr 1fr':'1fr 1fr 1fr'}">
+          ${prog?'':`<button class="cred-btn" style="background:#EFF6FF;color:#2563EB;border:1px solid #bfdbfe" onclick="programarCredito('${c.id}','${(g.nom||'').replace(/'/g,'')}','${g.turno||''}')">🗓️ Programar</button>`}
+          <button class="cred-btn cbtn-ok" onclick="marcarUsado('${c.id}','${(g.nom||'').replace(/'/g,'')}')">✅ Recuperó</button>
+          <button class="cred-btn cbtn-del" onclick="cancelarCredito('${c.id}')">🗑 Cancelar</button>
+        </div>
+      </div>`;
+    });
+    html+='</div>';
+  });
+  cont.innerHTML=html;
 }
 
 function marcarUsado(id,nom){
   const fecha=prompt('¿Qué día recuperó '+nom+'? (dd/mm/aaaa)\nDeja vacío para hoy:','');
   fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'credito_usar',id,fechaUsada:fecha||''})});
   alert('✅ Marcado como recuperado');
+  setTimeout(cargarPendientes,1500);
+}
+
+function programarCredito(id,nom,turnoAlu){
+  const fecha=prompt('¿Qué día va a recuperar '+nom+'? (dd/mm/aaaa)','');
+  if(!fecha)return;
+  const turno=prompt('¿En qué turno va a recuperar? (TA1, TC1, etc.)\nSu turno es '+turnoAlu, turnoAlu||'');
+  if(!turno)return;
+  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'credito_programar',id,fechaProg:fecha,turnoProg:turno})});
+  alert('🗓️ Recuperación programada para el '+fecha);
   setTimeout(cargarPendientes,1500);
 }
 function cancelarCredito(id){
@@ -399,7 +426,8 @@ function renderGenForm(){
         <div class="dl" id="gi-lista"></div>
         <div id="gi-sel" style="font-size:13px;color:#0F6E56;font-weight:700;margin-top:6px"></div>
       </div>
-      <div class="fs"><span class="fl">Días que faltó/faltará * (uno o varios)</span>
+      <div class="fs"><span class="fl">📅 Día(s) que faltó o faltará * (uno o varios)</span>
+        <div style="font-size:11px;color:#999;margin-bottom:6px">Por cada día generas un crédito, según el motivo de abajo.</div>
         <div id="gi-fechas"></div>
         <button type="button" class="addbtn" onclick="addFecha('gi-fechas')" style="width:100%;padding:10px;background:#fff;color:#0F6E56;border:1.5px dashed #0F6E56;border-radius:10px;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;margin-top:6px">+ Agregar día</button>
       </div>
