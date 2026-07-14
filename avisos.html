@@ -382,8 +382,28 @@ function programarCredito(id,nom,turnoAlu){
   const turno=prompt('¿En qué turno va a recuperar? (TA1, TC1, etc.)\nSu turno es '+turnoAlu, turnoAlu||'');
   if(!turno)return;
   fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'credito_programar',id,fechaProg:fecha,turnoProg:turno})});
-  alert('🗓️ Recuperación programada para el '+fecha);
+  // Mostrar ventana para compartir con el papá
+  mostrarCompartirRecup(nom,fecha,turno);
   setTimeout(cargarPendientes,1500);
+}
+
+function mostrarCompartirRecup(nom,fecha,turno){
+  const txt=`🏀 *HERO TACNA ACADEMIA*\n\n¡Hola! Te confirmamos la *recuperación de clase* de tu hijo(a):\n\n👦 ${nom}\n📅 Día: *${fecha}*\n⏰ Turno: *${turno}*\n\nRecuerda asistir puntualmente. ¡Los esperamos! 🟢`;
+  const modal=document.createElement('div');
+  modal.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,0.5);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px';
+  modal.innerHTML=`
+    <div style="background:#fff;border-radius:16px;padding:20px;max-width:400px;width:100%">
+      <div style="font-size:15px;font-weight:700;color:#0F6E56;margin-bottom:10px">🗓️ Recuperación programada</div>
+      <div style="font-size:13px;color:#444;background:#f7f7f7;border-radius:10px;padding:12px;white-space:pre-line;line-height:1.5;margin-bottom:12px">${txt}</div>
+      <button onclick='compartirRecupWA(${JSON.stringify(JSON.stringify(txt))})' style="width:100%;padding:13px;background:#25D366;color:#fff;border:none;border-radius:10px;font-weight:700;font-family:inherit;cursor:pointer;margin-bottom:8px">📤 Enviar por WhatsApp</button>
+      <button onclick="this.closest('div[style*=fixed]').remove()" style="width:100%;padding:11px;background:#f0f0f0;color:#666;border:none;border-radius:10px;font-weight:600;font-family:inherit;cursor:pointer">Cerrar</button>
+    </div>`;
+  document.body.appendChild(modal);
+}
+async function compartirRecupWA(txtStr){
+  const txt=JSON.parse(txtStr);
+  try{if(navigator.share)await navigator.share({text:txt});else{await navigator.clipboard.writeText(txt);alert('✅ Copiado, pégalo en WhatsApp');}}
+  catch(e){try{await navigator.clipboard.writeText(txt);alert('✅ Copiado');}catch(e2){alert(txt);}}
 }
 function cancelarCredito(id){
   if(!confirm('¿Cancelar (eliminar) este crédito de recuperación?'))return;
@@ -797,11 +817,31 @@ function renderDia(){
         </div>`;
       if(a.tipo==='Recuperación'&&a.turno) html+=`<div style="font-size:12px;color:#888;margin-left:38px">viene de turno ${a.turno}</div>`;
       if(a.nota) html+=`<div style="font-size:12px;color:#888;margin-top:2px;margin-left:38px">💬 ${a.nota}</div>`;
+      if(a.alumno){
+        html+=`<div style="display:flex;gap:6px;margin-top:6px;margin-left:38px">
+          <button onclick="editarFechaDia('${(a.alumno||'').replace(/'/g,'')}','${a.fechaFalta||a.fechaRecup||''}')" style="font-size:11px;padding:5px 10px;border:1px solid #ddd;border-radius:7px;background:#fff;color:#555;cursor:pointer;font-family:inherit">✏️ Editar fecha</button>
+          <button onclick="eliminarAvisoDia('${(a.alumno||'').replace(/'/g,'')}','${a.fechaFalta||a.fechaRecup||''}')" style="font-size:11px;padding:5px 10px;border:1px solid #f5c6c6;border-radius:7px;background:#fff0f0;color:#c0392b;cursor:pointer;font-family:inherit">🗑 Eliminar</button>
+        </div>`;
+      }
       html+='</div>';
     });
     html+='</div>';
   });
   cont.innerHTML=html;
+}
+
+function eliminarAvisoDia(alumno,fecha){
+  if(!confirm('¿Eliminar este registro de '+alumno+'?'))return;
+  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'aviso_eliminar',alumno,fecha})});
+  alert('🗑 Registro eliminado');
+  setTimeout(cargarDia,1500);
+}
+function editarFechaDia(alumno,fechaVieja){
+  const nueva=prompt('Nueva fecha para '+alumno+' (dd/mm/aaaa):',fechaVieja);
+  if(!nueva||nueva===fechaVieja)return;
+  fetch(API_A,{method:'POST',mode:'no-cors',body:JSON.stringify({app:'aviso_editar_fecha',alumno,fechaVieja,fechaNueva:nueva})});
+  alert('✏️ Fecha actualizada');
+  setTimeout(cargarDia,1500);
 }
 
 // Comparte un solo aviso del día (sin comentarios, igual que el grupal)
