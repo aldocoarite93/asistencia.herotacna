@@ -185,6 +185,29 @@ async function init(){
   }
 }
 
+// Decide qué alumnos asisten a un turno en una fecha, según su MODALIDAD.
+// - Completa/vacío: aparece en su turno normal, cualquier día de ese turno
+// - Solo sábados: aparece en su turno SOLO si es sábado
+// - MIX: aparece en el turno que tenga asignado para ESE día (columnas L-S)
+function alumnosDeTurno(t, fechaISO){
+  t=(t||'').toUpperCase();
+  let dow=null;
+  if(fechaISO){const p=fechaISO.split('-');dow=new Date(parseInt(p[0]),parseInt(p[1])-1,parseInt(p[2])).getDay();}
+  return TODOS.filter(a=>{
+    const mod=(a.modalidad||'').toLowerCase().trim();
+    const turnoAlu=(a.turno||'').toUpperCase();
+    if(mod==='mix'){
+      if(dow===null||!a.diasMix)return false;
+      const turnoDia=(a.diasMix[dow]||'').toUpperCase();
+      return turnoDia===t;
+    }
+    if(mod==='solo sábados'||mod==='solo sabados'){
+      return turnoAlu===t && dow===6;
+    }
+    return turnoAlu===t;
+  });
+}
+
 function selTurno(t,btn){
   turno=t;
   document.querySelectorAll('.tbtn').forEach(b=>b.classList.remove('active'));
@@ -287,7 +310,9 @@ function addPrAuto(nombre,nota){
 }
 
 function renderTabla(t){
-  const lista=APT[t]||[];
+  const fecha=document.getElementById('fecha').value;
+  const lista=alumnosDeTurno(t,fecha);
+  APT[t]=lista;
   document.getElementById('badge').textContent=lista.length+' alumnos';
   if(!lista.length){document.getElementById('tabla').innerHTML='<div class="no-sel">Sin alumnos en este turno</div>';return;}
   document.getElementById('tabla').innerHTML=lista.map((a,i)=>`
