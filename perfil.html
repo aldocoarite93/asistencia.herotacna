@@ -401,8 +401,34 @@ function renderEditar(a){
       <div><label class="clbl">Fecha inscripción</label><input class="cfi" id="ed-finsc" value="${a.fechaInsc}" placeholder="dd/mm/aaaa"></div>
     </div>
     <div style="font-size:11px;color:#999;margin:8px 0">🔒 N° camiseta (${a.numCamiseta||'—'}) y talla (${a.talla||'—'}) se llenan solos desde Tienda</div>
+
+    <div style="border-top:1px solid #eee;margin-top:12px;padding-top:12px">
+      <label class="clbl">📅 Modalidad de asistencia</label>
+      <select class="cfi" id="ed-modalidad" onchange="toggleMix()">
+        <option value="" ${!a.modalidad||a.modalidad.toLowerCase()==='completa'?'selected':''}>Completa (todos sus días)</option>
+        <option value="Solo sábados" ${(a.modalidad||'').toLowerCase().includes('sáb')||(a.modalidad||'').toLowerCase().includes('sab')?'selected':''}>Solo sábados</option>
+        <option value="MIX" ${(a.modalidad||'').toUpperCase()==='MIX'?'selected':''}>MIX (días personalizados)</option>
+      </select>
+      <div id="ed-mix-box" style="display:${(a.modalidad||'').toUpperCase()==='MIX'?'block':'none'}">
+        <div style="font-size:11px;color:#888;margin:6px 0 8px">Escribe el turno de cada día que asiste (ej. TB1). Deja vacío si no viene ese día.</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+          <div><label class="clbl">Lun</label><input class="cfi" id="ed-diaL" value="${a.diaL||''}" placeholder="—" style="text-transform:uppercase"></div>
+          <div><label class="clbl">Mar</label><input class="cfi" id="ed-diaM" value="${a.diaM||''}" placeholder="—" style="text-transform:uppercase"></div>
+          <div><label class="clbl">Mié</label><input class="cfi" id="ed-diaX" value="${a.diaX||''}" placeholder="—" style="text-transform:uppercase"></div>
+          <div><label class="clbl">Jue</label><input class="cfi" id="ed-diaJ" value="${a.diaJ||''}" placeholder="—" style="text-transform:uppercase"></div>
+          <div><label class="clbl">Vie</label><input class="cfi" id="ed-diaV" value="${a.diaV||''}" placeholder="—" style="text-transform:uppercase"></div>
+          <div><label class="clbl">Sáb</label><input class="cfi" id="ed-diaS" value="${a.diaS||''}" placeholder="—" style="text-transform:uppercase"></div>
+        </div>
+      </div>
+    </div>
+
     <button class="sb-cobro" id="btn-editar" onclick="guardarEditar()">💾 Guardar cambios</button>
     <div id="editar-result"></div>`;
+}
+
+function toggleMix(){
+  const mod=document.getElementById('ed-modalidad').value;
+  document.getElementById('ed-mix-box').style.display=mod==='MIX'?'block':'none';
 }
 
 function guardarEditar(){
@@ -414,7 +440,10 @@ function guardarEditar(){
     nombre,apellido,horario:g('ed-horario'),fnac:g('ed-fnac'),
     apo1:g('ed-apo1'),apo2:g('ed-apo2'),tel1:g('ed-tel1'),tel2:g('ed-tel2'),
     colegio:g('ed-colegio'),dni:g('ed-dni'),hermanos:g('ed-hermanos'),monto:g('ed-monto'),
-    nomCamiseta:g('ed-nomcam'),fechaInsc:g('ed-finsc')};
+    nomCamiseta:g('ed-nomcam'),fechaInsc:g('ed-finsc'),
+    modalidad:g('ed-modalidad'),
+    diaL:g('ed-diaL'),diaM:g('ed-diaM'),diaX:g('ed-diaX'),
+    diaJ:g('ed-diaJ'),diaV:g('ed-diaV'),diaS:g('ed-diaS')};
   const btn=document.getElementById('btn-editar');btn.disabled=true;btn.textContent='⏳ Guardando...';
   fetch(API,{method:'POST',mode:'no-cors',body:JSON.stringify(payload)});
   setTimeout(()=>{
