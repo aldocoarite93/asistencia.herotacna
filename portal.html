@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Hero Tacna</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#F4F6F8;color:#1a1a1a}
+.layout{display:flex;min-height:100vh}
+/* SIDEBAR */
+.sidebar{width:230px;background:#fff;border-right:1px solid #eaeaea;padding:20px 14px;flex-shrink:0;position:sticky;top:0;height:100vh}
+.brand{display:flex;align-items:center;gap:10px;margin-bottom:6px;padding:0 6px}
+.brand-icon{width:38px;height:38px;background:#0F6E56;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.brand-txt{font-size:16px;font-weight:800;color:#0F6E56}
+.brand-sub{font-size:11px;color:#aaa;margin:2px 0 22px 6px}
+.nav-item{display:flex;align-items:center;gap:11px;padding:11px 12px;border-radius:10px;cursor:pointer;font-size:14px;color:#555;font-weight:500;margin-bottom:3px;transition:0.12s}
+.nav-item:hover{background:#f4f6f8}
+.nav-item.on{background:#E1F5EE;color:#0F6E56;font-weight:700}
+.nav-ico{font-size:17px;width:20px;text-align:center}
+.nav-sep{border-top:1px solid #f0f0f0;margin:12px 6px}
+/* MAIN */
+.main{flex:1;padding:26px 32px;overflow-x:hidden}
+.page-title{font-size:22px;font-weight:800;color:#1a1a1a;margin-bottom:3px}
+.page-sub{font-size:13px;color:#999;margin-bottom:24px}
+/* DASHBOARD CARDS */
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+.card{background:#fff;border:1px solid #eaeaea;border-radius:14px;padding:18px 20px}
+.card-lbl{font-size:12px;color:#999;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.card-num{font-size:30px;font-weight:800;color:#1a1a1a;line-height:1}
+.card-foot{font-size:11px;color:#aaa;margin-top:6px}
+.panels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+.panel{background:#fff;border:1px solid #eaeaea;border-radius:14px;padding:20px}
+.panel-t{font-size:15px;font-weight:700;color:#1a1a1a;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.turno-bar{display:flex;align-items:center;gap:10px;margin-bottom:11px}
+.turno-lbl{font-size:12px;font-weight:700;color:#4F46E5;background:#EEF2FF;padding:3px 9px;border-radius:6px;width:52px;text-align:center;flex-shrink:0}
+.turno-track{flex:1;height:8px;background:#f0f0f0;border-radius:4px;overflow:hidden}
+.turno-fill{height:100%;background:#0F6E56;border-radius:4px}
+.turno-n{font-size:12px;color:#666;font-weight:600;width:28px;text-align:right}
+.cumple-item{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid #f5f5f5;font-size:13px}
+.cumple-item:last-child{border-bottom:none}
+.cumple-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:#FBEAF0;color:#993556}
+/* TABLA */
+.controls{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+.si{flex:1;min-width:220px;padding:11px 15px;border:1.5px solid #ddd;border-radius:11px;font-size:14px;font-family:inherit;background:#fff}
+.si:focus{outline:none;border-color:#0F6E56}
+.sel{padding:11px 14px;border:1.5px solid #ddd;border-radius:11px;font-size:14px;font-family:inherit;background:#fff;cursor:pointer}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:16px}
+.chip{padding:8px 15px;border:1.5px solid #ddd;border-radius:20px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#666}
+.chip.on{background:#0F6E56;color:#fff;border-color:#0F6E56}
+.chip.debe.on{background:#D14343;border-color:#D14343}
+.tabla{background:#fff;border:1px solid #eaeaea;border-radius:14px;overflow:hidden}
+.thead{display:grid;grid-template-columns:2.2fr 1fr 0.9fr 1.1fr 1fr 1fr;gap:12px;padding:14px 20px;background:#fafafa;font-size:11px;font-weight:700;color:#999;text-transform:uppercase;border-bottom:1px solid #eee}
+.trow{display:grid;grid-template-columns:2.2fr 1fr 0.9fr 1.1fr 1fr 1fr;gap:12px;padding:14px 20px;border-bottom:1px solid #f2f2f2;cursor:pointer;align-items:center;transition:0.1s}
+.trow:hover{background:#f8fbfa}
+.trow:last-child{border-bottom:none}
+.al-cell{display:flex;align-items:center;gap:11px}
+.avatar{width:38px;height:38px;border-radius:50%;background:#E1F5EE;color:#0F6E56;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;flex-shrink:0}
+.al-nom{font-size:14px;font-weight:600;color:#1a1a1a}
+.al-sub{font-size:11px;color:#aaa;margin-top:1px}
+.badge{font-size:10px;padding:4px 10px;border-radius:20px;font-weight:700;display:inline-block;white-space:nowrap}
+.b-turno{background:#EEF2FF;color:#4F46E5}
+.b-mod{background:#FEF3C7;color:#92400E;font-size:9px;margin-left:3px}
+.b-pago{background:#ECFDF5;color:#0F6E56}
+.b-debe{background:#FEF2F2;color:#D14343}
+.b-sinpago{background:#F3F4F6;color:#9CA3AF}
+.clases-big{font-weight:800;font-size:16px;color:#1a1a1a}
+.empty{padding:50px;text-align:center;color:#999;font-size:14px}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid #ddd;border-top-color:#0F6E56;border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:6px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hidden{display:none}
+/* RESPONSIVE: en móvil, sidebar arriba */
+@media(max-width:860px){
+  .layout{flex-direction:column}
+  .sidebar{width:100%;height:auto;position:relative;display:flex;flex-wrap:wrap;gap:4px;padding:12px}
+  .brand,.brand-sub,.nav-sep{width:100%}
+  .nav-item{flex:1;min-width:120px;justify-content:center;margin-bottom:0}
+  .main{padding:18px}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .panels{grid-template-columns:1fr}
+  .thead,.trow{grid-template-columns:2fr 1fr 1fr}
+  .col-cat,.col-antig,.col-clases{display:none}
+}
+</style>
+</head>
+<body>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-icon">🏀</div><div class="brand-txt">Hero Tacna</div></div>
+    <div class="brand-sub">Panel de administración</div>
+    <div class="nav-item on" id="nav-dash" onclick="showView('dash')"><span class="nav-ico">📊</span> Resumen</div>
+    <div class="nav-item" id="nav-alumnos" onclick="showView('alumnos')"><span class="nav-ico">👥</span> Alumnos</div>
+    <div class="nav-sep"></div>
+    <a class="nav-item" href="index.html" target="_blank"><span class="nav-ico">✅</span> Asistencia</a>
+    <a class="nav-item" href="avisos.html" target="_blank"><span class="nav-ico">📋</span> Avisos</a>
+    <a class="nav-item" href="tienda.html" target="_blank"><span class="nav-ico">🛍️</span> Tienda</a>
+    <a class="nav-item" href="admin.html" target="_blank"><span class="nav-ico">💰</span> Caja / Admin</a>
+    <a class="nav-item" href="perfil.html" target="_blank"><span class="nav-ico">🔍</span> Perfiles</a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <!-- VISTA RESUMEN -->
+    <div id="view-dash">
+      <div class="page-title">Resumen de la academia</div>
+      <div class="page-sub" id="dash-sub"><span class="spinner"></span>Cargando datos...</div>
+      <div class="cards" id="dash-cards"></div>
+      <div class="panels" id="dash-panels"></div>
+    </div>
+
+    <!-- VISTA ALUMNOS -->
+    <div id="view-alumnos" class="hidden">
+      <div class="page-title">Alumnos</div>
+      <div class="page-sub" id="al-sub">Todos tus alumnos de un vistazo</div>
+      <div class="controls">
+        <input class="si" id="busca" type="text" placeholder="🔍 Buscar por nombre o código..." oninput="renderTabla()" autocomplete="off">
+        <select class="sel" id="orden" onchange="renderTabla()">
+          <option value="nombre">Ordenar: Nombre</option>
+          <option value="antiguedad">Más antiguo</option>
+          <option value="nuevo">Más nuevo</option>
+          <option value="clases">Más clases este mes</option>
+        </select>
+      </div>
+      <div class="chips" id="chips"></div>
+      <div class="tabla" id="tabla"><div class="empty"><span class="spinner"></span> Cargando...</div></div>
+    </div>
+  </main>
+</div>
+
+<script>
+const API = "https://script.google.com/macros/s/AKfycbw0OmFTAkOl85NCF5RO-XLvDGU9qedhEr_OskfqZtz5JujMhziD8zTrdwFENvSr1sQugw/exec";
+const BASE = "https://aldocoarite93.github.io/asistencia.herotacna";
+let ALUMNOS=[], RESUMEN={}, MES_ACTUAL='', filtroTurno='', filtroDebe=false;
+const TURNOS=['TA1','TA2','TB1','TB2','TC1','TC2'];
+const MESES=['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+
+async function init(){
+  try{
+    const r=await fetch(API+'?app=portal');
+    const d=await r.json();
+    ALUMNOS=d.alumnos||[];
+    RESUMEN=d.resumen||{};
+    MES_ACTUAL=d.mesActual||'';
+    renderDash();
+    renderChips();
+    renderTabla();
+  }catch(e){
+    document.getElementById('dash-sub').textContent='⚠️ Sin conexión. Intenta de nuevo.';
+  }
+}
+
+function showView(v){
+  document.getElementById('view-dash').classList.toggle('hidden',v!=='dash');
+  document.getElementById('view-alumnos').classList.toggle('hidden',v!=='alumnos');
+  document.getElementById('nav-dash').classList.toggle('on',v==='dash');
+  document.getElementById('nav-alumnos').classList.toggle('on',v==='alumnos');
+}
+
+function mesNombre(){
+  const p=MES_ACTUAL.split('/');
+  if(p.length===2)return MESES[parseInt(p[0])]+' '+p[1];
+  return MES_ACTUAL;
+}
+
+function renderDash(){
+  const r=RESUMEN;
+  document.getElementById('dash-sub').textContent=mesNombre()+' · '+(r.totalAlumnos||0)+' alumnos activos';
+  document.getElementById('dash-cards').innerHTML=`
+    <div class="card"><div class="card-lbl">👥 Total alumnos</div><div class="card-num">${r.totalAlumnos||0}</div><div class="card-foot">en la academia</div></div>
+    <div class="card"><div class="card-lbl">✅ Pagaron este mes</div><div class="card-num" style="color:#0F6E56">${r.pagaronMes||0}</div><div class="card-foot">al día con su pago</div></div>
+    <div class="card"><div class="card-lbl">⚠️ Con saldo / sin pago</div><div class="card-num" style="color:#D14343">${(r.debenMes||0)+(r.sinPago||0)}</div><div class="card-foot">${r.debenMes||0} deben · ${r.sinPago||0} sin registrar</div></div>
+    <div class="card"><div class="card-lbl">💰 Ingresos del mes</div><div class="card-num" style="color:#0F6E56">S/${Math.round(r.ingresosMes||0)}</div><div class="card-foot">registrado en caja</div></div>`;
+
+  // Panel de turnos
+  const pt=r.porTurno||{};
+  const maxT=Math.max(1,...Object.values(pt));
+  let turnosHtml='<div class="panel"><div class="panel-t">📊 Alumnos por turno</div>';
+  TURNOS.forEach(t=>{
+    const n=pt[t]||0;
+    turnosHtml+=`<div class="turno-bar"><span class="turno-lbl">${t}</span><div class="turno-track"><div class="turno-fill" style="width:${(n/maxT*100)}%"></div></div><span class="turno-n">${n}</span></div>`;
+  });
+  turnosHtml+='</div>';
+
+  // Panel de cumpleaños
+  const cp=r.cumpleProximos||[];
+  let cumpleHtml='<div class="panel"><div class="panel-t">🎂 Cumpleaños próximos (7 días)</div>';
+  if(cp.length){
+    cp.forEach(c=>{
+      const txt=c.enDias===0?'¡Hoy!':(c.enDias===1?'Mañana':'En '+c.enDias+' días');
+      cumpleHtml+=`<div class="cumple-item"><span>${c.nombre.split(' ').slice(0,2).join(' ')} · ${c.dia}</span><span class="cumple-badge">${txt}</span></div>`;
+    });
+  }else{
+    cumpleHtml+='<div style="color:#aaa;font-size:13px;padding:8px 0">No hay cumpleaños esta semana 🎈</div>';
+  }
+  cumpleHtml+='</div>';
+  document.getElementById('dash-panels').innerHTML=turnosHtml+cumpleHtml;
+}
+
+function renderChips(){
+  let html='<button class="chip'+(filtroTurno===''&&!filtroDebe?' on':'')+'" onclick="setTurno(\'\')">Todos</button>';
+  TURNOS.forEach(t=>{html+=`<button class="chip${filtroTurno===t?' on':''}" onclick="setTurno('${t}')">${t}</button>`;});
+  html+=`<button class="chip debe${filtroDebe?' on':''}" onclick="toggleDebe()">⚠️ Con saldo</button>`;
+  document.getElementById('chips').innerHTML=html;
+}
+function setTurno(t){filtroTurno=t;filtroDebe=false;renderChips();renderTabla();}
+function toggleDebe(){filtroDebe=!filtroDebe;filtroTurno='';renderChips();renderTabla();}
+
+function antiguedad(fechaInsc){
+  if(!fechaInsc)return {txt:'—',meses:0};
+  const p=String(fechaInsc).split('/');
+  if(p.length!==3)return {txt:'—',meses:0};
+  const f=new Date(parseInt(p[2]),parseInt(p[1])-1,parseInt(p[0]));
+  const hoy=new Date();
+  let meses=(hoy.getFullYear()-f.getFullYear())*12+(hoy.getMonth()-f.getMonth());
+  if(meses<0)meses=0;
+  let txt;
+  if(meses<1)txt='Nuevo';
+  else if(meses<12)txt=meses+(meses>1?' meses':' mes');
+  else{const a=Math.floor(meses/12);const m=meses%12;txt=a+(a>1?' años':' año')+(m?' '+m+'m':'');}
+  return {txt,meses};
+}
+function iniciales(nombre){
+  const p=nombre.trim().split(' ').filter(x=>x);
+  return ((p[0]||'')[0]||'')+((p[1]||'')[0]||'');
+}
+
+function renderTabla(){
+  const q=document.getElementById('busca').value.toLowerCase().trim();
+  const orden=document.getElementById('orden').value;
+  let lista=ALUMNOS.slice();
+  if(filtroTurno)lista=lista.filter(a=>a.turno===filtroTurno);
+  if(filtroDebe)lista=lista.filter(a=>a.pagoMes&&a.saldoMes>0);
+  if(q)lista=lista.filter(a=>(a.nombre||'').toLowerCase().includes(q)||String(a.cod).includes(q));
+  lista.forEach(a=>{a._ant=antiguedad(a.fechaInsc);});
+  if(orden==='nombre')lista.sort((a,b)=>a.nombre.localeCompare(b.nombre));
+  else if(orden==='antiguedad')lista.sort((a,b)=>b._ant.meses-a._ant.meses);
+  else if(orden==='nuevo')lista.sort((a,b)=>a._ant.meses-b._ant.meses);
+  else if(orden==='clases')lista.sort((a,b)=>b.clasesMes-a.clasesMes);
+
+  document.getElementById('al-sub').textContent=lista.length+' alumno(s)'+(filtroTurno?' en '+filtroTurno:'');
+
+  if(!lista.length){document.getElementById('tabla').innerHTML='<div class="empty">Sin resultados</div>';return;}
+
+  let html=`<div class="thead">
+    <div>Alumno</div><div>Turno</div><div class="col-cat">Categoría</div>
+    <div class="col-clases">Clases (${mesNombre().split(' ')[0]})</div><div>Pago</div><div class="col-antig">Antigüedad</div>
+  </div>`;
+  lista.forEach(a=>{
+    const mod=(a.modalidad||'').toLowerCase();
+    let modBadge='';
+    if(mod.includes('sáb')||mod.includes('sab'))modBadge='<span class="badge b-mod">Sáb</span>';
+    else if(mod==='mix')modBadge='<span class="badge b-mod">MIX</span>';
+    let pagoBadge;
+    if(!a.pagoMes)pagoBadge='<span class="badge b-sinpago">Sin pago</span>';
+    else if(a.saldoMes>0)pagoBadge='<span class="badge b-debe">Debe S/'+a.saldoMes+'</span>';
+    else pagoBadge='<span class="badge b-pago">Pagó</span>';
+    html+=`<div class="trow" onclick="verPerfil('${a.cod}')">
+      <div class="al-cell"><div class="avatar">${iniciales(a.nombre)}</div>
+        <div><div class="al-nom">${a.nombre.split(' ').slice(0,3).join(' ')}</div>
+        <div class="al-sub">📱 ${a.telApo||'—'} · ${a.cod}</div></div></div>
+      <div><span class="badge b-turno">${a.turno||'—'}</span>${modBadge}</div>
+      <div class="col-cat"><span style="font-size:13px;color:#666">${a.categoria||'—'}</span></div>
+      <div class="col-clases"><span class="clases-big">${a.clasesMes}</span></div>
+      <div>${pagoBadge}</div>
+      <div class="col-antig"><span style="font-size:13px;color:#666">${a._ant.txt}</span></div>
+    </div>`;
+  });
+  document.getElementById('tabla').innerHTML=html;
+}
+
+function verPerfil(cod){window.open(BASE+'/perfil.html?cod='+encodeURIComponent(cod),'_blank');}
+init();
+</script>
+</body>
+</html>
